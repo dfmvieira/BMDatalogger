@@ -1,8 +1,8 @@
 void StartScreen(){
-  String T1 = "        BM Devs";
-  String T2 = "      Datalogger";
-  String T3 = "        " + VersionStr;
-  String T4 = "    eCtune ISR V3";
+  String T1 = " BMDatalogger" + VersionStr;
+  String T2 = "   eCtune ISR V3    ";
+  String T3 = "  Datalog Protocol  ";
+  String T4 = "  Made by BM Devs   ";
 
   lcd.clear();
   lcd.setCursor(0,0);
