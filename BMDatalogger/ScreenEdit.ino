@@ -3,6 +3,8 @@ void DisplayEdit() {
   
   //Set Top Title
   lcd.setCursor(0, 0);
+  lcd.print("   EDIT PARAMETER   ");
+  lcd.setCursor(0, 1);
   if (ScreenOptionPage == 0) {
     if (ScreenCurrentIndex == 0) lcd.print("    INJECTOR SIZE   ");
     if (ScreenCurrentIndex == 1) lcd.print("    GEARBOX TYPE    ");
@@ -19,8 +21,6 @@ void DisplayEdit() {
     if (ScreenCurrentIndex == 4) ScreenEdit = false;
     if (ScreenCurrentIndex == 5) ScreenEdit = false;
   }
-  lcd.setCursor(0, 1);
-  lcd.print("                    ");
   
   //Set Bottom Edit Texts
   String Text1 = "";

@@ -1,3 +1,5 @@
+const String  DegChar = "\xDF";
+
 String GetLAMBA() {
   String Str = "";
   if (UseLAMBA == 1) Str = "LAMBA";

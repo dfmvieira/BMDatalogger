@@ -40,7 +40,6 @@ bool ScreenEditInc = false;    //Used to determine is we are in Inc/Dec Mode
 int ScreenOptionPage = 0;
 int Offset = 0;
 int Lines = 0;
-const String  DegChar = "\xDF";
 
 //Options Vars
 const String VersionStr = "V1.2.4";
