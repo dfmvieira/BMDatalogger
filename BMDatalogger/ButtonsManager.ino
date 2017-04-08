@@ -3,9 +3,10 @@
 #define OFF 0
 volatile int buttonTop = 0;
 volatile int buttonBottom = 0;
-volatile int buttonDual = 0;
+volatile int buttonHold = 0;
 unsigned long last_interrupt_time=0;
 int debouncing = 50;
+bool DoublePress = false;
 
 //Apply Buttons
 void GetButtonStates() {
@@ -14,7 +15,7 @@ void GetButtonStates() {
   
   if (buttonTop == ON) ApplyTop();
   if (buttonBottom == ON) ApplyBottom();
-  if (buttonDual == ON) ApplyDual();
+  if (buttonHold == ON) ApplyDual();
 }
 
 void ApplyTop() {
@@ -47,7 +48,7 @@ void ApplyDual() {
     ScreenCurrentIndex = 0;  //Reselect The First Index to Edit
     ScreenOption = true;
   }
-  buttonDual=OFF;
+  buttonHold=OFF;
 }
 
 //###########################################################################################################
@@ -60,10 +61,8 @@ void GetButtonTopState() {
       EcuConnected = true;
     else {
       unsigned long interrupt_time = millis();  
-      if (buttonTop == OFF &&  buttonDual == OFF && (interrupt_time - last_interrupt_time > debouncing)) {
-        delay(30);
-        if (digitalRead(BottomButton) == LOW) buttonDual = ON;
-        else buttonTop=ON;
+      if (buttonTop == OFF && (interrupt_time - last_interrupt_time > debouncing)) {
+        buttonTop=ON;
         last_interrupt_time = interrupt_time;
       }
     }
@@ -76,12 +75,14 @@ void GetButtonBottomState() {
       EcuConnected = true;
     else {
       unsigned long interrupt_time = millis();  
-      if (buttonBottom == OFF &&  buttonDual == OFF && (interrupt_time - last_interrupt_time > debouncing)) {
-        delay(30);
-        if (digitalRead(TopButton) == LOW) buttonDual = ON;
-        else buttonBottom=ON;
+      if (buttonBottom == OFF && (interrupt_time - last_interrupt_time > debouncing)) {
+        if (!DoublePress) {
+          DoublePress = true;
+          buttonBottom=ON;
+        }
+        else buttonHold=ON;
         last_interrupt_time = interrupt_time;
       }
     }
-  }
+  } else DoublePress = false;
 }
