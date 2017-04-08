@@ -41,7 +41,7 @@ int Offset = 0;
 int Lines = 0;
 
 //Options Vars
-const String VersionStr = "V1.2.2";
+const String VersionStr = "V1.2.3";
 int Timeout = 200;
 int Injectors_Size = 240;
 int mBarSeaLevel = 1013;

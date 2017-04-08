@@ -5,7 +5,7 @@ volatile int buttonTop = 0;
 volatile int buttonBottom = 0;
 volatile int buttonDual = 0;
 unsigned long last_interrupt_time=0;
-int debouncing = 50;
+const int debouncing = 80;
 
 //Apply Buttons
 void GetButtonStates() {
