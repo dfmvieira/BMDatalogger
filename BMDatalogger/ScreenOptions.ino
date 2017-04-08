@@ -18,26 +18,52 @@
 
 void DisplayOptions() {
   GetButtonStates();
+
+  //Line 1
+  lcd.setCursor(0, 0);
+  if (ScreenCurrentIndex == 0) lcd.print("    OPTIONS MENU    ");
   
-  for (int i=0; i<8; i++) {
+  //Line 2-4
+  for (int i=0; i<6; i++) {
     String Text = "";
-    if (i == 0) Text += "INJ:" + String(Injectors_Size);
-    if (i == 1) Text += "GB:" + String(GetTrannyStr());
-    if (i == 2) Text += "O2IN:" + String(GetO2Str());
-    if (i == 3) Text += "MAP:" + String(GetMapStr());
-    if (i == 4) Text += "TEMP:" + String(GetTempCelcius());
-    if (i == 5) Text += "SPEED:" + String(GetKMH());
-    if (i == 6) Text += "DELAY:" + String(Timeout) + "ms";
-    if (i == 7) Text += "SLVL:" + String(mBarSeaLevel);
+    if (ScreenOptionPage == 0) {
+      if (i == 0) Text += "INJ:" + String(Injectors_Size);
+      if (i == 1) Text += "GB:" + String(GetTrannyStr());
+      if (i == 2) Text += "O2IN:" + String(GetO2Str());
+      if (i == 3) Text += "MAP:" + String(GetMapStr());
+      if (i == 4) Text += "TEMP:" + String(GetTempCelcius());
+      if (i == 5) Text += "SPEED:" + String(GetKMH());
+    }
+    if (ScreenOptionPage == 1) {
+      if (i == 0) Text += "DELAY:" + String(Timeout) + "ms";
+      if (i == 1) Text += "SLVL:" + String(mBarSeaLevel);
+      if (i == 2) Text += "O2:" + String(GetLAMBA());
+      if (i == 3) Text += "WB:" + String(GetWBType());
+      if (i == 4) Text += "";
+      if (i == 5) Text += "";
+    }
 
     //Reset Invalid Char Over Text Lenght
     int ResetLenght = 10 - Text.length();
     for (int i2=0; i2<ResetLenght; i2++) Text += " ";
 
-    SetOffset(i);
+    SetOffset(i+2);
     lcd.setCursor(Offset, Lines);
     lcd.print(Text);
   }
+}
+
+String GetLAMBA() {
+  String Str = "";
+  if (UseLAMBA == 1) Str = "LAMBA";
+  if (UseLAMBA == 0) Str = "AFR";
+  return Str;
+}
+
+String GetWBType() {
+  String Str = "";
+  if (WBType == 0) Str = "OEM";
+  return Str;
 }
 
 String GetTrannyStr() {
@@ -70,22 +96,22 @@ String GetMapStr() {
   if (MapValue == 1) Str = "Bar";
   if (MapValue == 2) Str = "inHgG";
   if (MapValue == 3) Str = "inHg";
-  if (MapValue == 4) Str = "psi";
+  if (MapValue == 4) Str = "PSI";
   if (MapValue == 5) Str = "kPa";
   return Str;
 }
 
 String GetTempCelcius() {
   String Str = "";
-  if (UseCelcius == 1) Str = "CEL";
-  if (UseCelcius == 0) Str = "FAR";
+  if (UseCelcius == 1) Str = DegChar + "C";
+  if (UseCelcius == 0) Str = DegChar + "F";
   return Str;
 }
 
 String GetKMH() {
   String Str = "";
-  if (UseKMH == 1) Str = "KMH";
-  if (UseKMH == 0) Str = "MPH";
+  if (UseKMH == 1) Str = "kmh";
+  if (UseKMH == 0) Str = "mph";
   return Str;
 }
 
@@ -101,6 +127,8 @@ void SaveOptions() {
     if (i == 6) EEPROM.put(Addr, UseCelcius);
     if (i == 7) EEPROM.put(Addr, UseKMH);
     if (i == 8) EEPROM.put(Addr, ScreenIndex);
+    if (i == 9) EEPROM.put(Addr, UseLAMBA);
+    if (i == 10) EEPROM.put(Addr, WBType);
 
     //Write 3 at the last location to tell data ever get saved
     EEPROM.write(1023, 3);
@@ -120,6 +148,8 @@ void LoadOptions() {
       if (i == 6) EEPROM.get(Addr, UseCelcius);
       if (i == 7) EEPROM.get(Addr, UseKMH);
       if (i == 8) EEPROM.get(Addr, ScreenIndex);
+      if (i == 9) EEPROM.get(Addr, UseLAMBA);
+      if (i == 10) EEPROM.get(Addr, WBType);
     }
   }
   else

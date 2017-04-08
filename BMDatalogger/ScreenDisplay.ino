@@ -13,16 +13,16 @@ void execScreen(){
     //Set Text
     String Text = "";
     if (ThisScreenIndex == 0) Text += "RPM:" + String(GetRpm());
-    if (ThisScreenIndex == 1) Text += "ECT:" + String(GetEct()) + " C";
-    if (ThisScreenIndex == 2) Text += "IAT:" + String(GetIat()) + " C";
+    if (ThisScreenIndex == 1) Text += "ECT:" + String(GetEct()) + GetTempCelcius();
+    if (ThisScreenIndex == 2) Text += "IAT:" + String(GetIat()) + GetTempCelcius();
     if (ThisScreenIndex == 3) Text += "TPS:" + String(GetTps()) + "%";
     if (ThisScreenIndex == 4) Text += "O2:" + String(GetO2());
     if (ThisScreenIndex == 5) Text += "IGN:" + String(GetIgn());
     if (ThisScreenIndex == 6) Text += "INJ:" + String(GetInj()) + "ms";
     if (ThisScreenIndex == 7) Text += "FUEL:" + String(GetInstantConsumption()) + "L";
     if (ThisScreenIndex == 8) Text += "DTY:" + String(GetInjectorDuty());
-    if (ThisScreenIndex == 9) Text += "MAP:" + String(GetMap());
-    if (ThisScreenIndex == 10) Text += "VSS:" + String(GetVss()) + "kmh";
+    if (ThisScreenIndex == 9) Text += GetMapStr() + ":" + String(GetMap());
+    if (ThisScreenIndex == 10) Text += "VSS:" + String(GetVss()) + GetKMH();
     if (ThisScreenIndex == 11) Text += "Gear:" + String(GetGear());
     if (ThisScreenIndex == 12) Text += "BATT:" + String(GetBattery());
     if (ThisScreenIndex == 13) Text += "VTSM:" + String(GetVTSM());
@@ -146,7 +146,15 @@ void NextDisplay() {
 void NextLine() {
   //Switch to the next lines
   ScreenCurrentIndex++;
-  if(ScreenCurrentIndex > (8 - 1)) ScreenCurrentIndex = 0;
+  if (!ScreenOption && ScreenCurrentIndex > (8 - 1)) ScreenCurrentIndex = 0;
+  if (ScreenOption) {
+    //Switch to next option page
+    if (ScreenCurrentIndex > (6 - 1)) {
+      ScreenCurrentIndex = 0;
+      ScreenOptionPage++;
+      if (ScreenOptionPage > 1) ScreenOptionPage = 0;
+    }
+  }
 
   //Display a dot for 1sec that represent the selectec line
   DisplaySelectedLines();

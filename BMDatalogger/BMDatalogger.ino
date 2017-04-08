@@ -37,11 +37,13 @@ byte ScreenIndex[8];       //Display Index for 8x values
 bool ScreenOption = false;
 bool ScreenEdit = false;
 bool ScreenEditInc = false;    //Used to determine is we are in Inc/Dec Mode
+int ScreenOptionPage = 0;
 int Offset = 0;
 int Lines = 0;
+const String  DegChar = "\xDF";
 
 //Options Vars
-const String VersionStr = "V1.2.3";
+const String VersionStr = "V1.2.4";
 int Timeout = 200;
 int Injectors_Size = 240;
 int mBarSeaLevel = 1013;
@@ -69,7 +71,7 @@ void setup() {
   StartScreen();
   lcd.clear();
 
-  //Initialize Connection/Optinos
+  //Initialize Connection/Options
   Connect();
   LoadOptions();
 }
