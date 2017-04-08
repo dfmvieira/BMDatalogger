@@ -1,10 +1,7 @@
 void Display() {
   GetData();
   GetButtonStates();
-  execScreen();
-}
-
-void execScreen(){
+  
   //Running 8x Loop for 20x04 Display
   for (int i=0; i<8; i++) {
     //Get Text Index
@@ -162,6 +159,8 @@ void NextLine() {
 
 void DisplaySelectedLines() {
   SetOffset(ScreenCurrentIndex);
+  lcd.setCursor(Offset, Lines);
+  lcd.print(">");
   Offset += 9;
   lcd.setCursor(Offset, Lines);
   lcd.print("<");
