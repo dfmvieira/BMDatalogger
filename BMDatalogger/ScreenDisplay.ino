@@ -133,12 +133,12 @@ void NextDisplay() {
   ScreenIndex[ScreenCurrentIndex]++;
 
   //Check If the Index is not already been in use
-  for (int i=0; i<8; i++)
+  /*for (int i=0; i<8; i++)
     if (i != ScreenCurrentIndex)
       if(ScreenIndex[ScreenCurrentIndex] == ScreenIndex[i])
-        ScreenIndex[ScreenCurrentIndex]++;
+        ScreenIndex[ScreenCurrentIndex]++;*/
       
-  if(ScreenIndex[ScreenCurrentIndex] > ScreenMaxIndex) ScreenIndex[ScreenCurrentIndex] = 1;
+  if(ScreenIndex[ScreenCurrentIndex] > ScreenMaxIndex) ScreenIndex[ScreenCurrentIndex] = 0;
 }
 
 void NextLine() {
