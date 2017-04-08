@@ -179,6 +179,7 @@ String GetO2Str() {
   if (O2Input == 1) Str = "ELD";
   if (O2Input == 2) Str = "EGR";
   if (O2Input == 3) Str = "B6";
+  return Str;
 }
 
 String GetMapStr() {
@@ -189,18 +190,21 @@ String GetMapStr() {
   if (MapValue == 3) Str = "inHg";
   if (MapValue == 4) Str = "psi";
   if (MapValue == 5) Str = "kPa";
+  return Str;
 }
 
 String GetTempCelcius() {
   String Str = "";
   if (UseCelcius == 1) Str = "CEL";
   if (UseCelcius == 0) Str = "FAR";
+  return Str;
 }
 
 String GetKMH() {
   String Str = "";
   if (UseKMH == 1) Str = "KMH";
   if (UseKMH == 0) Str = "MPH";
+  return Str;
 }
 
 void SaveOptions() {

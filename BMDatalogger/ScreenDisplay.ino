@@ -139,6 +139,8 @@ void NextDisplay() {
         ScreenIndex[ScreenCurrentIndex]++;*/
       
   if(ScreenIndex[ScreenCurrentIndex] > ScreenMaxIndex) ScreenIndex[ScreenCurrentIndex] = 0;
+
+  SaveOptions();
 }
 
 void NextLine() {
