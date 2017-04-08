@@ -9,35 +9,45 @@ int debouncing = 50;
 
 //Apply Buttons
 void GetButtonStates() {
+  GetButtonTopState();
+  GetButtonBottomState();
+  
   if (buttonTop == ON) ApplyTop();
   if (buttonBottom == ON) ApplyBottom();
   if (buttonDual == ON) ApplyDual();
 }
 
 void ApplyTop() {
-  //Increase Index
-  ScreenIndex[ScreenCurrentIndex]++;
-
-  //Check If the Index is not already been in use
-  for (int i=0; i<8; i++)
-    if (i != ScreenCurrentIndex)
-      if(ScreenIndex[ScreenCurrentIndex] == ScreenIndex[i])
-        ScreenIndex[ScreenCurrentIndex]++;
-      
-  if(ScreenIndex[ScreenCurrentIndex] > ScreenMaxIndex) ScreenIndex[ScreenCurrentIndex] = 1;
+  if (!ScreenOption) NextDisplay();
+  if (ScreenOption) {
+    if (ScreenEdit) EditTop();
+    if (!ScreenEdit) ScreenEdit = true;
+  }
   buttonTop=OFF;
 }
 
 void ApplyBottom() {
-  //Switch to the next lines
-  ScreenCurrentIndex++;
-  if(ScreenIndex[ScreenCurrentIndex] > (8 - 1)) ScreenCurrentIndex = 0;
+  if (!ScreenOption) NextLine();
+  if (ScreenOption) {
+    if (ScreenEdit) EditBottom();
+    if (!ScreenEdit) NextLine();
+  }
   buttonBottom=OFF;
 }
 
 void ApplyDual() {
-  if (ScreenOption) ScreenOption = false;
-  else ScreenOption = true;
+  if (ScreenOption) {
+    if (!ScreenEdit) ScreenOption = false;
+    else {
+      SaveOptions();
+      ScreenEdit = false;
+    }
+  }
+  else {
+    ScreenCurrentIndex = 0;  //Reselect The First Index to Edit
+    ScreenOption = true;
+  }
+  buttonDual=OFF;
 }
 
 //###########################################################################################################
@@ -50,7 +60,7 @@ void GetButtonTopState() {
       EcuConnected = true;
     else {
       unsigned long interrupt_time = millis();  
-      if (buttonTop == OFF && (interrupt_time - last_interrupt_time > debouncing)) {
+      if (buttonTop == OFF &&  buttonDual == OFF && (interrupt_time - last_interrupt_time > debouncing)) {
         delay(30);
         if (digitalRead(BottomButton) == LOW) buttonDual = ON;
         else buttonTop=ON;
@@ -66,7 +76,7 @@ void GetButtonBottomState() {
       EcuConnected = true;
     else {
       unsigned long interrupt_time = millis();  
-      if (buttonBottom == OFF && (interrupt_time - last_interrupt_time > debouncing)) {
+      if (buttonBottom == OFF &&  buttonDual == OFF && (interrupt_time - last_interrupt_time > debouncing)) {
         delay(30);
         if (digitalRead(TopButton) == LOW) buttonDual = ON;
         else buttonBottom=ON;

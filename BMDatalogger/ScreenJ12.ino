@@ -10,7 +10,6 @@ void SetJ12Screen() {
 
     //Get States
     EcuConnected = GetJ12Cut();
-    GetButtonTopState();
-    GetButtonBottomState();
+    GetButtonStates();
 }
 

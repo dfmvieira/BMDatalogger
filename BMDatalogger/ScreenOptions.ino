@@ -27,21 +27,135 @@ void DisplayOptions() {
     if (i == 5) Text += "   SPEED:" + String(GetKMH());
     if (i == 6) Text += "    T/O:" + String(Timeout) + "ms";
     if (i == 7) Text += "   SLVL:" + String(mBarSeaLevel);
-  }
 
-  String T1 = "   YOU WILL NOT";
-  String T2 = "      FIND YOUR";
-  String T3 = " BEER AND TITTIES";
-  String T4 = "   ERROR HERE !";
-  lcd.clear();
-  lcd.setCursor(0,0);
-  lcd.print(T1);
-  lcd.setCursor(0,1);
-  lcd.print(T2);
-  lcd.setCursor(0,2);
-  lcd.print(T3);
-  lcd.setCursor(0,3);
-  lcd.print(T4);
+    //Reset Invalid Char Over Text Lenght
+    int ResetLenght = 10 - Text.length();
+    for (int i2=0; i2<ResetLenght; i2++) Text += " ";
+
+    SetOffset(i);
+    lcd.setCursor(Offset, Lines);
+    lcd.print(Text);
+  }
+}
+
+void DisplayEdit() {
+  //Set Top Title
+  lcd.setCursor(0, 0);
+  if (ScreenCurrentIndex == 0) lcd.print("    INJECTOR SIZE   ");
+  if (ScreenCurrentIndex == 1) lcd.print("    TRANNY TYPE     ");
+  if (ScreenCurrentIndex == 2) lcd.print("      O2 INPUT      ");
+  if (ScreenCurrentIndex == 3) lcd.print("      MAP TYPE      ");
+  if (ScreenCurrentIndex == 4) lcd.print("  TEMPERATURE TYPE  ");
+  if (ScreenCurrentIndex == 5) lcd.print("     SPEED TYPE     ");
+  if (ScreenCurrentIndex == 6) lcd.print("    DISPLAY DELAY   ");
+  if (ScreenCurrentIndex == 7) lcd.print("   MBAR SEA LEVEL   ");
+  lcd.setCursor(0, 1);
+  lcd.print("                    ");
+  lcd.setCursor(0, 2);
+
+  String Text1 = "";
+  String Text2 = "";
+  
+  //Set Bottom Edit Texts
+  if (ScreenCurrentIndex == 0) {
+    Text1 = "   " + String(Injectors_Size);
+    DisplayMode1();
+  }
+  if (ScreenCurrentIndex == 1) {
+    Text1 = "   #" + TrannyType;
+    Text1 += " " + String(GetTrannyStr());
+    DisplayModel2();
+  }
+  if (ScreenCurrentIndex == 2) {
+    Text1 = "   #" + O2Input;
+    Text1 += " " + String(GetO2Str());
+    DisplayModel2();
+  }
+  if (ScreenCurrentIndex == 3) {
+    Text1 = "   #" + MapValue;
+    Text1 += " " + String(GetMapStr());
+    DisplayModel2();
+  }
+  if (ScreenCurrentIndex == 4) {
+    Text1 = "   #" + UseCelcius;
+    Text1 += " " + String(GetTempCelcius());
+    DisplayModel2();
+  }
+  if (ScreenCurrentIndex == 5) {
+    Text1 = "   #" + UseKMH;
+    Text1 += " " + String(GetKMH());
+    DisplayModel2();
+  }
+  if (ScreenCurrentIndex == 6) {
+    Text1 = "   " + String(Timeout);
+    DisplayMode1();
+  }
+  if (ScreenCurrentIndex == 7) {
+    Text1 = "   " + String(mBarSeaLevel);
+    DisplayMode1();
+  }
+  
+  int ResetLenght = 10 - Text1.length();
+  for (int i2=0; i2<ResetLenght; i2++) Text1 += " ";
+  lcd.print(Text1);
+}
+
+void DisplayMode1() {
+  lcd.setCursor(10, 2);
+  lcd.print("  <    >  ");
+  
+  lcd.setCursor(0, 3);
+  if (!ScreenEditInc) lcd.print("DECREASE    ^       ");
+  if (ScreenEditInc) lcd.print("INCREASE         ^  ");
+}
+
+void DisplayModel2() {
+  lcd.setCursor(10, 2);
+  lcd.print("       >  ");
+  lcd.setCursor(0, 3);
+  lcd.print("    NEXT         ^  ");
+}
+
+//Top Button Input
+void EditTop() {
+  if (ScreenCurrentIndex == 0) {
+    if (!ScreenEditInc) Injectors_Size -= 10;
+    if (ScreenEditInc) Injectors_Size += 10;
+  }
+  if (ScreenCurrentIndex == 1) {
+    TrannyType++;
+    if (TrannyType > 9) TrannyType = 0;
+  }
+  if (ScreenCurrentIndex == 2) {
+    O2Input++;
+    if (O2Input > 3) O2Input = 0;
+  }
+  if (ScreenCurrentIndex == 3) {
+    MapValue++;
+    if (MapValue > 5) MapValue = 0;
+  }
+  if (ScreenCurrentIndex == 4) {
+    UseCelcius++;
+    if (UseCelcius > 1) UseCelcius = 0;
+  }
+  if (ScreenCurrentIndex == 5) {
+    UseKMH++;
+    if (UseKMH > 1) UseKMH = 0;
+  }
+  if (ScreenCurrentIndex == 6) {
+    if (!ScreenEditInc) Timeout -= 5;
+    if (ScreenEditInc) Timeout += 5;
+  }
+  if (ScreenCurrentIndex == 7) {
+    if (!ScreenEditInc) mBarSeaLevel -= 10;
+    if (ScreenEditInc) mBarSeaLevel += 10;
+  }
+}
+
+//Botom Button Input
+void EditBottom() {
+  if (!ScreenEditInc) ScreenEditInc = true;
+  else ScreenEditInc = false;
 }
 
 String GetTrannyStr() {

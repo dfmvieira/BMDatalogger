@@ -32,12 +32,16 @@ const int BottomButton = 8;
 
 //Screen Settings
 const int ScreenMaxIndex = 35;  //Maximum datalogs values
-int ScreenCurrentIndex = 0;
-int ScreenIndex[8];       //Display Index for 8x values
+byte ScreenCurrentIndex = 0;
+byte ScreenIndex[8];       //Display Index for 8x values
 bool ScreenOption = false;
+bool ScreenEdit = false;
+bool ScreenEditInc = false;    //Used to determine is we are in Inc/Dec Mode
+int Offset = 0;
+int Lines = 0;
 
 //Options Vars
-const String VersionStr = "V2.0.0";
+const String VersionStr = "V1.2.0";
 int Timeout = 200;
 int Injectors_Size = 240;
 int mBarSeaLevel = 1013;
@@ -46,6 +50,8 @@ byte O2Input = 0;
 byte MapValue = 0;
 byte UseCelcius = 1;
 byte UseKMH = 1;
+byte UseLAMBA = 0;
+byte WBType = 0;
 bool EcuConnected = false;
 
 //#####################################################
@@ -78,6 +84,10 @@ void loop() {
     if (!EcuConnected) SetJ12Screen();
     if (EcuConnected) Display();
   }
-  else DisplayOptions();
+  else 
+  {
+    if (!ScreenEdit) DisplayOptions();
+    else DisplayEdit();
+  }
 }
 

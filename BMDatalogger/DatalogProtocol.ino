@@ -1,7 +1,9 @@
-bool J12_Cut        = true;
+bool J12_Cut            = true;
 const int Array_Size    = 52;
 byte Datalog_Bytes[Array_Size];
 byte GB[10] = {0x46, 0x00, 0x67, 0x00, 0x8E, 0x00, 0xB8, 0x00, 0x52, 0xDE};
+double WBConversion[24] = {0.5, 0.75, 0.75, 0.79, 1, 0.82, 1.25, 0.85, 1.5, 0.89, 1.75, 0.92, 2, 0.96, 2.25, 0.99, 2.5, 1.02, 2.75, 1.06, 3, 1.09, 3.38, 1.14};
+double WBOffeset = 0;
 
 void Connect() {
   Serial.begin(38400);
@@ -12,9 +14,9 @@ void Connect() {
 }*/
 
 bool GetJ12Cut() {
-  J12_Cut = true;
-  Serial.write((byte) 171);
-  if ((int) Serial.read() != 205) J12_Cut = false;
+  J12_Cut = false;
+  Serial.write((byte) 16);
+  if ((int) Serial.read() == 205) J12_Cut = true;
   return J12_Cut;
 }
 
@@ -206,7 +208,7 @@ byte GetActivated(byte ThisByte, int ThisPos, bool Reversed) {
 float GetInstantConsumption(){
   float hundredkm = ((60 / GetVss()) * 100) / 60;     //minutes needed to travel 100km
   float fuelc = (hundredkm * ((Injectors_Size / 100) * GetDuty())) / 1000;     
-  return constrain(fuelc, 0.0001, 50.0);
+  return constrain(fuelc, 0.0, 50.0);
 }
 
 float GetDuty(){
@@ -217,36 +219,68 @@ float GetValueHG(int ThisInt) {
   return (float) round(((double) ThisInt * 0.02952999) * 10) / 10;
 }
 
-unsigned int GetEct(){
+int GetEct(){
   return GetTemperature(Datalog_Bytes[0]);
 }
 
-unsigned int GetIat(){
+int GetIat(){
   return GetTemperature(Datalog_Bytes[1]);                  
 }
 
 float GetO2(){
-  if (O2Input == 0) return round((float) GetVolt(Datalog_Bytes[2]) * 100) / 100;//O2Byte = Datalog_Bytes[2];
-  if (O2Input == 1) return round((float) GetVolt(Datalog_Bytes[24]) * 100) / 100;//O2Byte = Datalog_Bytes[24];
-  if (O2Input == 2) return round((float) GetVolt(Datalog_Bytes[44]) * 100) / 100;//O2Byte = Datalog_Bytes[44];   //byte_25
-  if (O2Input == 3) return round((float) GetVolt(Datalog_Bytes[45]) * 100) / 100;//O2Byte = Datalog_Bytes[45]; 
+  //if (O2Input == 0) return round((float) GetVolt(Datalog_Bytes[2]) * 10) / 10;//O2Byte = Datalog_Bytes[2];
+  //if (O2Input == 1) return round((float) GetVolt(Datalog_Bytes[24]) * 10) / 10;//O2Byte = Datalog_Bytes[24];
+  //if (O2Input == 2) return round((float) GetVolt(Datalog_Bytes[44]) * 10) / 10;//O2Byte = Datalog_Bytes[44];   //byte_25
+  //if (O2Input == 3) return round((float) GetVolt(Datalog_Bytes[45]) * 10) / 10;//O2Byte = Datalog_Bytes[45]; 
   //return round((float) GetVolt(O2Byte) * 100) / 100;
   //return ((2 * (float) O2Byte[2]) + 10) / 10f;
+
+  //New Extracted method
+  byte WBByte = 0;
+  if (O2Input == 0) WBByte = Datalog_Bytes[2];
+  if (O2Input == 1) WBByte = Datalog_Bytes[24];
+  if (O2Input == 2) WBByte = Datalog_Bytes[44];
+  if (O2Input == 3) WBByte = Datalog_Bytes[45];
+  double RTND = 0.0;
+  if (UseLAMBA == 1) RTND = round((double) InterpolateWB(GetVolt(WBByte) + WBOffeset * 10) / 10);
+  else RTND = round((double) InterpolateWB(GetVolt(WBByte) * 14.75 + WBOffeset * 10) / 10);
+  return RTND;
 }
 
-unsigned int GetBaro(){
+double InterpolateWB(double ThisDouble) {
+  //method264
+  int index = sizeof(WBConversion) - 1;
+  double RTN = 0.0;
+  if (ThisDouble < WBConversion[0]) RTN = WBConversion[1];
+  if (ThisDouble > WBConversion[index - 1]) RTN = WBConversion[index];
+  for (int i = 0; i < (sizeof(WBConversion) / 2); i++)
+  {
+      index = 2 * i;
+      if ((ThisDouble >= WBConversion[index]) && (ThisDouble <= WBConversion[index + 2])) 
+          RTN = (WBConversion[index + 1] + (((ThisDouble - WBConversion[index]) * (WBConversion[index + 3] - WBConversion[index + 1])) / (WBConversion[index + 2] - WBConversion[index])));
+  }
+
+  return RTN;
+}
+
+int GetBaro(){
   return (int) round((double) ((int) Datalog_Bytes[3] / 2 + 24) * 7.221 - 59.0);
 }
 
 float GetMap(){
-  int ThisInt = (int) Datalog_Bytes[4];
+ // int ThisInt = (int) Datalog_Bytes[4];
+  int ThisInt = round((double) (((int) Datalog_Bytes[4] * 7.221) - 59.0));
   //if (MapValue == 0) return ((float) ThisInt * 2041) / 255;  //(1764/255) * (float) ThisInt;
-  if (MapValue == 0) return 6.9176 * (float) ThisInt;
-  else if (MapValue == 1) return (float) (ThisInt / 1000);
-  else if (MapValue == 2) return (float) round(-((double) GetValueHG(mBarSeaLevel) + (double) GetValueHG(ThisInt)) * 10) / 10;
+  //if (MapValue == 0) return (int) 6.9176 * (float) ThisInt;
+  if (MapValue == 0) return (int) ThisInt;
+  else if (MapValue == 1) return (ThisInt / 1000);
+  else if (MapValue == 2) return (int) round(-((double) GetValueHG(mBarSeaLevel) + (double) GetValueHG(ThisInt)) * 10) / 10;
   else if (MapValue == 3) return GetValueHG(ThisInt);
-  else if (MapValue == 4) return (float) round(((double) (ThisInt - mBarSeaLevel) * 0.0145037695765495) * 100) / 100; //GetValuePSI(ThisInt);
-  else if (MapValue == 5) return (float) round((double) ThisInt * 0.1); //GetValueKPa(ThisInt);
+  else if (MapValue == 4) {
+    if (ThisInt <= 1013) return 0;
+    else return (float) round(((double) (ThisInt - mBarSeaLevel) * 0.0145037695765495) * 10) / 10; //GetValuePSI(ThisInt);
+  }
+  else if (MapValue == 5) return (int) round((double) ThisInt * 0.1); //GetValueKPa(ThisInt);
   else return 0;
 
   //float mapRaw = Datalog_Bytes[4];
@@ -254,13 +288,14 @@ float GetMap(){
 }
 
 unsigned int GetTps(){
-  return (int) round(((double) Datalog_Bytes[5] - 25.0) / 2.04);
+  return constrain((int) round(((double) Datalog_Bytes[5] - 25.0) / 2.04), 0, 100);
   //return constrain((0.4716  * Datalog_Bytes[5]) - 11.3184, 0, 100);    
 }
 
 unsigned int GetRpm(){
   //return (int) (1875000/Long2Bytes(Datalog_Bytes[6], Datalog_Bytes[7]));
-  return (int) (1851562/Long2Bytes(Datalog_Bytes[6], Datalog_Bytes[7]));  
+  int rpm = (int) (1851562/Long2Bytes(Datalog_Bytes[6], Datalog_Bytes[7]));
+  return constrain(rpm, 0, 11000);  
 }
 
 bool GetIgnCut(){
@@ -286,19 +321,19 @@ unsigned int GetVss(){
 }
 
 double GetInjFV() {
-    return round(((double) Long2Bytes(Datalog_Bytes[17], Datalog_Bytes[18]) / 4.0) * 100) / 100;
+    return round(((double) Long2Bytes(Datalog_Bytes[17], Datalog_Bytes[18]) / 4.0) * 10) / 10;
 }
 
 float GetInjectorDuty() {
   return (float) ((double) GetRpm() * (double) GetDuration(Long2Bytes(Datalog_Bytes[17], Datalog_Bytes[18])) / 1200.0);
 }
 
-float GetInj(){
-  return (float) (Long2Bytes(Datalog_Bytes[17], Datalog_Bytes[18]) / 352);  
+int GetInj(){
+  return (int) (Long2Bytes(Datalog_Bytes[17], Datalog_Bytes[18]) / 352);  
 }
 
-unsigned int GetIgn(){
-  return (0.25 * Datalog_Bytes[19]) - 6;
+int GetIgn(){
+  return constrain((0.25 * Datalog_Bytes[19]) - 6, -6, 60);
 }
 
 bool GetVTP(){
@@ -406,7 +441,10 @@ unsigned int GetGear(){
 }
 
 
-
+int GetFC(long ThisByte, long ThisLong) {
+  int num = (int) ThisByte / (int) ThisLong;
+  return round((num) * 100) / 100;
+}
 
 
 

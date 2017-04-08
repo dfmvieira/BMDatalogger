@@ -1,7 +1,5 @@
 void Display() {
   GetData();
-  GetButtonTopState();
-  GetButtonBottomState();
   GetButtonStates();
   execScreen();
 }
@@ -15,8 +13,8 @@ void execScreen(){
     //Set Text
     String Text = "";
     if (ThisScreenIndex == 0) Text += "RPM:" + String(GetRpm());
-    if (ThisScreenIndex == 1) Text += "ECT:" + String(GetEct()) + "C";
-    if (ThisScreenIndex == 2) Text += "IAT:" + String(GetIat()) + "C";
+    if (ThisScreenIndex == 1) Text += "ECT:" + String(GetEct()) + " C";
+    if (ThisScreenIndex == 2) Text += "IAT:" + String(GetIat()) + " C";
     if (ThisScreenIndex == 3) Text += "TPS:" + String(GetTps()) + "%";
     if (ThisScreenIndex == 4) Text += "O2:" + String(GetO2());
     if (ThisScreenIndex == 5) Text += "IGN:" + String(GetIgn());
@@ -98,32 +96,64 @@ void execScreen(){
     int ResetLenght = 10 - Text.length();
     for (int i2=0; i2<ResetLenght; i2++) Text += " ";
 
-    //Offset the text (to show 2x value wide rather than only one)
-    int Offset = 0;
-    int Lines = i;
-    if (i == 1)  {
-      Lines = 0;
-      Offset = 10;
-    }
-    if (i == 2) Lines = 1;
-    if (i == 3) {
-      Lines = 1;
-      Offset = 10;
-    }
-    if (i == 4) Lines = 2;
-    if (i == 5) {
-      Lines = 2;
-      Offset = 10;
-    }
-    if (i == 6) Lines = 3;
-    if (i == 7) {
-      Lines = 3;
-      Offset = 10;
-    }
-    
-    //Print Text
+    SetOffset(i);
     lcd.setCursor(Offset, Lines);
     lcd.print(Text);
   }
 }
 
+void SetOffset(int ThisLine) {
+  //Offset the text (to show 2x value wide rather than only one)
+  Offset = 0;
+  Lines = ThisLine;
+    
+  if (ThisLine == 1)  {
+      Lines = 0;
+      Offset = 10;
+    }
+    if (ThisLine == 2) Lines = 1;
+    if (ThisLine == 3) {
+      Lines = 1;
+      Offset = 10;
+    }
+    if (ThisLine == 4) Lines = 2;
+    if (ThisLine == 5) {
+      Lines = 2;
+      Offset = 10;
+    }
+    if (ThisLine == 6) Lines = 3;
+    if (ThisLine == 7) {
+      Lines = 3;
+      Offset = 10;
+    }
+}
+
+void NextDisplay() {
+  //Increase Index
+  ScreenIndex[ScreenCurrentIndex]++;
+
+  //Check If the Index is not already been in use
+  for (int i=0; i<8; i++)
+    if (i != ScreenCurrentIndex)
+      if(ScreenIndex[ScreenCurrentIndex] == ScreenIndex[i])
+        ScreenIndex[ScreenCurrentIndex]++;
+      
+  if(ScreenIndex[ScreenCurrentIndex] > ScreenMaxIndex) ScreenIndex[ScreenCurrentIndex] = 1;
+}
+
+void NextLine() {
+  //Switch to the next lines
+  ScreenCurrentIndex++;
+  if(ScreenCurrentIndex > (8 - 1)) ScreenCurrentIndex = 0;
+
+  //Display a dot for 1sec that represent the selectec line
+  DisplaySelectedLines();
+}
+
+void DisplaySelectedLines() {
+  SetOffset(ScreenCurrentIndex);
+  Offset += 9;
+  lcd.setCursor(Offset, Lines);
+  lcd.print("<");
+  delay(1000);
+}
