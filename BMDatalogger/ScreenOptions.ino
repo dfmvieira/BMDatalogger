@@ -19,14 +19,14 @@
 void DisplayOptions() {
   for (int i=0; i<8; i++) {
     String Text = "";
-    if (i == 0) Text += "    INJ:" + String(Injectors_Size);
-    if (i == 1) Text += "  TRANNY:" + String(GetTrannyStr());
-    if (i == 2) Text += "   O2IN:" + String(GetO2Str());
-    if (i == 3) Text += "    MAP:" + String(GetMapStr());
-    if (i == 4) Text += "   TEMP:" + String(GetTempCelcius());
-    if (i == 5) Text += "   SPEED:" + String(GetKMH());
-    if (i == 6) Text += "    T/O:" + String(Timeout) + "ms";
-    if (i == 7) Text += "   SLVL:" + String(mBarSeaLevel);
+    if (i == 0) Text += "INJ:" + String(Injectors_Size);
+    if (i == 1) Text += "TRANNY:" + String(GetTrannyStr());
+    if (i == 2) Text += "O2IN:" + String(GetO2Str());
+    if (i == 3) Text += "MAP:" + String(GetMapStr());
+    if (i == 4) Text += "TEMP:" + String(GetTempCelcius());
+    if (i == 5) Text += "SPEED:" + String(GetKMH());
+    if (i == 6) Text += "T/O:" + String(Timeout) + "ms";
+    if (i == 7) Text += "SLVL:" + String(mBarSeaLevel);
 
     //Reset Invalid Char Over Text Lenght
     int ResetLenght = 10 - Text.length();
