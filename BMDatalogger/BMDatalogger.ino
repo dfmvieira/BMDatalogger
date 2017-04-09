@@ -24,7 +24,7 @@
 #include <stdio.h>
 #include <avr/pgmspace.h>
 #include <EEPROM.h>
-#include <phi_big_font.h>
+//#include <phi_big_font.h>
 
 //Set Inputs
 LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);
@@ -41,7 +41,7 @@ bool EcuConnected = false;
 const byte ScreenPage1[8] = {0, 1, 2, 3, 4, 5, 6 ,7};
 const byte ScreenPage2[8] = {8, 9, 10, 11, 12, 13, 14 ,15};
 const byte ScreenPage3[8] = {16, 17, 18, 19, 20, 21, 22 ,0};
-const byte ScreenPage4[8] = {50, 0, 51, 0, 102, 0, 0, 0};
+const byte ScreenPage4[8] = {50, 0, 51, 0, 2, 3, 4, 5};
 
 //Options Vars
 const String VersionStr = "V1.3.2";
@@ -65,7 +65,7 @@ void setup() {
   
   //Start LCD Display
   lcd.begin(20, 4);
-  init_big_font(&lcd);
+  //init_big_font(&lcd);
   GraphInit();
   StartScreen();
   lcd.clear();

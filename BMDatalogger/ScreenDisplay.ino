@@ -183,7 +183,7 @@ void Display() {
       //Display Big Text
       char charBuf[sizeof(Text2)];
       Text2.toCharArray(charBuf, sizeof(Text2)); 
-      render_big_msg(charBuf, Offset, Lines);
+      //render_big_msg(charBuf, Offset, Lines);
       
       //Increase 3 index (doesnt overlay display, since big font use 4x display)
       i += 3;
