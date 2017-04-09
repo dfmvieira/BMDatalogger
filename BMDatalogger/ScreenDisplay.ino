@@ -187,7 +187,7 @@ void Display() {
     //Display BigFont
     if (ThisScreenMode == 2) {
       //Reset Big Text
-      for (int i2=0; i2< (10 - Text2.length()); i2++) Text2 += " ";
+      for (int i2=0; i2< (5 - Text2.length()); i2++) Text2 += " ";
       
       //Display Big Text
       char charBuf[sizeof(Text2)];
