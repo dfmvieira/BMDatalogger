@@ -172,8 +172,7 @@ void Display() {
       Offset += 10;
       lcd.setCursor(Offset, Lines);
 
-      int Value = 15;
-      GraphDrawValue(Value);
+      GraphDrawValue(Text2.toInt());
       
       //Increase 1 index (doesnt overlay display, since progressbar use 2x display)
       i++;

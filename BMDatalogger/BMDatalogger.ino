@@ -77,8 +77,6 @@ void setup() {
 
 void loop() {
   delay(Timeout);
-  init_big_font(&lcd);   
-  lcd.clear();
   if (!EcuConnected) SetJ12Screen();
   if (EcuConnected) Display();
 }
