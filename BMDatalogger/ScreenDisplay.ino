@@ -16,140 +16,140 @@ void Display() {
     if (ThisScreenIndex == 0 | ThisScreenIndex == 50  | ThisScreenIndex == 100) {
       Text1 = "RPM:";
       Text2 = String(GetRpm());
-      progBar.setMinValue(0);
-      progBar.setMaxValue(11000);
+      GraphSetMinValue(0);
+      GraphSetMaxValue(11000);
     }
     if (ThisScreenIndex == 1 | ThisScreenIndex == 51  | ThisScreenIndex == 101) {
       Text1 = "ECT:";
       Text2 =  String(GetEct()) + GetTempCelcius();
-      progBar.setMinValue(-40);
-      progBar.setMaxValue(140);
+      GraphSetMinValue(-40);
+      GraphSetMaxValue(140);
     }
     if (ThisScreenIndex == 2 | ThisScreenIndex == 52  | ThisScreenIndex == 102) {
       Text1 = "IAT:";
       Text2 = String(GetIat()) + GetTempCelcius();
-      progBar.setMinValue(-40);
-      progBar.setMaxValue(140);
+      GraphSetMinValue(-40);
+      GraphSetMaxValue(140);
     }
     if (ThisScreenIndex == 3 | ThisScreenIndex == 53  | ThisScreenIndex == 103) {
       Text1 = "TPS:";
       Text2 = String(GetTps()) + "%";
-      progBar.setMinValue(0);
-      progBar.setMaxValue(100);
+      GraphSetMinValue(0);
+      GraphSetMaxValue(100);
     }
     if (ThisScreenIndex == 4 | ThisScreenIndex == 54  | ThisScreenIndex == 104) {
       Text1 = "O2:";
       Text2 = String(GetO2());
-      progBar.setMinValue(0);
-      progBar.setMaxValue(20);
+      GraphSetMinValue(0);
+      GraphSetMaxValue(20);
     }
     if (ThisScreenIndex == 5 | ThisScreenIndex == 55  | ThisScreenIndex == 105) {
       Text1 = "IGN:";
       Text2 = String(GetIgn());
-      progBar.setMinValue(-6);
-      progBar.setMaxValue(60);
+      GraphSetMinValue(-6);
+      GraphSetMaxValue(60);
     }
     if (ThisScreenIndex == 6 | ThisScreenIndex == 56  | ThisScreenIndex == 106) {
       Text1 = "INJ:";
       Text2 = String(GetInj()) + "ms";
-      progBar.setMinValue(0);
-      progBar.setMaxValue(20);
+      GraphSetMinValue(0);
+      GraphSetMaxValue(20);
     }
     if (ThisScreenIndex == 7 | ThisScreenIndex == 57  | ThisScreenIndex == 107) {
       Text1 = "FUEL:";
       Text2 = String(GetInstantConsumption()) + "L";
-      progBar.setMinValue(0);
-      progBar.setMaxValue(50);
+      GraphSetMinValue(0);
+      GraphSetMaxValue(50);
     }
     if (ThisScreenIndex == 8 | ThisScreenIndex == 58  | ThisScreenIndex == 108) {
       Text1 = "IACV:";
       Text2 = String(GetIACVDuty());
-      progBar.setMinValue(-100);
-      progBar.setMaxValue(100);
+      GraphSetMinValue(-100);
+      GraphSetMaxValue(100);
     }
     if (ThisScreenIndex == 9 | ThisScreenIndex == 59  | ThisScreenIndex == 109) {
       Text1 = GetMapStr() + ":";
       Text2 = String(GetMap());
-      progBar.setMinValue(0);
-      progBar.setMaxValue(1048);
+      GraphSetMinValue(0);
+      GraphSetMaxValue(1048);
     }
     if (ThisScreenIndex == 10 | ThisScreenIndex == 60  | ThisScreenIndex == 110) {
       Text1 = "VSS:";
       Text2 = String(GetVss()) + GetKMH();
-      progBar.setMinValue(0);
-      progBar.setMaxValue(300);
+      GraphSetMinValue(0);
+      GraphSetMaxValue(300);
     }
     if (ThisScreenIndex == 11 | ThisScreenIndex == 61  | ThisScreenIndex == 111) {
       Text1 = "Gear:";
       Text2 = String(GetGear());
-      progBar.setMinValue(0);
-      progBar.setMaxValue(5);
+      GraphSetMinValue(0);
+      GraphSetMaxValue(5);
     }
     if (ThisScreenIndex == 12 | ThisScreenIndex == 62  | ThisScreenIndex == 112) {
       Text1 = "BATT:";
       Text2 = String(GetBattery());
-      progBar.setMinValue(0);
-      progBar.setMaxValue(16);
+      GraphSetMinValue(0);
+      GraphSetMaxValue(16);
     }
     if (ThisScreenIndex == 13 | ThisScreenIndex == 63  | ThisScreenIndex == 113) {
       Text1 = "ICUT:";
       Text2 = String(GetIgnCut());
-      progBar.setMinValue(0);
-      progBar.setMaxValue(1);
+      GraphSetMinValue(0);
+      GraphSetMaxValue(1);
     }
     if (ThisScreenIndex == 14 | ThisScreenIndex == 64  | ThisScreenIndex == 114) {
       Text1 = "FCUT:";
       Text2 = String(GetFuelCut1());
-      progBar.setMinValue(0);
-      progBar.setMaxValue(1);
+      GraphSetMinValue(0);
+      GraphSetMaxValue(1);
     }
     if (ThisScreenIndex == 15 | ThisScreenIndex == 65  | ThisScreenIndex == 115) {
       Text1 = "INJFV:";
       Text2 = String(GetInjFV());
-      progBar.setMinValue(0);
-      progBar.setMaxValue(3000);
+      GraphSetMinValue(0);
+      GraphSetMaxValue(3000);
     }
     if (ThisScreenIndex == 16 | ThisScreenIndex == 66  | ThisScreenIndex == 116) {
       Text1 = "2MAP:";
       Text2 = String(GetOutput2ndMap());
-      progBar.setMinValue(0);
-      progBar.setMaxValue(1);
+      GraphSetMinValue(0);
+      GraphSetMaxValue(1);
     }
     if (ThisScreenIndex == 17 | ThisScreenIndex == 67  | ThisScreenIndex == 117) {
       Text1 = "FTLO:";
       Text2 = String(GetOutputFTL());
-      progBar.setMinValue(0);
-      progBar.setMaxValue(1);
+      GraphSetMinValue(0);
+      GraphSetMaxValue(1);
     }
     if (ThisScreenIndex == 18 | ThisScreenIndex == 68  | ThisScreenIndex == 118) {
       Text1 = "ATLG:";
       Text2 = String(GetOutputAntilag());
-      progBar.setMinValue(0);
-      progBar.setMaxValue(1);
+      GraphSetMinValue(0);
+      GraphSetMaxValue(1);
     }
     if (ThisScreenIndex == 19 | ThisScreenIndex == 69  | ThisScreenIndex == 119) {
       Text1 = "FTSO:";
       Text2 = String(GetOutputFTS());
-      progBar.setMinValue(0);
-      progBar.setMaxValue(1);
+      GraphSetMinValue(0);
+      GraphSetMaxValue(1);
     }
     if (ThisScreenIndex == 20 | ThisScreenIndex == 70  | ThisScreenIndex == 120) {
       Text1 = "EBCO:";
       Text2 = String(GetOutputEBC());
-      progBar.setMinValue(0);
-      progBar.setMaxValue(1);
+      GraphSetMinValue(0);
+      GraphSetMaxValue(1);
     }
     if (ThisScreenIndex == 21 | ThisScreenIndex == 71  | ThisScreenIndex == 121) {
       Text1 = "FCTRLO:";
       Text2 = String(GetOutputFanCtrl());
-      progBar.setMinValue(0);
-      progBar.setMaxValue(1);
+      GraphSetMinValue(0);
+      GraphSetMaxValue(1);
     }
     if (ThisScreenIndex == 22 | ThisScreenIndex == 72  | ThisScreenIndex == 122) {
       Text1 = "BSTO:";
       Text2 = String(GetOutputBST());
-      progBar.setMinValue(0);
-      progBar.setMaxValue(1);
+      GraphSetMinValue(0);
+      GraphSetMaxValue(1);
     }
     
     //Reset Invalid Char Over Text Lenght
@@ -173,7 +173,7 @@ void Display() {
       lcd.setCursor(Offset, Lines);
 
       int Value = 15;
-      progBar.drawValue(Value);
+      GraphDrawValue(Value);
       
       //Increase 1 index (doesnt overlay display, since progressbar use 2x display)
       i++;
