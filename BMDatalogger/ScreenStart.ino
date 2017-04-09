@@ -42,10 +42,10 @@ void StartScreen(){
 
   //Display Scroll (20px)
   for (int i=0; i<20; i++) {
-    T1.remove(0);
-    T2.remove(0);
-    T3.remove(0);
-    T4.remove(0);
+    T1.remove(0, 1);
+    T2.remove(0, 1);
+    T3.remove(0, 1);
+    T4.remove(0, 1);
     T1 += " ";
     T2 += " ";
     T3 += " ";
@@ -58,6 +58,6 @@ void StartScreen(){
     lcd.print(T3);
     lcd.setCursor(0,3);
     lcd.print(T4);
-    delay(25);
+    delay(75);
   }
 }

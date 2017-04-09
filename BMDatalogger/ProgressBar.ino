@@ -10,7 +10,7 @@ byte _level0[8] = {
     B11111
 };
 // -- character with one bars
-byte _level1[8] = {
+/*byte _level1[8] = {
     B10000,
     B10000,
     B10000,
@@ -52,7 +52,7 @@ byte _level4[8] = {
     B11110,
     B11110,
     B11110
-};
+};*/
 
 //###########################################################################################################
 //###########################################################################################################
@@ -60,10 +60,10 @@ byte _level4[8] = {
 
 void GraphInit() {
   lcd.createChar(10, _level0);
-  lcd.createChar(11, _level1);
+  /*lcd.createChar(11, _level1);
   lcd.createChar(12, _level2);
   lcd.createChar(13, _level3);
-  lcd.createChar(14, _level4);
+  lcd.createChar(14, _level4);*/
   
 }
 
@@ -75,14 +75,14 @@ void GraphSetValue(int minValue, int maxValue) {
   GraphMaxValue = maxValue;
 }
 
-void GraphDrawValue(int value) {
-  int Count = GraphMinValue + value * 10 / GraphMaxValue;
-  int CountHalf = (GraphMinValue + value * 10 * 5 / GraphMaxValue) % 5;
-      
-  for(byte i=0; i < Count; i++) lcd.write((char)10);
-  if(CountHalf > 0) {
+void GraphDrawValue(int value, int Lenght) {
+  int Count = GraphMinValue + value * Lenght / GraphMaxValue;
+  int CountHalf = (GraphMinValue + value * Lenght * 5 / GraphMaxValue) % 5;
+
+  for(byte i=0; i < Count; i++) lcd.write((uint8_t)10);
+  /*if(CountHalf > 0) {
     lcd.write((char) CountHalf + 10);
     Count++;
-  }
-  for(byte i=0; i < 10 - Count; i++) lcd.write(' ');
+  }*/
+  for(byte i=0; i < Lenght - Count; i++) lcd.write(' ');
 }

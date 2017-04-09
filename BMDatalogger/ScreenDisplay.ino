@@ -176,9 +176,8 @@ void Display() {
     //Display Progressbar
     if (ThisScreenMode == 1) {
       //Line 10-20 serve to display Progressbar
-      Offset += 10;
-      lcd.setCursor(Offset, Lines);
-      GraphDrawValue(Value);
+      lcd.setCursor(Offset+10, Lines);
+      GraphDrawValue(Value, 10);
       
       //Increase 1 index (doesnt overlay display, since progressbar use 2x display)
       i++;
@@ -187,8 +186,11 @@ void Display() {
     //Display BigFont
     if (ThisScreenMode == 2) {
       //Reset Big Text
-      for (int i2=0; i2< (5 - Text2.length()); i2++) Text2 += " ";
-      
+      lcd.setCursor(Offset, Lines);
+      lcd.print("                    ");
+      lcd.setCursor(Offset, Lines+1);
+      lcd.print("                    ");
+
       //Display Big Text
       char charBuf[sizeof(Text2)];
       Text2.toCharArray(charBuf, sizeof(Text2));
