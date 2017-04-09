@@ -55,11 +55,11 @@ byte _level4[8] = {
 };
 
 void GraphInit() {
-  lcd.createChar(0, _level0);
-  lcd.createChar(1, _level1);
-  lcd.createChar(2, _level2);
-  lcd.createChar(3, _level3);
-  lcd.createChar(4, _level4);
+  lcd.createChar(10, _level0);
+  lcd.createChar(11, _level1);
+  lcd.createChar(12, _level2);
+  lcd.createChar(13, _level3);
+  lcd.createChar(14, _level4);
   
 }
 
@@ -75,10 +75,10 @@ void GraphDrawValue(int value) {
   int Count = GraphMinValue + value * 10 / GraphMaxValue;
   int CountHalf = (GraphMinValue + value * 10 * 5 / GraphMaxValue) % 5;
       
-  for(byte i=0; i < Count; i++) lcd.write((byte)0);
+  for(byte i=0; i < Count; i++) lcd.write((char)10);
   if(CountHalf > 0) {
-    lcd.write(CountHalf);
+    lcd.write((char) CountHalf + 10);
     Count++;
   }
-  for(byte i=0; i < Count - 10; i++) lcd.write(' ');
+  for(byte i=0; i < 10 - Count; i++) lcd.write(' ');
 }

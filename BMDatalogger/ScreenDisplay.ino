@@ -175,22 +175,22 @@ void SetOffset(int ThisLine) {
   Lines = ThisLine;
     
   if (ThisLine == 1)  {
-      Lines = 0;
-      Offset = 10;
-    }
-    if (ThisLine == 2) Lines = 1;
-    if (ThisLine == 3) {
-      Lines = 1;
-      Offset = 10;
-    }
-    if (ThisLine == 4) Lines = 2;
-    if (ThisLine == 5) {
-      Lines = 2;
-      Offset = 10;
-    }
-    if (ThisLine == 6) Lines = 3;
-    if (ThisLine == 7) {
-      Lines = 3;
-      Offset = 10;
-    }
+    Lines = 0;
+    Offset = 10;
+  }
+  if (ThisLine == 2) Lines = 1;
+  if (ThisLine == 3) {
+    Lines = 1;
+    Offset = 10;
+  }
+  if (ThisLine == 4) Lines = 2;
+  if (ThisLine == 5) {
+    Lines = 2;
+    Offset = 10;
+  }
+  if (ThisLine == 6) Lines = 3;
+  if (ThisLine == 7) {
+    Lines = 3;
+    Offset = 10;
+  }
 }

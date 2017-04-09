@@ -40,7 +40,7 @@ bool EcuConnected = false;
 const byte ScreenPage1[8] = {0, 1, 2, 3, 4, 5, 6 ,7};
 const byte ScreenPage2[8] = {8, 9, 10, 11, 12, 13, 14 ,15};
 const byte ScreenPage3[8] = {16, 17, 18, 19, 20, 21, 22 ,0};
-const byte ScreenPage4[8] = {50, 0, 51, 0, 2, 3, 4, 5};
+const byte ScreenPage4[8] = {50, 0, 51, 0, 102, 0, 0, 0};
 
 //Options Vars
 const String VersionStr = "V1.3.2";
@@ -54,7 +54,6 @@ const byte UseLAMBA = 0;
 const byte WBType = 0;
 const double WBConversion[24] = {0.5, 0.75, 0.75, 0.79, 1, 0.82, 1.25, 0.85, 1.5, 0.89, 1.75, 0.92, 2, 0.96, 2.25, 0.99, 2.5, 1.02, 2.75, 1.06, 3, 1.09, 3.38, 1.14};
 const byte Tranny[10] = {0x46, 0x00, 0x67, 0x00, 0x8E, 0x00, 0xB8, 0x00, 0x52, 0xDE};
-
 
 //#####################################################
 
