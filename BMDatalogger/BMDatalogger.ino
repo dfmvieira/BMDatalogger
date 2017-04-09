@@ -24,71 +24,61 @@
 #include <stdio.h>
 #include <avr/pgmspace.h>
 #include <EEPROM.h>
+#include <LcdBarGraph.h>
+#include <phi_big_font.h>
 
 //Set Inputs
 LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);
+LcdBarGraph progBar(&lcd, 10);
 const int TopButton = 9;
-const int BottomButton = 8;
 
 //Screen Settings
-const int ScreenMaxIndex = 35;  //Maximum datalogs values
-byte ScreenCurrentIndex = 0;
-byte ScreenIndex[8];       //Display Index for 8x values
-bool ScreenOption = false;
-bool ScreenEdit = false;
-bool ScreenEditInc = false;    //Used to determine is we are in Inc/Dec Mode
-int ScreenOptionPage = 0;
+byte ScreenCurrentPage = 1;
+byte ScreenIndex[8];
 int Offset = 0;
 int Lines = 0;
+bool EcuConnected = false;
+
+//Pages Settings
+const byte ScreenPage1[8] = {0, 1, 2, 3, 4, 5, 6 ,7};
+const byte ScreenPage2[8] = {8, 9, 10, 11, 12, 13, 14 ,15};
+const byte ScreenPage3[8] = {16, 17, 18, 19, 20, 21, 22 ,0};
+const byte ScreenPage4[8] = {50, 0, 101, 0, 0, 0, 52, 0};
 
 //Options Vars
-const String VersionStr = "V1.2.4";
-int Timeout = 200;
-int Injectors_Size = 240;
-int mBarSeaLevel = 1013;
-byte TrannyType = 5;
-byte O2Input = 0;
-byte MapValue = 0;
-byte UseCelcius = 1;
-byte UseKMH = 1;
-byte UseLAMBA = 0;
-byte WBType = 0;
-bool EcuConnected = false;
+const String VersionStr = "V1.3.0";
+const int Timeout = 200;
+const int Injectors_Size = 240;
+const byte O2Input = 0;
+const byte MapValue = 0;
+const byte UseCelcius = 1;
+const byte UseKMH = 1;
+const byte UseLAMBA = 0;
+const byte WBType = 0;
+const double WBConversion[24] = {0.5, 0.75, 0.75, 0.79, 1, 0.82, 1.25, 0.85, 1.5, 0.89, 1.75, 0.92, 2, 0.96, 2.25, 0.99, 2.5, 1.02, 2.75, 1.06, 3, 1.09, 3.38, 1.14};
+const byte Tranny[10] = {0x46, 0x00, 0x67, 0x00, 0x8E, 0x00, 0xB8, 0x00, 0x52, 0xDE};
+
 
 //#####################################################
 
 void setup() {
-  //Initialize Screen Indexes
-  for (int i=0; i<8; i++) ScreenIndex[i] = i;
-
   //Initialize Buttons Pinout
   pinMode(TopButton,INPUT_PULLUP);  
-  pinMode(BottomButton,INPUT_PULLUP);
 
   //Start LCD Display
+  init_big_font(&lcd);
   lcd.begin(20, 4);
   StartScreen();
   lcd.clear();
-
-  //Initialize Connection/Options
   Connect();
-  LoadOptions();
+  ApplyPage();
 }
 
 //#####################################################
 
 void loop() {
   delay(Timeout);
-
-  //Screens Loop
-  if (!ScreenOption) {
-    if (!EcuConnected) SetJ12Screen();
-    if (EcuConnected) Display();
-  }
-  else 
-  {
-    if (!ScreenEdit) DisplayOptions();
-    else DisplayEdit();
-  }
+  if (!EcuConnected) SetJ12Screen();
+  if (EcuConnected) Display();
 }
 
