@@ -43,7 +43,7 @@ const byte ScreenPage3[8] = {16, 17, 18, 19, 20, 21, 22 ,0};
 const byte ScreenPage4[8] = {50, 0, 51, 0, 102, 0, 0, 0};
 
 //Options Vars
-const String VersionStr = "V1.3.2";
+const String VersionStr = "V1.3.3";
 const int Timeout = 200;
 const int Injectors_Size = 240;
 const byte O2Input = 0;
