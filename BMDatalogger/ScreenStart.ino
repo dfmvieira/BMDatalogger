@@ -4,6 +4,7 @@ void StartScreen(){
 
   lcd.clear();
   //render_big_msg("HONDA",0,0);
+  writeBigString("HONDA", 0, 0);
   delay(1000);
   lcd.setCursor(0,2);
   lcd.print(T1);

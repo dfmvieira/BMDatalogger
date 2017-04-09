@@ -24,7 +24,6 @@
 #include <stdio.h>
 #include <avr/pgmspace.h>
 #include <EEPROM.h>
-//#include <phi_big_font.h>
 
 //Set Inputs
 LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);
@@ -65,8 +64,8 @@ void setup() {
   
   //Start LCD Display
   lcd.begin(20, 4);
-  //init_big_font(&lcd);
   GraphInit();
+  BigNumberInit();
   StartScreen();
   lcd.clear();
   Connect();

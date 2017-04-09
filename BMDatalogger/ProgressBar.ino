@@ -9,33 +9,76 @@ byte _level0[8] = {
     B11111,
     B11111
 };
+// -- character with one bars
+byte _level1[8] = {
+    B10000,
+    B10000,
+    B10000,
+    B10000,
+    B10000,
+    B10000,
+    B10000,
+    B10000
+};
+// -- character with two bars
+byte _level2[8] = {
+    B11000,
+    B11000,
+    B11000,
+    B11000,
+    B11000,
+    B11000,
+    B11000,
+    B11000
+};
+// -- character with three bars
+byte _level3[8] = {
+    B11100,
+    B11100,
+    B11100,
+    B11100,
+    B11100,
+    B11100,
+    B11100,
+    B11100
+};
+// -- character with four bars
+byte _level4[8] = {
+    B11110,
+    B11110,
+    B11110,
+    B11110,
+    B11110,
+    B11110,
+    B11110,
+    B11110
+};
 
 void GraphInit() {
   lcd.createChar(0, _level0);
+  lcd.createChar(1, _level1);
+  lcd.createChar(2, _level2);
+  lcd.createChar(3, _level3);
+  lcd.createChar(4, _level4);
+  
 }
 
 int GraphMinValue = 0;
 int GraphMaxValue = 1;
 
-void GraphSetMinValue(long minValue) {
+void GraphSetValue(int minValue, int maxValue) {
   GraphMinValue = minValue;
-}
-
-void GraphSetMaxValue(long maxValue) {
   GraphMaxValue = maxValue;
 }
 
 void GraphDrawValue(int value) {
-  // calculate character count
-  byte fullChars = (long)(value + GraphMinValue) * 10 / GraphMaxValue;
+  int Count = GraphMinValue + value * 10 / GraphMaxValue;
+  int CountHalf = (GraphMinValue + value * 10 * 5 / GraphMaxValue) % 5;
       
-  // write characters
-  for(byte i=0; i<fullChars; i++) {
-    lcd.write((byte)0);
+  for(byte i=0; i < Count; i++) lcd.write((byte)0);
+  if(CountHalf > 0) {
+    lcd.write(CountHalf);
+    Count++;
   }
-  
-  // clear characters left over
-  for(byte i=0; i<sizeof(fullChars) - 10; i++) {
-      lcd.write(' ');
-  }
+  for(byte i=0; i < Count - 10; i++) lcd.write(' ');
 }
