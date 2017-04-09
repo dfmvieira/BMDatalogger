@@ -191,11 +191,11 @@ void Display() {
       render_big_msg(charBuf,Offset,Lines);
       
       //Set 2nd line texts (spaces)
-      Text1 = "";
-      for (int i2=0; i2 < sizeof(Text1); i2++) Text1 += " ";
+      Text2 = "";
+      for (int i2=0; i2 < sizeof(Text1); i2++) Text2 += " ";
       Lines++;
       lcd.setCursor(Offset, Lines);
-      lcd.print(Text1);
+      lcd.print(Text2);
       
       //Increase 3 index (doesnt overlay display, since big font use 4x display)
       i += 3;
