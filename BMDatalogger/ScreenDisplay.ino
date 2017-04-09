@@ -154,24 +154,21 @@ void Display() {
     
     //Reset Invalid Char Over Text Lenght
     if (ThisScreenMode < 2) {
-      Text1 = Text1 + Text2;
-      int ResetLenght = 10 - Text1.length();
-      for (int i2=0; i2<ResetLenght; i2++) Text1 += " ";
+      Text1 += Text2;
+      for (int i2=0; i2< (10 - Text1.length()); i2++) Text1 += " ";
     }
-
-    //Reset Offset for bigfont & progressbar (always start of the line)
-    if (ThisScreenMode > 0) Offset = 0;
-
+    
+    //Set/Reset Offset
     SetOffset(i);
+    if (ThisScreenMode > 0) Offset = 0;
     lcd.setCursor(Offset, Lines);
-    if (ThisScreenMode != 2) lcd.print(Text1);  //dont print this text for BigFont (missing space)
-
+    if (ThisScreenMode < 2) lcd.print(Text1);
+    
     //Display Progressbar
     if (ThisScreenMode == 1) {
       //Line 10-20 serve to display Progressbar
       Offset += 10;
       lcd.setCursor(Offset, Lines);
-
       GraphDrawValue(Text2.toInt());
       
       //Increase 1 index (doesnt overlay display, since progressbar use 2x display)
@@ -181,20 +178,12 @@ void Display() {
     //Display BigFont
     if (ThisScreenMode == 2) {
       //Reset Big Text
-      int ResetLenght = 6 - Text2.length();
-      for (int i2=0; i2<ResetLenght; i2++) Text2 += " ";
+      for (int i2=0; i2< (6 - Text2.length()); i2++) Text2 += " ";
       
       //Display Big Text
       char charBuf[sizeof(Text2)];
-      Text2.toCharArray(charBuf, 6); 
-      render_big_msg(charBuf,Offset,Lines);
-      
-      //Set 2nd line texts (spaces)
-      Text2 = "";
-      for (int i2=0; i2 < sizeof(Text1); i2++) Text2 += " ";
-      Lines++;
-      lcd.setCursor(Offset, Lines);
-      lcd.print(Text2);
+      Text2.toCharArray(charBuf, sizeof(Text2)); 
+      render_big_msg(charBuf, Offset, Lines);
       
       //Increase 3 index (doesnt overlay display, since big font use 4x display)
       i += 3;
