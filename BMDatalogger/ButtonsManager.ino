@@ -18,15 +18,17 @@ void GetButtonStates() {
 void NextDisplay() {
   ScreenCurrentPage++;
   if(ScreenCurrentPage > 4) ScreenCurrentPage = 1;
-  ApplyPage();
+  ShowPage();
   buttonTop=OFF;
 }
 
-void ApplyPage() {
-  if (ScreenCurrentPage == 1) for (int i=0; i < 8; ++i ) ScreenIndex[i] = ScreenPage1[i];
-  if (ScreenCurrentPage == 2) for (int i=0; i < 8; ++i ) ScreenIndex[i] = ScreenPage2[i];
-  if (ScreenCurrentPage == 3) for (int i=0; i < 8; ++i ) ScreenIndex[i] = ScreenPage3[i];
-  if (ScreenCurrentPage == 4) for (int i=0; i < 8; ++i ) ScreenIndex[i] = ScreenPage4[i];
+void ShowPage() {
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("     PAGE #" + String(ScreenCurrentPage));
+  delay(1000);
+  lcd.clear();
+  buttonTop=OFF;
 }
 
 //###########################################################################################################

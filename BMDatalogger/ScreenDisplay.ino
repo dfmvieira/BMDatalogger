@@ -5,7 +5,12 @@ void Display() {
   //Running 8x Loop for 20x04 Display
   for (int i=0; i<8; i++) {
     //Get Text Index
-    int ThisScreenIndex = ScreenIndex[i];
+    int ThisScreenIndex = 0;
+    if (ScreenCurrentPage == 1) ThisScreenIndex = ScreenPage1[i];
+    if (ScreenCurrentPage == 2) ThisScreenIndex = ScreenPage2[i];
+    if (ScreenCurrentPage == 3) ThisScreenIndex = ScreenPage3[i];
+    if (ScreenCurrentPage == 4) ThisScreenIndex = ScreenPage4[i];
+  
     int ThisScreenMode = 0;
     if (ThisScreenIndex >= 50) ThisScreenMode = 1;
     if (ThisScreenIndex >= 100) ThisScreenMode = 2;
@@ -195,7 +200,6 @@ void Display() {
       char charBuf[sizeof(Text2)];
       Text2.toCharArray(charBuf, sizeof(Text2));
       writeBigString(charBuf, Offset, Lines);
-      //render_big_msg(charBuf, Offset, Lines);
       
       //Increase 3 index (doesnt overlay display, since big font use 4x display)
       i += 3;
