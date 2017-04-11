@@ -11,70 +11,47 @@ byte level0[8] = {
 };
 // -- character with one bars
 byte level1[8] = {
-    B11111,
     B10000,
     B10000,
     B10000,
     B10000,
     B10000,
     B10000,
-    B11111
+    B10000,
+    B10000
 };
 // -- character with two bars
 byte level2[8] = {
-    B11111,
     B11000,
     B11000,
     B11000,
     B11000,
     B11000,
     B11000,
-    B11111
+    B11000,
+    B11000
 };
 // -- character with three bars
 byte level3[8] = {
-    B11111,
     B11100,
     B11100,
     B11100,
     B11100,
     B11100,
     B11100,
-    B11111
+    B11100,
+    B11100
 };
 // -- character with four bars
 byte level4[8] = {
-    B11111,
     B11110,
     B11110,
     B11110,
     B11110,
     B11110,
     B11110,
-    B11111
-};
-// -- character with ending ']'
-byte level5[8] = {
-    B11111,
-    B00001,
-    B00001,
-    B00001,
-    B00001,
-    B00001,
-    B00001,
-    B11111
-};
-
-// -- character with empty spaces '='
-byte level6[8] = {
-    B11111,
-    B00000,
-    B00000,
-    B00000,
-    B00000,
-    B00000,
-    B00000,
-    B11111
+    B11110,
+    B11110
 };
 
 //###########################################################################################################
@@ -181,7 +158,7 @@ const char *bigChars[][2] = {
   {"\024", "\004"}, // .
   {"\024\024\004\001", "\004\001\024\024"}, // /
   {"\010\001\002", "\003\004\005"}, // 0
-  {"\001\002\024", "\024\377\024"}, // 1
+  {"\002\024", "\377\024"}, // 1
   {"\006\006\002", "\003\007\007"}, // 2
   {"\006\006\002", "\007\007\005"}, // 3
   {"\003\004\002", "\024\024\377"}, // 4
@@ -206,8 +183,6 @@ void CharacterInit(bool Bars) {
     lcd.createChar(2, level2);
     lcd.createChar(3, level3);
     lcd.createChar(4, level4);
-    lcd.createChar(5, level5);
-    lcd.createChar(6, level6);
     InitMode = 1;
   }
   if (!Bars && InitMode != 2) {
@@ -271,15 +246,9 @@ void GraphDrawValue(int value, int Lenght) {
       RowsDone++;
       break;
   }
-
-  //Set First Line if not already set
-  if (RowsDone == 0 && peace == 0) lcd.write((uint8_t)1);
   
   //clearing line
-  for (int i =0; i < (Lenght - RowsDone); i++) {
-    if (i < (Lenght - RowsDone) - 1) lcd.write((uint8_t)6);   //Write Empty Lines
-    if (i >= (Lenght - RowsDone) - 1) lcd.write((uint8_t)5);  //Write Last Line
-  }
+  for (int i =0; i < (Lenght - RowsDone); i++) lcd.write(' ');   //Write Empty Lines
 }
 
 //###########################################################################################################
