@@ -1,32 +1,35 @@
-void StartScreen(){
-  /*String T1 = "BMDatalogger " + VersionStr + " ";
-  String T2 = "   eCtune ISR V3    ";
-  String T3 = "  Datalog Protocol  ";
-  String T4 = "  Made by BM Devs   ";
-
-  lcd.clear();
-  //render_big_msg("HONDA",0,0);
-  writeBigString("HONDA", 0, 0);
-  lcd.setCursor(0,2);
-  lcd.print(T1);
-  lcd.setCursor(0,3);
-  lcd.print(T2);
-  delay(2000);*/
-
-  lcd.clear();
-  writeBigString("BMDEV", 0, 0);
-  //lcd.setCursor(0,0);
-  //lcd.print("BMDatalogger " + VersionStr + " ");
-  //delay(1000);
-  //lcd.setCursor(0,1);
-  //lcd.print("   eCtune ISR V3    ");
-  delay(1000);
-  lcd.setCursor(0,2);
-  lcd.print(" Datalogger " + VersionStr + "  ");
-  //lcd.print("  Datalog Protocol  ");
-  delay(1000);
-  lcd.setCursor(0,3);
-  lcd.print("  Made for eCtune   ");
-  //lcd.print("  Made by BM Devs   ");
-  delay(2000);
+void Screen(bool J12){
+  if (J12) EcuConnected = GetJ12Cut();
+  if ((J12 && !EcuConnected) | !J12) {
+    lcd.clear();
+    lcd.setCursor(0,0);
+    ResetBufferIndex(true);
+    if (!J12) {
+      GetStringAt(true, 0, false);
+      Add_String(false, VersionStr);
+    }
+    if (J12) GetStringAt(true, 4, false);
+    lcd.print(StringBufferLong);
+    if (!J12) delay(1000);
+  
+    lcd.setCursor(0,1);
+    ResetBufferIndex(true);
+    if (!J12) GetStringAt(true, 1, false);
+    if (J12) GetStringAt(true, 5, false);
+    lcd.print(StringBufferLong);
+    if (!J12) delay(1000);
+  
+    lcd.setCursor(0,2); 
+    ResetBufferIndex(true);
+    if (!J12) GetStringAt(true, 2, false);
+    lcd.print(StringBufferLong);
+    if (!J12) delay(1000);
+  
+    lcd.setCursor(0,3);
+    ResetBufferIndex(true);
+    if (!J12) GetStringAt(true, 3, false);
+    if (J12) GetStringAt(true, 6, false);
+    lcd.print(StringBufferLong);
+    if (!J12) delay(2000);
+  }
 }

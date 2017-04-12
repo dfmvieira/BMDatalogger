@@ -1,164 +1,19 @@
-// -- character with fith bar
-byte level0[8] = {
-    B11111,
-    B11111,
-    B11111,
-    B11111,
-    B11111,
-    B11111,
-    B11111,
-    B11111
-};
-// -- character with one bars
-byte level1[8] = {
-    B10000,
-    B10000,
-    B10000,
-    B10000,
-    B10000,
-    B10000,
-    B10000,
-    B10000
-};
-// -- character with two bars
-byte level2[8] = {
-    B11000,
-    B11000,
-    B11000,
-    B11000,
-    B11000,
-    B11000,
-    B11000,
-    B11000
-};
-// -- character with three bars
-byte level3[8] = {
-    B11100,
-    B11100,
-    B11100,
-    B11100,
-    B11100,
-    B11100,
-    B11100,
-    B11100
-};
-// -- character with four bars
-byte level4[8] = {
-    B11110,
-    B11110,
-    B11110,
-    B11110,
-    B11110,
-    B11110,
-    B11110,
-    B11110
+const char custom[][8] PROGMEM = {
+      { 0x1F, 0x1F, 0x1F, 0x00, 0x00, 0x00, 0x00, 0x00 }, // char 1 
+      { 0x18, 0x1C, 0x1E, 0x1F, 0x1F, 0x1F, 0x1F, 0x1F }, // char 2 
+      { 0x1F, 0x1F, 0x1F, 0x1F, 0x1F, 0x0F, 0x07, 0x03 }, // char 3 
+      { 0x00, 0x00, 0x00, 0x00, 0x00, 0x1F, 0x1F, 0x1F }, // char 4 
+      { 0x1F, 0x1F, 0x1F, 0x1F, 0x1F, 0x1E, 0x1C, 0x18 }, // char 5 
+      { 0x1F, 0x1F, 0x1F, 0x00, 0x00, 0x00, 0x1F, 0x1F }, // char 6 
+      { 0x1F, 0x00, 0x00, 0x00, 0x00, 0x1F, 0x1F, 0x1F }, // char 7 
+      { 0x03, 0x07, 0x0F, 0x1F, 0x1F, 0x1F, 0x1F, 0x1F }  // char 8 
 };
 
-//###########################################################################################################
-//###########################################################################################################
-//###########################################################################################################
-
-byte custom1[8] =
-{ 
-  B11111,
-  B11111,
-  B11111,
-  B00000,
-  B00000,
-  B00000,
-  B00000,
-  B00000 
-};
-
-byte custom2[8] =
-{ 
-  B11100,
-  B11110,
-  B11111,
-  B11111,
-  B11111,
-  B11111,
-  B11111,
-  B11111
-};
-
-byte custom3[8] =
-{ 
-  B11111,
-  B11111,
-  B11111,
-  B11111,
-  B11111,
-  B11111,
-  B01111,
-  B00111 
-};
-
-byte custom4[8] =
-{ 
-  B00000,
-  B00000,
-  B00000,
-  B00000,
-  B00000,
-  B11111,
-  B11111,
-  B11111
-};
-
-byte custom5[8] =
-{ 
-  B11111,
-  B11111,
-  B11111,
-  B11111,
-  B11111,
-  B11111,
-  B11110,
-  B11100 
-};
-
-byte custom6[8] =
-{ 
-  B11111,
-  B11111,
-  B11111,
-  B00000,
-  B00000,
-  B00000,
-  B11111,
-  B11111 
-};
-
-byte custom7[8] =
-{ 
-  B11111,
-  B00000,
-  B00000,
-  B00000,
-  B00000,
-  B11111,
-  B11111,
-  B11111 
-};
-
-byte custom8[8] =
-{ 
-  B00111,
-  B01111,
-  B11111,
-  B11111,
-  B11111,
-  B11111,
-  B11111,
-  B11111
-};
-
-const char *bigChars[][2] = {
+const char *bigChars[][2] = { 
+  {"\024\024\024", "\024\024\024"}, // Space
   {"\024", "\004"}, // .
-  {"\024\024\004\001", "\004\001\024\024"}, // /
   {"\010\001\002", "\003\004\005"}, // 0
-  {"\002\024", "\377\024"}, // 1
+  {"\001\002\024", "\024\377\024"}, // 1
   {"\006\006\002", "\003\007\007"}, // 2
   {"\006\006\002", "\007\007\005"}, // 3
   {"\003\004\002", "\024\024\377"}, // 4
@@ -167,54 +22,71 @@ const char *bigChars[][2] = {
   {"\001\001\002", "\024\010\024"}, // 7
   {"\010\006\002", "\003\007\005"}, // 8
   {"\010\006\002", "\024\024\377"}, // 9
+  {"\004", "\001"}, // :
+  {"\010\006\002", "\377\024\377"}, // A
+  {"\377\006\005", "\377\007\002"}, // B
+  {"\010\001\001", "\003\004\004"}, // C
+  {"\377\001\002", "\377\004\005"}, // D
+  {"\377\006\006", "\377\007\007"}, // E
+  {"\377\006\006", "\377\024\024"}, // F
+  {"\010\001\001", "\003\004\002"}, // G
+  {"\377\004\377", "\377\024\377"}, // H
+  {"\001\377\001", "\004\377\004"}, // I
+  {"\024\024\377", "\004\004\005"}, // J
+  {"\377\004\005", "\377\024\002"}, // K
+  {"\377\024\024", "\377\004\004"}, // L
+  {"\010\003\005\002", "\377\024\024\377"}, // M
+  {"\010\002\024\377", "\377\024\003\005"}, // N
+  {"\010\001\002", "\003\004\005"}, // 0
+  {"\377\006\002", "\377\024\024"}, // P
+  {"\010\001\002\024", "\003\004\377\004"}, // Q
+  {"\377\006\002", "\377\024\002"}, // R
+  {"\010\006\006", "\007\007\005"}, // S
+  {"\001\377\001", "\024\377\024"}, // T
+  {"\377\024\377", "\003\004\005"}, // U
+  {"\003\024\024\005", "\024\002\010\024"}, // V
+  {"\377\024\024\377", "\003\010\002\005"}, // W
+  {"\003\004\005", "\010\024\002"}, // X
+  {"\003\004\005", "\024\377\024"}, // Y
+  {"\001\006\005", "\010\007\004"}, // Z
 };
-
-//###########################################################################################################
-//###########################################################################################################
-//###########################################################################################################
 
 int InitMode = 0;
 
 void CharacterInit(bool Bars) {
   if (Bars && InitMode != 1) {
     lcd.begin(20, 4);
-    lcd.createChar(0, level0);
-    lcd.createChar(1, level1);
-    lcd.createChar(2, level2);
-    lcd.createChar(3, level3);
-    lcd.createChar(4, level4);
+    for (int i=0; i<5; i++ ) {
+      char ThisArray[8];
+      byte ThisByte = 0x00;
+      if (i == 0) ThisByte = 0x1F;
+      if (i == 1) ThisByte = 0x10;
+      if (i == 2) ThisByte = 0x18;
+      if (i == 3) ThisByte = 0x1C;
+      if (i == 4) ThisByte = 0x1E;
+      for (int i2=0; i2<8; i2++) ThisArray[i2]= (char) ThisByte;
+      lcd.createChar (i, ThisArray);
+    }
     InitMode = 1;
   }
   if (!Bars && InitMode != 2) {
     lcd.begin(20, 4);
-    lcd.createChar(1, custom1);
-    lcd.createChar(2, custom2);
-    lcd.createChar(3, custom3);
-    lcd.createChar(4, custom4);
-    lcd.createChar(5, custom5);
-    lcd.createChar(6, custom6);
-    lcd.createChar(7, custom7);
-    lcd.createChar(8, custom8);
+    for (int i=0; i<8; i++ ) {
+      char ThisArray[8];
+      for (int i2=0; i2<8; i2++) ThisArray[i2]= (char) pgm_read_byte( &custom[i][i2] );
+      lcd.createChar (i+1, ThisArray);
+    }
     InitMode = 2;
   }
 }
 
-int GraphMinValue = 0;
-int GraphMaxValue = 1;
-
-void GraphSetValue(int minValue, int maxValue) {
-  GraphMinValue = minValue;
-  GraphMaxValue = maxValue;
-}
-
-void GraphDrawValue(int value, int Lenght) {
+void GraphDrawValue(const int value, const int Lenght) {
   CharacterInit(true);
   
-  double percent = (((double) GraphMinValue + (double) value) / (double) GraphMaxValue) * 100;
+  double percent = (((double) PeakMinValue + (double) value) / (double) PeakMaxValue) * 100;
   double RowsNumber = ((double) Lenght / 100) * (double) percent;
   int RowsDone = 0;
   
-  // drawing black rectangles on LCD
   if (RowsNumber >= 1) {
     for (int i=1; i < RowsNumber; i++) {
       lcd.write((uint8_t)0);
@@ -225,7 +97,6 @@ void GraphDrawValue(int value, int Lenght) {
   RowsNumber = RowsNumber - RowsDone;
   unsigned int peace = RowsNumber * 5;
   
-  // drawing charater's colums
   switch (peace) {
     case 0:
       break;
@@ -247,36 +118,33 @@ void GraphDrawValue(int value, int Lenght) {
       break;
   }
   
-  //clearing line
-  for (int i =0; i < (Lenght - RowsDone); i++) lcd.write(' ');   //Write Empty Lines
+  for (int i =0; i < (Lenght - RowsDone); i++) lcd.write(' ');
 }
 
-//###########################################################################################################
-//###########################################################################################################
-//###########################################################################################################
+int writeBigChar(const char ch, const int x, const int y) {
+  const char *(*blocks)[2] = NULL;
 
-int writeBigChar(char ch, int x, int y) {
-  const char *(*blocks)[2] = NULL; // Pointer to an array of two strings (character pointers)
-
-  // If outside our table range, do nothing
-  if (ch < '.' || ch > '9') return 0;
+  if (ch < ' ' || ch > '_') return 0;
+  if (ch >= '!' || ch <= '-') return 0;
+  if (ch == '/') return 0;
+  if (ch >= ';' || ch <= '@') return 0;
   
-  blocks = &bigChars[ch-'.']; // Look up the definition
+  blocks = &bigChars[ch-' '];
   
   for (int half = 0; half <=1; half++) {
-    int t = x; // Write out top or bottom string, byte at a time
+    int t = x;
     for (const char *cp = (*blocks)[half]; *cp; cp++) {
       lcd.setCursor(t, y+half);
       lcd.write(*cp);
-      t = (t+1) % 40; // Circular scroll buffer of 40 characters, loop back at 40
+      t = (t+1) % 40;
     }
     lcd.setCursor(t, y+half);
-    lcd.write(' '); // Make space between letters, in case overwriting
+    lcd.write(' ');
   }
-  return strlen((*blocks)[0]); // Return char width
+  return strlen((*blocks)[0]);
 }
 
-void writeBigString(char *str, int x, int y) {
+void writeBigString(const char *str, int x, int y) {
   CharacterInit(false);
   char c;
   while ((c = *str++)) x += writeBigChar(c, x, y) + 1;

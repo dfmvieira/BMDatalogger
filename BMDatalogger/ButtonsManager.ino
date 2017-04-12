@@ -1,18 +1,15 @@
-//Buttons Vars
 #define ON 1
 #define OFF 0
 volatile int buttonTop = 0;
+volatile int buttonHold = 0;
 unsigned long last_interrupt_time=0;
 const int debouncing = 80;
+bool Holding = false;
 
-//###########################################################################################################
-//###########################################################################################################
-//###########################################################################################################
-
-//Apply Buttons
 void GetButtonStates() {
   GetButtonTopState();
   if (buttonTop == ON) NextDisplay();
+  if (buttonHold == ON) NextMenu();
 }
 
 void NextDisplay() {
@@ -22,29 +19,47 @@ void NextDisplay() {
   buttonTop=OFF;
 }
 
+void NextMenu() {
+  ScreenCurrentMenu++;
+  if(ScreenCurrentMenu > 1) ScreenCurrentMenu = 0;
+  ShowMenu();
+  buttonHold=OFF;
+}
+
 void ShowPage() {
   lcd.clear();
-  lcd.setCursor(0,0);
-  lcd.print("     PAGE #" + String(ScreenCurrentPage));
+  ResetBufferIndex(false);
+  GetStringAt(false, 5, true);
+  Add_String(false, String(ScreenCurrentPage));
+  writeBigString(StringBuffer, 0, 0);
   delay(1000);
   lcd.clear();
   buttonTop=OFF;
 }
 
-//###########################################################################################################
-//###########################################################################################################
-//###########################################################################################################
-//Get States
+void ShowMenu() {
+  lcd.clear();
+  ResetBufferIndex(false);
+  GetStringAt(false, 6, true);
+  Add_String(false, String(ScreenCurrentMenu));
+  writeBigString(StringBuffer, 0, 0);
+  delay(1000);
+  lcd.clear();
+  buttonTop=OFF;
+}
+
 void GetButtonTopState() {
   if (digitalRead(TopButton) == LOW) {
     if (!EcuConnected)
       EcuConnected = true;
     else {
       unsigned long interrupt_time = millis();  
-      if (buttonTop == OFF && (interrupt_time - last_interrupt_time > debouncing)) {
-        buttonTop=ON;
+      if (buttonTop == OFF && buttonHold == OFF && (interrupt_time - last_interrupt_time > debouncing)) {
+        if (!Holding) buttonTop=ON;
+        if (Holding) buttonHold=ON;
+        Holding = true;
         last_interrupt_time = interrupt_time;
       }
     }
-  }
+  } else Holding = false;
 }

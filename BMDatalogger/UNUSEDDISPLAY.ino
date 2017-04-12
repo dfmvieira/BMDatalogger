@@ -1,89 +1,34 @@
 //###########################################################################################################
 //###########################################################################################################
 //###########################################################################################################
-//DISPLAY
-    //POSSIBLE USELESS DATALOGS
-    //if (ThisScreenIndex == 8 | ThisScreenIndex == 58  | ThisScreenIndex == 108) {
-    //  Text1 = "DTY:";
-    //  Text2 = String(GetInjectorDuty());
-    //  progBar.setMinValue(0);
-    //  progBar.setMaxValue(50);
-    //}
-    //if (ThisScreenIndex == 16) {
-    //  Text1 = "INJDU:";
-    //  Text2 = String(GetInjDuration());
-    //  Min = 0;
-    //  Max = 11000;
-    //}
-    /*if (ThisScreenIndex == 16 | ThisScreenIndex == 66  | ThisScreenIndex == 116) {
-      Text1 = "VTP:";
-      Text2 = String(GetVTP());
-      progBar.setMinValue(0);
-      progBar.setMaxValue(1);
-    }*/
-    //if (ThisScreenIndex == 00) Text += "VTSM:" + String(GetVTSM());
-    //if (ThisScreenIndex == 00) Text += "FCUT2:" + String(GetFuelCut2());
-    //if (ThisScreenIndex == 00) Text += "FCTRL:" + String(GetFanCtrl());
-    //if (ThisScreenIndex == 00) Text += "ACTRL:" + String(GetAtlCtrl());
-    //if (ThisScreenIndex == 00) Text += "MIL:" + String(GetMIL());
-    //if (ThisScreenIndex == 00) Text += "FTLI:" + String(GetInputFTL());
-    //if (ThisScreenIndex == 00) Text += "FTSI:" + String(GetInputFTS());
-    //if (ThisScreenIndex == 00) Text += "EBCI:" + String(GetInputEBC());
-    //if (ThisScreenIndex == 00) Text += "BSTI:" + String(GetInputBST());
-    //if (ThisScreenIndex == 00) Text += "BSTCT:" + String(GetOutputBoostCut());
-    //if (ThisScreenIndex == 00) Text += "   BARO:" + String(GetBaro());
-    //if (ThisScreenIndex == 00) Text += "    PSTF:" + String(GetPostFuel());
-    //if (ThisScreenIndex == 00) Text += "   SCC.C:" + String(GetSCCChecker());
-    //if (ThisScreenIndex == 00) Text += "   ATSF1:" + String(GetATShift1());
-    //if (ThisScreenIndex == 00) Text += "   ATSF2:" + String(GetATShift2());
-    //if (ThisScreenIndex == 00) Text += "    IGNT:" + String(GetIgnTable());
-    //if (ThisScreenIndex == 00) Text += "    PARK:" + String(GetParkN());
-    //if (ThisScreenIndex == 00) Text += "    BKSW:" + String(GetBKSW());
-    //if (ThisScreenIndex == 00) Text += "    ACC:" + String(GetACC());
-    //if (ThisScreenIndex == 00) Text += "    STRT:" + String(GetStart());
-    //if (ThisScreenIndex == 00) Text += "    SCC:" + String(GetSCC());
-    //if (ThisScreenIndex == 00) Text += "   VTSFB:" + String(GetVTSFeedBack());
-    //if (ThisScreenIndex == 00) Text += "    PSP:" + String(GetPSP());
-    //if (ThisScreenIndex == 00) Text += "    FPMP:" + String(GetFuelPump());
-    //if (ThisScreenIndex == 00) Text += "    IAB:" + String(GetIAB());
-    //if (ThisScreenIndex == 00) Text += "   PURGE:" + String(GetPurge());
-    //if (ThisScreenIndex == 00) Text += "    AC:" + String(GetAC());
-    //if (ThisScreenIndex == 00) Text += "    O2H:" + String(GetO2Heater());
-    //if (ThisScreenIndex == 00) Text += "    VTS:" + String(GetVTS());
-    //if (ThisScreenIndex == 00) Text += "  ELDV:" + String(GetELDVolt()) + "v";
-    //if (ThisScreenIndex == 00) Text += "   ECTFC:" + String(GetECTFC());
-    //if (ThisScreenIndex == 00) Text += "    O2S:" + String(GetO2Short());
-    //if (ThisScreenIndex == 00) Text += "    O2L:" + String(GetO2Long());
-    //if (ThisScreenIndex == 00) Text += "   IATFC:" + String(GetIATFC());
-    //if (ThisScreenIndex == 00) Text += "   VEFC:" + String(GetVEFC());
-    //if (ThisScreenIndex == 00) Text += "  IATIC:" + String(GetIATIC());
-    //if (ThisScreenIndex == 00) Text += "  ECTIC:" + String(GetECTIC());
-    //if (ThisScreenIndex == 00) Text += "  GEARIC:" + String(GetGEARIC());
-    //if (ThisScreenIndex == 00) Text += "   EBCHi:" + String(GetInputEBCHi());
-    //if (ThisScreenIndex == 00) Text += "   GPO1I:" + String(GetInputGPO1());
-    //if (ThisScreenIndex == 00) Text += "   GPO2I:" + String(GetInputGPO2());
-    //if (ThisScreenIndex == 00) Text += "   GPO3I:" + String(GetInputGPO3());
-    //if (ThisScreenIndex == 00) Text += " EBCBDTY:" + String(GetEBCBaseDuty());
-    //if (ThisScreenIndex == 00) Text += "  EBCDTY:" + String(GetEBCDuty());
-    //if (ThisScreenIndex == 00) Text += "   GPO1O:" + String(GetOutputGPO1());
-    //if (ThisScreenIndex == 00) Text += "   GPO2O:" + String(GetOutputGPO2());
-    //if (ThisScreenIndex == 00) Text += "   GPO3O:" + String(GetOutputGPO3());
-    //if (ThisScreenIndex == 00) Text += "   BSTS2:" + String(GetOutputBSTStage2());
-    //if (ThisScreenIndex == 00) Text += "   BSTS3:" + String(GetOutputBSTStage3());
-    //if (ThisScreenIndex == 00) Text += "   BSTS4:" + String(GetOutputBSTStage4());
-    //if (ThisScreenIndex == 00) Text += "    LEAN:" + String(GetLeanProtect());
-
-
-
-
-
-//###########################################################################################################
-//###########################################################################################################
-//###########################################################################################################
 //PROTOCOL
 
 /*void Disconnect() {
   Serial.end();
+}
+
+bool GetOutputFanCtrl(){
+  return (bool) GetActivated(Datalog_Bytes[39], 6, false);
+}
+
+bool GetOutputBST(){
+  return (bool) GetActivated(Datalog_Bytes[39], 7, false);
+}
+
+bool GetOutputFTL(){
+  return (bool) GetActivated(Datalog_Bytes[39], 0, false);
+}
+
+bool GetOutputAntilag(){
+  return (bool) GetActivated(Datalog_Bytes[39], 1, false);
+}
+
+bool GetOutputFTS(){
+  return (bool) GetActivated(Datalog_Bytes[39], 2, false);
+}
+
+bool GetOutputEBC(){
+  return (bool) GetActivated(Datalog_Bytes[39], 4, false);
 }
 
 bool GetVTP(){
