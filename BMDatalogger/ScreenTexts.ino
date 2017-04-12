@@ -63,7 +63,7 @@ void Add_String(const bool Long, const String ThisStr) {
   if (!Long && Size > 10) Size = 10;
   if (Long && Size > 20) Size = 20;
   for (int i=0; i<Size; i++) {
-    AddThisChar(Long, (char) ThisStr[i]);
+    AddThisChar(Long, ThisStr.charAt(i));
   }
 }
 
@@ -84,13 +84,13 @@ void GetStringAt(const bool Long, const int Addr, const bool Infos) {
 
 void AddThisChar(const bool Long, const char This) {
   if (!Long) {
-    if (CurrentBufferIndex <= 9) {
+    if (CurrentBufferIndex < 10) {
       StringBuffer[CurrentBufferIndex] = This;
       CurrentBufferIndex++;
     }
   }
   if (Long) {
-    if (CurrentBufferIndex <= 19) {
+    if (CurrentBufferIndex < 20) {
       StringBufferLong[CurrentBufferIndex] = This;
       CurrentBufferIndex++;
     }

@@ -9,13 +9,13 @@ void Display() {
     if (ScreenCurrentPage == 4) ThisScreenIndex = ScreenPage4[i];
     if (ScreenCurrentMenu == 1) ThisScreenIndex = ScreenCurrentPeak;
 
-    if (ThisScreenIndex >= 50 && ThisScreenIndex < 100) ThisScreenIndex -= 50;
-    if (ThisScreenIndex >= 100) ThisScreenIndex -= 100;
-
     int ThisScreenMode = 0;
     if (ThisScreenIndex >= 50) ThisScreenMode = 1;
     if (ThisScreenIndex >= 100) ThisScreenMode = 2;
     if (ScreenCurrentMenu == 1) ThisScreenMode = 3;
+    
+    if (ThisScreenIndex >= 50 && ThisScreenIndex < 100) ThisScreenIndex -= 50;
+    if (ThisScreenIndex >= 100) ThisScreenIndex -= 100;
     
     ResetBufferIndex(false);
     GetStringAt(false, ThisScreenIndex, false);

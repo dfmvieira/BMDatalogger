@@ -1,12 +1,11 @@
 void Screen(bool J12){
   if (J12) EcuConnected = GetJ12Cut();
   if ((J12 && !EcuConnected) | !J12) {
-    lcd.clear();
     lcd.setCursor(0,0);
     ResetBufferIndex(true);
     if (!J12) {
       GetStringAt(true, 0, false);
-      Add_String(false, VersionStr);
+      Add_String(true, VersionStr);
     }
     if (J12) GetStringAt(true, 4, false);
     lcd.print(StringBufferLong);
