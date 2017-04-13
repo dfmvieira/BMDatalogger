@@ -19,14 +19,15 @@ void Display() {
     
     ResetBufferIndex(false);
     GetStringAt(false, ThisScreenIndex, false);
-    if (ThisScreenMode < 2) SetValueToBuffer();
-
-    if (ThisScreenIndex == 1) GetTempCelcius();
-    if (ThisScreenIndex == 2) GetTempCelcius();
-    if (ThisScreenIndex == 3) GetStringAt(false, 2, true);
-    if (ThisScreenIndex == 6) GetStringAt(false, 3, true);
-    if (ThisScreenIndex == 7) GetStringAt(false, 4, true);
-    if (ThisScreenIndex == 11) GetKMH();
+    if (ThisScreenMode < 2) {
+      SetValueToBuffer();
+      if (ThisScreenIndex == 1) GetTempCelcius();
+      if (ThisScreenIndex == 2) GetTempCelcius();
+      if (ThisScreenIndex == 3) GetStringAt(false, 2, true);
+      if (ThisScreenIndex == 6) GetStringAt(false, 3, true);
+      if (ThisScreenIndex == 7) GetStringAt(false, 4, true);
+      if (ThisScreenIndex == 11) GetKMH();
+    }
 
     SetSpeedTime();
     SetPeak();

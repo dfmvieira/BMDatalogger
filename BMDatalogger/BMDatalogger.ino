@@ -20,12 +20,15 @@
 
 #include "Wire.h"
 #include <LiquidCrystal_I2C.h>
+//#include <LiquidCrystal.h>
 //#include <stdio.h>
 #include <avr/pgmspace.h>
 #include <EEPROM.h>
 
 LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);
+//LiquidCrystal lcd(12, 11, 10, 9, 8, 7);
 const int TopButton = 9;
+//const int TopButton = 6;
 
 byte ScreenCurrentPage = 1;
 byte ScreenCurrentPeak = 0; //This also refer to the Display Data index (ex: 0 = rpm)
@@ -47,7 +50,7 @@ const byte ScreenPage2[8] = {8, 9, 10, 11, 12, 13, 14 ,18};
 const byte ScreenPage3[8] = {50, 0, 51, 0, 53, 0, 54, 0};
 const byte ScreenPage4[8] = {100, 0, 0, 0, 0, 0, 0, 0};
 
-const String VersionStr = "V1.4.0";
+const String VersionStr = "V1.4.1";
 const int Timeout = 100;
 const int Injectors_Size = 240;   //Switch this to 2byte
 const byte O2Input = 0;
@@ -67,6 +70,9 @@ const byte Tranny[4] = {0x46, 0x67, 0x8E, 0xB8};
 
 void setup() {
   pinMode(TopButton,INPUT_PULLUP);
+
+  Serial.begin(38400);
+  Serial.println("Serial Debugger Started");
   
   lcd.begin(20, 4);
   Screen(false);

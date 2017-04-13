@@ -11,7 +11,21 @@ const char custom[][8] PROGMEM = {
 
 const char *bigChars[][2] = { 
   {"\024\024\024", "\024\024\024"}, // Space
+  {"\377", "\007"}, // !
+  {"\005\005", "\024\024"}, // "
+  {"\004\377\004\377\004", "\001\377\001\377\001"}, // #
+  {"\010\377\006", "\007\377\005"}, // $
+  {"\001\024\004\001", "\004\001\024\004"}, // %
+  {"\010\006\002\024", "\003\007\002\004"}, // &
+  {"\005", "\024"}, // '
+  {"\010\001", "\003\004"}, // (
+  {"\001\002", "\004\005"}, // )
+  {"\001\004\004\001", "\004\001\001\004"}, // *
+  {"\004\377\004", "\001\377\001"}, // +
+  {"\024", "\005"}, // ,
+  {"\004\004\004", "\024\024\024"}, // -
   {"\024", "\004"}, // .
+  {"\024\024\004\001", "\004\001\024\024"}, // /
   {"\010\001\002", "\003\004\005"}, // 0
   {"\001\002\024", "\024\377\024"}, // 1
   {"\006\006\002", "\003\007\007"}, // 2
@@ -23,6 +37,12 @@ const char *bigChars[][2] = {
   {"\010\006\002", "\003\007\005"}, // 8
   {"\010\006\002", "\024\024\377"}, // 9
   {"\004", "\001"}, // :
+  {"\004", "\005"}, // ;
+  {"\024\004\001", "\001\001\004"}, // <
+  {"\004\004\004", "\001\001\001"}, // =
+  {"\001\004\024", "\004\001\001"}, // >
+  {"\001\006\002", "\024\007\024"}, // ?
+  {"\010\006\002", "\003\004\004"}, // @
   {"\010\006\002", "\377\024\377"}, // A
   {"\377\006\005", "\377\007\002"}, // B
   {"\010\001\001", "\003\004\004"}, // C
@@ -57,24 +77,30 @@ void CharacterInit(bool Bars) {
   if (Bars && InitMode != 1) {
     lcd.begin(20, 4);
     for (int i=0; i<5; i++ ) {
-      char ThisArray[8];
+      //char ThisArray[8];
+      uint8_t ThisArray[8];
       byte ThisByte = 0x00;
       if (i == 0) ThisByte = 0x1F;
       if (i == 1) ThisByte = 0x10;
       if (i == 2) ThisByte = 0x18;
       if (i == 3) ThisByte = 0x1C;
       if (i == 4) ThisByte = 0x1E;
-      for (int i2=0; i2<8; i2++) ThisArray[i2]= (char) ThisByte;
+      for (int i2=0; i2<8; i2++) ThisArray[i2]= (uint8_t) ThisByte;
       lcd.createChar (i, ThisArray);
+      //for (int i2=0; i2<8; i2++) ThisArray[i2]= (char) ThisByte;
+      //lcd.createChar (i, ThisArray);
     }
     InitMode = 1;
   }
   if (!Bars && InitMode != 2) {
     lcd.begin(20, 4);
     for (int i=0; i<8; i++ ) {
-      char ThisArray[8];
-      for (int i2=0; i2<8; i2++) ThisArray[i2]= (char) pgm_read_byte( &custom[i][i2] );
+      //char ThisArray[8];
+      uint8_t ThisArray[8];
+      for (int i2=0; i2<8; i2++) ThisArray[i2]= (uint8_t) pgm_read_byte( &custom[i][i2] );
       lcd.createChar (i+1, ThisArray);
+      //for (int i2=0; i2<8; i2++) ThisArray[i2]= (char) pgm_read_byte( &custom[i][i2] );
+      //lcd.createChar (i, ThisArray);
     }
     InitMode = 2;
   }
@@ -124,10 +150,7 @@ void GraphDrawValue(const int value, const int Lenght) {
 int writeBigChar(const char ch, const int x, const int y) {
   const char *(*blocks)[2] = NULL;
 
-  if (ch < ' ' || ch > '_') return 0;
-  if (ch >= '!' || ch <= '-') return 0;
-  if (ch == '/') return 0;
-  if (ch >= ';' || ch <= '@') return 0;
+  if (ch < ' ' || ch > 'Z') return 0;
   
   blocks = &bigChars[ch-' '];
   

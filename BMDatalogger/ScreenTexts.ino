@@ -52,22 +52,26 @@ const char* const StringDesc[] PROGMEM = {
   long_5, long_6
 };
 
-void ResetBufferIndex(const bool Long) {
+void ResetBufferIndex(bool Long) {
   CurrentBufferIndex = 0;
   if (!Long) for (int i=0; i < 10; i++) StringBuffer[i] = ' ';
   if (Long) for (int i=0; i < 20; i++) StringBufferLong[i] = ' ';
 }
 
-void Add_String(const bool Long, const String ThisStr) {
-  int Size = sizeof(ThisStr);
+void Add_String(bool Long, String ThisStr) {
+  int Size = ThisStr.length();
+  //int Size = (int) strlen(ThisStr);
   if (!Long && Size > 10) Size = 10;
   if (Long && Size > 20) Size = 20;
-  for (int i=0; i<Size; i++) {
-    AddThisChar(Long, ThisStr.charAt(i));
-  }
+  
+  Serial.println(String(ThisStr) + " SIZE:" + String(Size));
+
+  char charBuf[ThisStr.length()];
+  ThisStr.toCharArray(charBuf, ThisStr.length() + 1);
+  for (int i=0; i<Size; i++) AddThisChar(Long, charBuf[i]);
 }
 
-void GetStringAt(const bool Long, const int Addr, const bool Infos) {
+void GetStringAt(bool Long, int Addr, bool Infos) {
   unsigned int flash_address = 0;
   if (!Long) {
     if (!Infos) flash_address = pgm_read_word(&StringVars[Addr]);
@@ -75,14 +79,15 @@ void GetStringAt(const bool Long, const int Addr, const bool Infos) {
   }
   if (Long) flash_address = pgm_read_word(&StringDesc[Addr]);
 
-  char c;
-  do {
-    c = (char) pgm_read_byte(flash_address++);
-    AddThisChar(Long, c);
-  } while (c!='\0');
+  for (int i=0; i < 20; i++) {
+    char c = (char) pgm_read_byte(flash_address++);
+    if ((int) c != 0) AddThisChar(Long, c);
+    if ((int) c == 0) i += 20;
+  }
 }
 
-void AddThisChar(const bool Long, const char This) {
+void AddThisChar(bool Long, char This) {
+  //Serial.println(String(This));
   if (!Long) {
     if (CurrentBufferIndex < 10) {
       StringBuffer[CurrentBufferIndex] = This;
@@ -96,4 +101,3 @@ void AddThisChar(const bool Long, const char This) {
     }
   }
 }
-

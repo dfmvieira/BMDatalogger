@@ -12,12 +12,10 @@ void SetSpeedTime() {
     last_zero_time = millis();
     CheckDone = false;
   }
-  if (Speed > 0 && Speed < 100) TimeVal = (double) (millis() - last_zero_time);
-  if (Speed >= 100) {
-    if (!CheckDone) {
-      if (TimeVal < BestTimeVal) BestTimeVal = TimeVal;
-      CheckDone = true;
-    }
+  if (Speed > 0 && Speed < 100 && !CheckDone) TimeVal = (double)(((long) millis() - (long) last_zero_time)) / 1000;
+  if (Speed >= 100 && !CheckDone) {
+    if (TimeVal < BestTimeVal) BestTimeVal = TimeVal;
+    CheckDone = true;
   }
 }
 
