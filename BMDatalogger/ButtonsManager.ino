@@ -34,13 +34,15 @@ void NextMenu() {
 
 void ShowPage() {
   lcd.clear();
-  ResetBufferIndex(2);
-  GetStringAt(2, 5, true);
+  ResetBufferIndex(0);
+  GetStringAt(0, 5, true);
   RemakeBigBuffer();
   writeBigString(StringBufferBig, 0, 0);
-  
-  if(ScreenCurrentMenu == 0) Add_String(2, String(ScreenCurrentPage));
-  if(ScreenCurrentMenu == 1) Add_String(2, String(ScreenCurrentPeak));
+
+  ResetBufferIndex(0);
+  if(ScreenCurrentMenu == 0) Add_String(0, String(ScreenCurrentPage));
+  if(ScreenCurrentMenu == 1) Add_String(0, String(ScreenCurrentPeak));
+  RemakeBigBuffer();
   writeBigString(StringBufferBig, 0, 3);
   
   delay(1000);
@@ -50,12 +52,14 @@ void ShowPage() {
 
 void ShowMenu() {
   lcd.clear();
-  ResetBufferIndex(2);
-  GetStringAt(2, 6, true);
+  ResetBufferIndex(0);
+  GetStringAt(0, 6, true);
+  RemakeBigBuffer();
   writeBigString(StringBufferBig, 0, 0);
 
-  ResetBufferIndex(2);
-  Add_String(2, String(ScreenCurrentMenu));
+  ResetBufferIndex(0);
+  Add_String(0, String(ScreenCurrentMenu));
+  RemakeBigBuffer();
   writeBigString(StringBufferBig, 0, 3);
   delay(1000);
   lcd.clear();

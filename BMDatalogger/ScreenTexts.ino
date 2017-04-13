@@ -63,7 +63,6 @@ void Add_String(int Mode, String ThisStr) {
   int Size = ThisStr.length();
   if (Mode == 0 && Size > 10) Size = 10;
   if (Mode == 1 && Size > 20) Size = 20;
-  if (Mode == 2 && Size > 5) Size = 5;
 
   for (int i=0; i<Size; i++) AddThisChar(Mode, ThisStr.charAt(i));
   //for (int i=0; i<Size; i++) AddThisChar(Mode, charBuf[i]);
@@ -76,10 +75,6 @@ void GetStringAt(int Mode, int Addr, bool Info) {
     if (Info) flash_address = pgm_read_word(&StringInfos[Addr]);
   }
   if (Mode == 1) flash_address = pgm_read_word(&StringDesc[Addr]);
-  if (Mode == 2) {
-    if (!Info) flash_address = pgm_read_word(&StringVars[Addr]);
-    if (Info) flash_address = pgm_read_word(&StringInfos[Addr]);
-  }
 
   for (int i=0; i < 20; i++) {
     char c = (char) pgm_read_byte(flash_address++);
@@ -99,12 +94,6 @@ void AddThisChar(int Mode, char This) {
   if (Mode == 1) {
     if (CurrentBufferIndex < 20) {
       StringBufferLong[CurrentBufferIndex] = This;
-      CurrentBufferIndex++;
-    }
-  }
-  if (Mode == 2) {
-    if (CurrentBufferIndex < 5) {
-      StringBufferBig[CurrentBufferIndex] = This;
       CurrentBufferIndex++;
     }
   }
