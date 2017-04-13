@@ -60,15 +60,11 @@ void ResetBufferIndex(bool Long) {
 
 void Add_String(bool Long, String ThisStr) {
   int Size = ThisStr.length();
-  //int Size = (int) strlen(ThisStr);
   if (!Long && Size > 10) Size = 10;
   if (Long && Size > 20) Size = 20;
-  
-  //Serial.println(String(ThisStr) + " SIZE:" + String(Size));
 
-  char charBuf[ThisStr.length()];
-  ThisStr.toCharArray(charBuf, ThisStr.length() + 1);
-  for (int i=0; i<Size; i++) AddThisChar(Long, charBuf[i]);
+  for (int i=0; i<Size; i++) AddThisChar(Long, ThisStr.charAt(i));
+  //for (int i=0; i<Size; i++) AddThisChar(Long, charBuf[i]);
 }
 
 void GetStringAt(bool Long, int Addr, bool Infos) {
@@ -101,3 +97,4 @@ void AddThisChar(bool Long, char This) {
     }
   }
 }
+
