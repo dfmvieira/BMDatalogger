@@ -11,30 +11,30 @@ void Screen(bool J12){
     lcd.setCursor(0,0);
     ResetBufferIndex(true);
     if (!J12) {
-      GetStringAt(true, 0, false);
-      Add_String(true, VersionStr);
+      GetStringAt(1, 0, false);
+      Add_String(1, VersionStr);
     }
-    if (J12) GetStringAt(true, 4, false);
+    if (J12) GetStringAt(1, 4, false);
     lcd.print(StringBufferLong);
     if (!J12) delay(1000);
   
     lcd.setCursor(0,1);
-    ResetBufferIndex(true);
-    if (!J12) GetStringAt(true, 1, false);
-    if (J12) GetStringAt(true, 5, false);
+    ResetBufferIndex(1);
+    if (!J12) GetStringAt(1, 1, false);
+    if (J12) GetStringAt(1, 5, false);
     lcd.print(StringBufferLong);
     if (!J12) delay(1000);
   
     lcd.setCursor(0,2); 
-    ResetBufferIndex(true);
-    if (!J12) GetStringAt(true, 2, false);
+    ResetBufferIndex(1);
+    if (!J12) GetStringAt(1, 2, false);
     lcd.print(StringBufferLong);
     if (!J12) delay(1000);
   
     lcd.setCursor(0,3);
-    ResetBufferIndex(true);
-    if (!J12) GetStringAt(true, 3, false);
-    if (J12) GetStringAt(true, 6, false);
+    ResetBufferIndex(1);
+    if (!J12) GetStringAt(1, 3, false);
+    if (J12) GetStringAt(1, 6, false);
     lcd.print(StringBufferLong);
     if (!J12) delay(2000);
   }

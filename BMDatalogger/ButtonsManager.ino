@@ -34,11 +34,15 @@ void NextMenu() {
 
 void ShowPage() {
   lcd.clear();
-  ResetBufferIndex(false);
-  GetStringAt(false, 5, true);
-  if(ScreenCurrentMenu == 0) Add_String(false, String(ScreenCurrentPage));
-  if(ScreenCurrentMenu == 1) Add_String(false, String(ScreenCurrentPeak));
-  writeBigString(StringBuffer, 0, 0);
+  ResetBufferIndex(2);
+  GetStringAt(2, 5, true);
+  RemakeBigBuffer();
+  writeBigString(StringBufferBig, 0, 0);
+  
+  if(ScreenCurrentMenu == 0) Add_String(2, String(ScreenCurrentPage));
+  if(ScreenCurrentMenu == 1) Add_String(2, String(ScreenCurrentPeak));
+  writeBigString(StringBufferBig, 0, 3);
+  
   delay(1000);
   lcd.clear();
   buttonTop=OFF;
@@ -46,10 +50,13 @@ void ShowPage() {
 
 void ShowMenu() {
   lcd.clear();
-  ResetBufferIndex(false);
-  GetStringAt(false, 6, true);
-  Add_String(false, String(ScreenCurrentMenu));
-  writeBigString(StringBuffer, 0, 0);
+  ResetBufferIndex(2);
+  GetStringAt(2, 6, true);
+  writeBigString(StringBufferBig, 0, 0);
+
+  ResetBufferIndex(2);
+  Add_String(2, String(ScreenCurrentMenu));
+  writeBigString(StringBufferBig, 0, 3);
   delay(1000);
   lcd.clear();
   buttonTop=OFF;

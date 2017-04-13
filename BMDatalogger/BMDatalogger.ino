@@ -39,6 +39,7 @@ int YPos = 0;
 
 char StringBuffer[10];      //10x chars buffer
 char StringBufferLong[20];  //20x chars buffer
+char StringBufferBig[5];    //5x chars buffer
 int CurrentBufferIndex = 0; //which index we are now doing into the Buffer (0-10 or 0-20)
 
 const int MaxDataValue = 20;
@@ -52,7 +53,7 @@ const byte ScreenPage2[8] = {8, 9, 10, 11, 12, 13, 14 ,18};
 const byte ScreenPage3[8] = {50, 0, 51, 0, 53, 0, 54, 0};
 const byte ScreenPage4[8] = {100, 0, 0, 0, 0, 0, 0, 0};
 
-const String VersionStr = "V1.4.1";
+const String VersionStr = "V1.4.2";
 const int Timeout = 120;
 const int Injectors_Size = 240;   //Switch this to 2byte
 const byte O2Input = 0;

@@ -52,47 +52,59 @@ const char* const StringDesc[] PROGMEM = {
   long_5, long_6
 };
 
-void ResetBufferIndex(bool Long) {
+void ResetBufferIndex(int Mode) {
   CurrentBufferIndex = 0;
-  if (!Long) for (int i=0; i < 10; i++) StringBuffer[i] = ' ';
-  if (Long) for (int i=0; i < 20; i++) StringBufferLong[i] = ' ';
+  if (Mode == 0) for (int i=0; i < 10; i++) StringBuffer[i] = ' ';
+  if (Mode == 1) for (int i=0; i < 20; i++) StringBufferLong[i] = ' ';
+  if (Mode == 2) for (int i=0; i < 5; i++) StringBufferBig[i] = ' ';
 }
 
-void Add_String(bool Long, String ThisStr) {
+void Add_String(int Mode, String ThisStr) {
   int Size = ThisStr.length();
-  if (!Long && Size > 10) Size = 10;
-  if (Long && Size > 20) Size = 20;
+  if (Mode == 0 && Size > 10) Size = 10;
+  if (Mode == 1 && Size > 20) Size = 20;
+  if (Mode == 2 && Size > 5) Size = 5;
 
-  for (int i=0; i<Size; i++) AddThisChar(Long, ThisStr.charAt(i));
-  //for (int i=0; i<Size; i++) AddThisChar(Long, charBuf[i]);
+  for (int i=0; i<Size; i++) AddThisChar(Mode, ThisStr.charAt(i));
+  //for (int i=0; i<Size; i++) AddThisChar(Mode, charBuf[i]);
 }
 
-void GetStringAt(bool Long, int Addr, bool Infos) {
+void GetStringAt(int Mode, int Addr, bool Info) {
   unsigned int flash_address = 0;
-  if (!Long) {
-    if (!Infos) flash_address = pgm_read_word(&StringVars[Addr]);
-    if (Infos) flash_address = pgm_read_word(&StringInfos[Addr]);
+  if (Mode == 0) {
+    if (!Info) flash_address = pgm_read_word(&StringVars[Addr]);
+    if (Info) flash_address = pgm_read_word(&StringInfos[Addr]);
   }
-  if (Long) flash_address = pgm_read_word(&StringDesc[Addr]);
+  if (Mode == 1) flash_address = pgm_read_word(&StringDesc[Addr]);
+  if (Mode == 2) {
+    if (!Info) flash_address = pgm_read_word(&StringVars[Addr]);
+    if (Info) flash_address = pgm_read_word(&StringInfos[Addr]);
+  }
 
   for (int i=0; i < 20; i++) {
     char c = (char) pgm_read_byte(flash_address++);
-    if ((int) c != 0) AddThisChar(Long, c);
+    if ((int) c != 0) AddThisChar(Mode, c);
     if ((int) c == 0) i += 20;
   }
 }
 
-void AddThisChar(bool Long, char This) {
+void AddThisChar(int Mode, char This) {
   //Serial.println(String(This));
-  if (!Long) {
+  if (Mode == 0) {
     if (CurrentBufferIndex < 10) {
       StringBuffer[CurrentBufferIndex] = This;
       CurrentBufferIndex++;
     }
   }
-  if (Long) {
+  if (Mode == 1) {
     if (CurrentBufferIndex < 20) {
       StringBufferLong[CurrentBufferIndex] = This;
+      CurrentBufferIndex++;
+    }
+  }
+  if (Mode == 2) {
+    if (CurrentBufferIndex < 5) {
+      StringBufferBig[CurrentBufferIndex] = This;
       CurrentBufferIndex++;
     }
   }

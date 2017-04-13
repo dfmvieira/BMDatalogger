@@ -21,15 +21,15 @@ void Display() {
     if (ThisScreenIndex >= 50 && ThisScreenIndex < 100) ThisScreenIndex -= 50;
     if (ThisScreenIndex >= 100) ThisScreenIndex -= 100;
     
-    ResetBufferIndex(false);
-    GetStringAt(false, ThisScreenIndex, false);
+    ResetBufferIndex(0);
+    GetStringAt(0, ThisScreenIndex, false);
     if (ThisScreenMode < 2) {
       SetValueToBuffer();
       if (ThisScreenIndex == 1) GetTempCelcius();
       if (ThisScreenIndex == 2) GetTempCelcius();
-      if (ThisScreenIndex == 3) GetStringAt(false, 2, true);
-      if (ThisScreenIndex == 6) GetStringAt(false, 3, true);
-      if (ThisScreenIndex == 7) GetStringAt(false, 4, true);
+      if (ThisScreenIndex == 3) GetStringAt(0, 2, true);
+      if (ThisScreenIndex == 6) GetStringAt(0, 3, true);
+      if (ThisScreenIndex == 7) GetStringAt(0, 4, true);
       if (ThisScreenIndex == 11) GetKMH();
     }
 
@@ -49,24 +49,27 @@ void Display() {
     }
 
     if (ThisScreenMode == 2) {
-      writeBigString(StringBuffer, XPos, YPos);
-      ResetBufferIndex(false);
+      RemakeBigBuffer();
+      writeBigString(StringBufferBig, XPos, YPos);
+      ResetBufferIndex(0);
       SetValueToBuffer();
-      writeBigString(StringBuffer, XPos, YPos+2);
+      RemakeBigBuffer();
+      writeBigString(StringBufferBig, XPos, YPos+2);
       i += 8;
     }
 
     if (ThisScreenMode == 3) {
-      writeBigString(StringBuffer, XPos, YPos);
-      ResetBufferIndex(false);
-      Add_String(true, "Minimum :");
-      Add_String(true, String(GetPeakMin()));
+      RemakeBigBuffer();
+      writeBigString(StringBufferBig, XPos, YPos);
+      ResetBufferIndex(1);
+      Add_String(1, "Minimum :");
+      Add_String(1, String(GetPeakMin()));
       lcd.setCursor(XPos, YPos + 2);
       lcd.print(StringBufferLong);
       
-      ResetBufferIndex(false);
-      Add_String(true, "Maximum :");
-      Add_String(true, String(GetPeakMax()));
+      ResetBufferIndex(1);
+      Add_String(1, "Maximum :");
+      Add_String(1, String(GetPeakMax()));
       lcd.setCursor(XPos, YPos + 3);
       lcd.print(StringBufferLong);
       
@@ -112,8 +115,8 @@ void GetTempCelcius() {
 }
 
 void GetKMH() {
-  if (UseKMH == 1) GetStringAt(false, 0, true);
-  if (UseKMH == 0) GetStringAt(false, 1, true);
+  if (UseKMH == 1) GetStringAt(0, 0, true);
+  if (UseKMH == 0) GetStringAt(0, 1, true);
 }
 
 int GetInt() {
@@ -140,26 +143,26 @@ int GetInt() {
 }
 
 void SetValueToBuffer() {
-  if (ThisScreenIndex == 0) Add_String(false, String(GetRpm()));
-  if (ThisScreenIndex == 1) Add_String(false, String(GetEct()));
-  if (ThisScreenIndex == 2) Add_String(false, String(GetIat()));
-  if (ThisScreenIndex == 3) Add_String(false, String(GetTps()));
-  if (ThisScreenIndex == 4) Add_String(false, String(GetO2()));
-  if (ThisScreenIndex == 5) Add_String(false, String(GetIgn()));
-  if (ThisScreenIndex == 6) Add_String(false, String(GetInj()));
-  if (ThisScreenIndex == 7) Add_String(false, String(GetInstantConsumption()));
-  if (ThisScreenIndex == 8) Add_String(false, String(GetIACVDuty()));
-  if (ThisScreenIndex == 9) Add_String(false, String(GetMap()));
-  if (ThisScreenIndex == 10) Add_String(false, String(GetBoost()));
-  if (ThisScreenIndex == 11) Add_String(false, String(GetVss()));
-  if (ThisScreenIndex == 12) Add_String(false, String(GetGear()));
-  if (ThisScreenIndex == 13) Add_String(false, String(GetBattery()));
-  if (ThisScreenIndex == 14) Add_String(false, String(GetIgnCut()));
-  if (ThisScreenIndex == 15) Add_String(false, String(GetFuelCut1()));
-  if (ThisScreenIndex == 16) Add_String(false, String(GetInjFV()));
-  if (ThisScreenIndex == 17) Add_String(false, String(GetOutput2ndMap()));
-  if (ThisScreenIndex == 18) Add_String(false, String(GetSpeedTime()));
-  if (ThisScreenIndex == 19) Add_String(false, String(GetBestSpeedTime()));
+  if (ThisScreenIndex == 0) Add_String(0, String(GetRpm()));
+  if (ThisScreenIndex == 1) Add_String(0, String(GetEct()));
+  if (ThisScreenIndex == 2) Add_String(0, String(GetIat()));
+  if (ThisScreenIndex == 3) Add_String(0, String(GetTps()));
+  if (ThisScreenIndex == 4) Add_String(0, String(GetO2()));
+  if (ThisScreenIndex == 5) Add_String(0, String(GetIgn()));
+  if (ThisScreenIndex == 6) Add_String(0, String(GetInj()));
+  if (ThisScreenIndex == 7) Add_String(0, String(GetInstantConsumption()));
+  if (ThisScreenIndex == 8) Add_String(0, String(GetIACVDuty()));
+  if (ThisScreenIndex == 9) Add_String(0, String(GetMap()));
+  if (ThisScreenIndex == 10) Add_String(0, String(GetBoost()));
+  if (ThisScreenIndex == 11) Add_String(0, String(GetVss()));
+  if (ThisScreenIndex == 12) Add_String(0, String(GetGear()));
+  if (ThisScreenIndex == 13) Add_String(0, String(GetBattery()));
+  if (ThisScreenIndex == 14) Add_String(0, String(GetIgnCut()));
+  if (ThisScreenIndex == 15) Add_String(0, String(GetFuelCut1()));
+  if (ThisScreenIndex == 16) Add_String(0, String(GetInjFV()));
+  if (ThisScreenIndex == 17) Add_String(0, String(GetOutput2ndMap()));
+  if (ThisScreenIndex == 18) Add_String(0, String(GetSpeedTime()));
+  if (ThisScreenIndex == 19) Add_String(0, String(GetBestSpeedTime()));
 }
 
 void SetPeak() {
@@ -188,5 +191,10 @@ void SetPeak() {
   if (ThisScreenIndex == 19) SetPeakValue(2, 18);
 
   ApplyPeak();
+}
+
+void RemakeBigBuffer() {
+  ResetBufferIndex(2);
+  for (int i=0; i < 5; i++) StringBufferBig[i] = StringBuffer[i];
 }
 
