@@ -1,9 +1,9 @@
-int PeakValuesMin[17];
-int PeakValuesMax[17];
+int PeakValuesMin[MaxDataValue];
+int PeakValuesMax[MaxDataValue];
 byte PeakInitialized = 0;
 
 void InitPeak() {
-  for (int i=0; i < sizeof(PeakValuesMin); i++) {
+  for (int i=0; i < MaxDataValue; i++) {
     ThisScreenIndex = i;
     PeakValuesMin[ThisScreenIndex] = GetInt();
     PeakValuesMax[ThisScreenIndex] = GetInt();
@@ -20,7 +20,7 @@ void SetPeakValue(const int minValue, const int maxValue) {
 }
 
 void ApplyPeak() {
-  for (int i=0; i < sizeof(PeakValuesMin); i++) {
+  for (int i=0; i < MaxDataValue; i++) {
     int ThisValue = GetInt();
     if (ThisValue < PeakMinValue) PeakValuesMin[ThisScreenIndex] = ThisValue;
     if (ThisValue > PeakMaxValue) PeakValuesMax[ThisScreenIndex] = ThisValue;

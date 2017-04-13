@@ -1,5 +1,9 @@
 void Display() {
-  GetData();
+  unsigned long current_time = millis();
+  if (current_time - last_datalog_time > Timeout) {
+    GetData();
+    last_datalog_time = current_time;
+  }
   
   for (int i=0; i<8; i++) {
     ThisScreenIndex = 0;

@@ -41,9 +41,11 @@ char StringBuffer[10];      //10x chars buffer
 char StringBufferLong[20];  //20x chars buffer
 int CurrentBufferIndex = 0; //which index we are now doing into the Buffer (0-10 or 0-20)
 
+const int MaxDataValue = 20;
 int PeakMinValue = 0;
 int PeakMaxValue = 1;
 bool EcuConnected = false;
+unsigned long last_datalog_time=0;
 
 const byte ScreenPage1[8] = {0, 1, 2, 3, 4, 5, 6 ,7};
 const byte ScreenPage2[8] = {8, 9, 10, 11, 12, 13, 14 ,18};
@@ -51,7 +53,7 @@ const byte ScreenPage3[8] = {50, 0, 51, 0, 53, 0, 54, 0};
 const byte ScreenPage4[8] = {100, 0, 0, 0, 0, 0, 0, 0};
 
 const String VersionStr = "V1.4.1";
-const int Timeout = 100;
+const int Timeout = 120;
 const int Injectors_Size = 240;   //Switch this to 2byte
 const byte O2Input = 0;
 const byte MapValue = 0;
@@ -71,8 +73,8 @@ const byte Tranny[4] = {0x46, 0x67, 0x8E, 0xB8};
 void setup() {
   pinMode(TopButton,INPUT_PULLUP);
 
-  Serial.begin(38400);
-  Serial.println("Serial Debugger Started");
+  //Serial.begin(38400);
+  //Serial.println("Serial Debugger Started");
   
   lcd.begin(20, 4);
   Screen(false);
@@ -83,7 +85,7 @@ void setup() {
 //#####################################################
 
 void loop() {
-  delay(Timeout);
+  //delay(Timeout);
   if (!EcuConnected) Screen(true);
   if (EcuConnected) Display();
   GetButtonStates();

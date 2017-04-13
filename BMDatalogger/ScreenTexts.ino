@@ -64,7 +64,7 @@ void Add_String(bool Long, String ThisStr) {
   if (!Long && Size > 10) Size = 10;
   if (Long && Size > 20) Size = 20;
   
-  Serial.println(String(ThisStr) + " SIZE:" + String(Size));
+  //Serial.println(String(ThisStr) + " SIZE:" + String(Size));
 
   char charBuf[ThisStr.length()];
   ThisStr.toCharArray(charBuf, ThisStr.length() + 1);

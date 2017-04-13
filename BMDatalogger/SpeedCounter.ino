@@ -5,7 +5,7 @@ bool CheckDone = false;
 
 void SetSpeedTime() {
   int Speed = GetVss();
-  if (UseKMH == 0) Speed = (int) round((double) Datalog_Bytes[16] * 1.6);
+  if (UseKMH == 0) Speed = Speed * 1.6;
   
   if (Speed == 0) {
     TimeVal = 99.99;

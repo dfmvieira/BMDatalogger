@@ -1,5 +1,12 @@
 void Screen(bool J12){
-  if (J12) EcuConnected = GetJ12Cut();
+  if (J12) {
+    unsigned long current_time = millis();
+    if (current_time - last_datalog_time > Timeout) {
+      EcuConnected = GetJ12Cut();
+      last_datalog_time = current_time;
+    }
+  }
+  
   if ((J12 && !EcuConnected) | !J12) {
     lcd.setCursor(0,0);
     ResetBufferIndex(true);

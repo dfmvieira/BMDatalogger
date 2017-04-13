@@ -13,8 +13,14 @@ void GetButtonStates() {
 }
 
 void NextDisplay() {
-  ScreenCurrentPage++;
-  if(ScreenCurrentPage > 4) ScreenCurrentPage = 1;
+  if(ScreenCurrentMenu == 0) {
+    ScreenCurrentPage++;
+    if(ScreenCurrentPage > 4) ScreenCurrentPage = 1;
+  }
+  if(ScreenCurrentMenu == 1) {
+    ScreenCurrentPeak++;
+    if(ScreenCurrentPeak >= MaxDataValue) ScreenCurrentPeak = 0;
+  }
   ShowPage();
   buttonTop=OFF;
 }
@@ -30,7 +36,8 @@ void ShowPage() {
   lcd.clear();
   ResetBufferIndex(false);
   GetStringAt(false, 5, true);
-  Add_String(false, String(ScreenCurrentPage));
+  if(ScreenCurrentMenu == 0) Add_String(false, String(ScreenCurrentPage));
+  if(ScreenCurrentMenu == 1) Add_String(false, String(ScreenCurrentPeak));
   writeBigString(StringBuffer, 0, 0);
   delay(1000);
   lcd.clear();
