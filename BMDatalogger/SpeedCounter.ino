@@ -4,18 +4,19 @@ unsigned long last_zero_time=0;
 bool CheckDone = false;
 
 void SetSpeedTime() {
-  int Speed = GetVss();
-  if (UseKMH == 0) Speed = Speed * 1.6;
+  unsigned int Speed = GetVssKMH();
   
-  if (Speed == 0) {
+  if (Speed < 3) {
     TimeVal = 99.99;
     last_zero_time = millis();
     CheckDone = false;
   }
-  if (Speed > 0 && Speed < 100 && !CheckDone) TimeVal = (double)(((long) millis() - (long) last_zero_time)) / 1000;
-  if (Speed >= 100 && !CheckDone) {
-    if (TimeVal < BestTimeVal) BestTimeVal = TimeVal;
-    CheckDone = true;
+  if (!CheckDone) {
+    if (Speed >= 3 && Speed < 100) TimeVal = ((double)(((long) millis() - (long) last_zero_time)) / 1000) + 0.1;
+    if (Speed >= 100) {
+      if (TimeVal < BestTimeVal) BestTimeVal = TimeVal;
+      CheckDone = true;
+    }
   }
 }
 

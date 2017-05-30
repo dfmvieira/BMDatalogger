@@ -19,6 +19,86 @@ void GetData(){
       
   Serial.flush();
   Serial.write(" ");
+
+  FakeValue += 156;
+  if (FakeValue >= 11000) FakeValue = 0;
+  FakeValue2 += 1;
+  if (FakeValue2 >= 175) FakeValue2 = 0;
+}
+
+bool ResetMil() {
+  bool MilResetted = false;
+  Serial.write((byte) 80);
+  delay(500);
+  if ((int) Serial.read() == 80) MilResetted = true;
+  return MilResetted;
+}
+
+void GetMil() {
+  int Displayed = 0;
+  for (int i = 1; i <= 8; i++) {
+    if (Displayed < 4) {
+      if (GetActivated(Datalog_Bytes[12], i - 1, false) == 1) {
+        ResetBufferIndex();
+        GetErrorString(FixMil(i));
+        DisplayMil(Displayed);
+        Displayed++;
+      }
+    }
+  }
+  for (int j = 1; j <= 8; j++) {
+    if (Displayed < 4) {
+      if (GetActivated(Datalog_Bytes[13], j - 1, false) == 1) {
+        ResetBufferIndex();
+        GetErrorString(FixMil(j + 8));
+        DisplayMil(Displayed);
+        Displayed++;
+      }
+    }
+  }
+  for (int k = 1; k <= 8; k++) {
+    if (Displayed < 4) {
+      if (GetActivated(Datalog_Bytes[14], k - 1, false) == 1) {
+        ResetBufferIndex();
+        GetErrorString(FixMil((k + 8) + 8));
+        DisplayMil(Displayed);
+        Displayed++;
+      }
+    }
+  }
+  for (int m = 1; m <= 8; m++) {
+    if (Displayed < 4) {
+      if (GetActivated(Datalog_Bytes[15], m - 1, false) == 1) {
+        ResetBufferIndex();
+        GetErrorString(FixMil(((m + 8) + 8) + 8));
+        DisplayMil(Displayed);
+        Displayed++;
+      }
+    }
+  }
+
+  if (Displayed == 0) {
+    ResetBufferIndex();
+    GetInfosString(10);
+    writeBigString(0, 2);
+  }
+}
+
+int FixMil(int Value) {
+  switch (Value) {
+      case 0x18:
+          return 30;
+      case 0x19:
+          return 0x1f;
+      case 0x1a:
+          return 0x24;
+      case 0x1b:
+          return 0x29;
+      case 0x1c:
+          return 0x2b;
+  }
+  //if (Value >= 0x18) return 0;
+  return Value;
 }
 
 long Long2Bytes(const byte ThisByte1, const byte ThisByte2) {
@@ -37,7 +117,7 @@ float GetTemperature(const byte ThisByte) {
 }
 
 double GetVolt(const byte ThisByte) {
-  return round(((double) ThisByte * 0.0196078438311815) * 100) / 100;
+  return (double) ThisByte * 0.0196078438311815;
 }
 
 float GetDuration(const int ThisInt) {
@@ -57,7 +137,8 @@ byte GetActivated(byte ThisByte, const int ThisPos, const bool Reversed) {
 }
 
 float GetInstantConsumption(){
-  float hundredkm = ((60 / GetVss()) * 100) / 60;     //minutes needed to travel 100km
+  //float hundredkm = ((60 / GetVssKMH()) * 100) / 60;     //minutes needed to travel 100km
+  float hundredkm = (60 / GetVssKMH()) * 100;     //minutes needed to travel 100km
   float fuelc = (hundredkm * ((Injectors_Size / 100) * GetDuty())) / 1000;     
   return constrain(fuelc, 0.0, 50.0);
 }
@@ -66,16 +147,12 @@ float GetDuty(){
   return ((float) GetRpm() * (float) GetInj()) / 1200;
 }
 
-float GetValueHG(const int ThisInt) {
-  return (float) round(((double) ThisInt * 0.02952999) * 10) / 10;
-}
-
 int GetEct(){
-  return GetTemperature(Datalog_Bytes[0]);
+  return constrain(GetTemperature(Datalog_Bytes[0]), -40, 140);
 }
 
 int GetIat(){
-  return GetTemperature(Datalog_Bytes[1]);                  
+  return constrain(GetTemperature(Datalog_Bytes[1]), -40, 140);                  
 }
 
 double GetO2(){
@@ -85,9 +162,11 @@ double GetO2(){
   if (O2Input == 2) WBByte = Datalog_Bytes[44];
   if (O2Input == 3) WBByte = Datalog_Bytes[45];
   double RTND = 0.0;
-  if (UseLAMBA == 0) RTND = round((double) InterpolateWB(GetVolt(WBByte) * 14.75 * 10)) / 10;
-  if (UseLAMBA == 1) RTND = round((double) InterpolateWB(GetVolt(WBByte) * 10)) / 10;
-  if (UseLAMBA == 2) RTND = round((double) GetVolt(WBByte) * 10) / 10;
+  if (UseLAMBA == 0) RTND = constrain((double) InterpolateWB(GetVolt(WBByte) * 14.7), 10, 20);
+  if (UseLAMBA == 1) RTND = constrain((double) InterpolateWB(GetVolt(WBByte)), 0, 5);
+  if (UseLAMBA == 2) RTND = constrain((double) GetVolt(WBByte), 0, 16);
+
+  //return RoundThis(1, RTND);
   return RTND;
 }
 
@@ -107,30 +186,26 @@ double InterpolateWB(const double ThisDouble) {
   return RTN;
 }
 
-float GetMap(){
-  int ThisInt = round((double) (((int) Datalog_Bytes[4] * 7.221) - 59.0));
-  if (MapValue == 0) return (int) ThisInt;
-  else if (MapValue == 1) return (ThisInt / 1000);
-  else if (MapValue == 2) return GetValueHG(ThisInt);
-  else if (MapValue == 3) {
-    if (ThisInt <= 1013) return 0;
-    else return (float) round(((double) (ThisInt - 1013) * 0.0145037695765495) * 10) / 10; //GetValuePSI(ThisInt);
+int GetMBar() {
+  int Value = (int) Datalog_Bytes[4];
+  return (int) ((((Value * ((int) MapByte[1] - (int) MapByte[0])) / 255) + (int) MapByte[0]) - 32768);
+}
+
+int GetMap(){
+  int mBar = GetMBar();
+  if (MapValue == 0) return constrain(mBar, 0, 1048);
+  else if (MapValue == 1) {
+    if (mBar <= 1013) return 0;
+    else return constrain((int) ((float) (mBar - 1013) * 0.01450377), 0, 40); //GetValuePSI(ThisInt);
   }
-  else if (MapValue == 4) return (int) round((double) ThisInt * 0.1); //GetValueKPa(ThisInt);
+  else if (MapValue == 2) return constrain((int) round((double) mBar * 0.1), 0, 105); //GetValueKPa(ThisInt);
   else return 0;
 }
 
-float GetBoost(){
-  int ThisInt = round((double) (((int) Datalog_Bytes[4] * 7.221) - 59.0));
-  if (BoostValue == 0) return (int) ThisInt;
-  else if (BoostValue == 1) return (ThisInt / 1000);
-  else if (BoostValue == 2) return GetValueHG(ThisInt);
-  else if (BoostValue == 3) {
-    if (ThisInt <= 1013) return 0;
-    else return (float) round(((double) (ThisInt - 1013) * 0.0145037695765495) * 10) / 10; //GetValuePSI(ThisInt);
-  }
-  else if (BoostValue == 4) return (int) round((double) ThisInt * 0.1); //GetValueKPa(ThisInt);
-  else return 0;
+double GetBoost(){
+  int ThisInt = GetMBar();
+  if (ThisInt <= 1013) return 0;
+  else return ((double) (ThisInt - 1013) * 0.0145037695765495);
 }
 
 unsigned int GetTps(){
@@ -139,9 +214,12 @@ unsigned int GetTps(){
 }
 
 unsigned int GetRpm(){
-  //return (int) (1875000/Long2Bytes(Datalog_Bytes[6], Datalog_Bytes[7]));
+  //return (int) (1875000/Long2Bytes(Datalog_Bytes[6], Datalog_Bytes[7]));  //unused
+  
   int rpm = (int) (1851562/Long2Bytes(Datalog_Bytes[6], Datalog_Bytes[7]));
-  return constrain(rpm, 0, 11000);  
+  return constrain(rpm, 0, 11000);
+
+  //return constrain(FakeValue, 0, 11000);
 }
 
 bool GetIgnCut(){
@@ -153,13 +231,16 @@ bool GetFuelCut1(){
 }
 
 unsigned int GetVss(){
-  if (UseKMH == 1)
-    return (int) Datalog_Bytes[16];
+  if (UseKMH == 1) return (int) Datalog_Bytes[16];
   return (int) round((float) Datalog_Bytes[16] / 1.6f);
 }
 
+unsigned int GetVssKMH(){
+  return (int) Datalog_Bytes[16];
+}
+
 double GetInjFV() {
-    return round(((double) Long2Bytes(Datalog_Bytes[17], Datalog_Bytes[18]) / 4.0) * 10) / 10;
+    return (double) Long2Bytes(Datalog_Bytes[17], Datalog_Bytes[18]) / 4.0;
 }
 
 int GetInj(){
@@ -171,26 +252,26 @@ int GetIgn(){
 }
 
 float GetBattery(){  
-  return (26.0 * Datalog_Bytes[25]) / 270.0;
+  return constrain((26.0 * Datalog_Bytes[25]) / 270.0, 0, 18);
 }
 
 bool GetOutput2ndMap(){
   return (bool) GetActivated(Datalog_Bytes[39], 5, false);
 }
 
-double GetIACVDuty(){
-  return ((double) ((float) Long2Bytes(Datalog_Bytes[49], Datalog_Bytes[50]) / 32768) * 100.0 - 100.0);
+int GetIACVDuty(){
+  return constrain(((int) ((float) Long2Bytes(Datalog_Bytes[49], Datalog_Bytes[50]) / 32768) * 100.0 - 100.0), -100, 100);
 }
 
 double GetMapVolt(){
-  return GetVolt(Datalog_Bytes[4]);
+  return constrain(GetVolt(Datalog_Bytes[4]), 0, 5);
 }
 
 double GetTPSVolt(){
-  return GetVolt(Datalog_Bytes[5]);
+  return constrain(GetVolt(Datalog_Bytes[5]), 0, 5);
 }
 
-unsigned int GetGear(){
+/*unsigned int GetGear(){
   byte Gear = 0;
   for (int i = 0; i < 4; i++) {
     if (((int) (GetVss() * 256) * (int) GetRpm() / (int) 256) >= Tranny[i]) Gear = i + 1;
@@ -199,5 +280,17 @@ unsigned int GetGear(){
 
   if (GetVss() == 0) Gear = 0;
     
+  return Gear;
+}*/
+
+unsigned int GetGear(){
+  if (GetVssKMH() == 0) return 0;
+  
+  int Gear = 0;
+  long num = (((long) GetVssKMH() * 256) * (long) GetRpm()) / 65535;
+  for (int i = 0; i < 4; i++) {
+      if (num < (long) Tranny[i]) Gear = i + 1;
+      else Gear = 5;
+  }
   return Gear;
 }

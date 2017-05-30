@@ -1,21 +1,45 @@
 #define ON 1
 #define OFF 0
 volatile int buttonTop = 0;
-volatile int buttonHold = 0;
+volatile int buttonBottom = 0;
 unsigned long last_interrupt_time=0;
 const int debouncing = 80;
-bool Holding = false;
 
 void GetButtonStates() {
   GetButtonTopState();
-  if (buttonTop == ON) NextDisplay();
-  if (buttonHold == ON) NextMenu();
+  if (buttonTop == ON) {
+    if (EcuConnected) {
+      if(ScreenCurrentMenu != 2) NextDisplay();
+      if(ScreenCurrentMenu == 2) ResetMilCodes();
+    } else {
+      NextMenu();
+      buttonTop=OFF;
+    }
+  }
+  if (buttonBottom == ON) NextMenu();
+}
+
+void ResetMilCodes() {
+  lcd.clear();
+  ResetBufferIndex();
+  GetInfosString(11);
+  writeBigString(0, 0);
+  ResetBufferIndex();
+  delay(250);
+  bool Resetted = ResetMil();
+  if (Resetted) GetInfosString(12);
+  if (!Resetted) GetInfosString(13);
+  writeBigString(0, 2);
+
+  delay(1000);
+  lcd.clear();
+  buttonTop=OFF;
 }
 
 void NextDisplay() {
   if(ScreenCurrentMenu == 0) {
     ScreenCurrentPage++;
-    if(ScreenCurrentPage > 4) ScreenCurrentPage = 1;
+    if(ScreenCurrentPage > 8) ScreenCurrentPage = 1;
   }
   if(ScreenCurrentMenu == 1) {
     ScreenCurrentPeak++;
@@ -26,41 +50,42 @@ void NextDisplay() {
 }
 
 void NextMenu() {
-  ScreenCurrentMenu++;
-  if(ScreenCurrentMenu > 1) ScreenCurrentMenu = 0;
+  if (EcuConnected) ScreenCurrentMenu++;
+  if (!EcuConnected) EcuConnected = true;
+  
+  if(ScreenCurrentMenu > 2) ScreenCurrentMenu = 0;
   ShowMenu();
-  buttonHold=OFF;
+  buttonBottom=OFF;
 }
 
 void ShowPage() {
   lcd.clear();
-  ResetBufferIndex(0);
-  GetStringAt(0, 5, true);
-  RemakeBigBuffer();
-  writeBigString(StringBufferBig, 0, 0);
+  ResetBufferIndex();
+  GetInfosString(5);
+  writeBigString(3, 0);
 
-  ResetBufferIndex(0);
-  if(ScreenCurrentMenu == 0) Add_String(0, String(ScreenCurrentPage));
-  if(ScreenCurrentMenu == 1) Add_String(0, String(ScreenCurrentPeak));
-  RemakeBigBuffer();
-  writeBigString(StringBufferBig, 0, 3);
+  ResetBufferIndex();
+  if(ScreenCurrentMenu == 0) Add_String(String(ScreenCurrentPage));
+  if(ScreenCurrentMenu == 1) Add_String(String(ScreenCurrentPeak));
+  writeBigString(7, 2);
   
-  delay(1000);
+  delay(500);
   lcd.clear();
   buttonTop=OFF;
 }
 
 void ShowMenu() {
   lcd.clear();
-  ResetBufferIndex(0);
-  GetStringAt(0, 6, true);
-  RemakeBigBuffer();
-  writeBigString(StringBufferBig, 0, 0);
+  ResetBufferIndex();
+  GetInfosString(6);
+  writeBigString(3, 0);
 
-  ResetBufferIndex(0);
-  Add_String(0, String(ScreenCurrentMenu));
-  RemakeBigBuffer();
-  writeBigString(StringBufferBig, 0, 3);
+  ResetBufferIndex();
+  if (ScreenCurrentMenu == 0) GetInfosString(7);
+  if (ScreenCurrentMenu == 1) GetInfosString(8);
+  if (ScreenCurrentMenu == 2) GetInfosString(9);
+  writeBigString(0, 2);
+  
   delay(1000);
   lcd.clear();
   buttonTop=OFF;
@@ -68,16 +93,18 @@ void ShowMenu() {
 
 void GetButtonTopState() {
   if (digitalRead(TopButton) == LOW) {
-    if (!EcuConnected)
-      EcuConnected = true;
-    else {
-      unsigned long interrupt_time = millis();  
-      if (buttonTop == OFF && buttonHold == OFF && (interrupt_time - last_interrupt_time > debouncing)) {
-        if (!Holding) buttonTop=ON;
-        if (Holding) buttonHold=ON;
-        Holding = true;
-        last_interrupt_time = interrupt_time;
-      }
+    unsigned long interrupt_time = millis();  
+    if (buttonTop == OFF && (interrupt_time - last_interrupt_time > debouncing)) {
+      buttonTop=ON;
+      last_interrupt_time = interrupt_time;
     }
-  } else Holding = false;
+  }
+
+  if (digitalRead(BottomButton) == LOW) {
+    unsigned long interrupt_time = millis();
+    if (buttonBottom == OFF && (interrupt_time - last_interrupt_time > debouncing)) {
+      buttonBottom=ON;
+      last_interrupt_time = interrupt_time;
+    }
+  }
 }
