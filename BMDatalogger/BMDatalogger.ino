@@ -40,37 +40,28 @@ const int MaxDataValue = 20;
 bool EcuConnected = false;
 unsigned long last_datalog_time=0;
 
-const byte ScreenPage1[8] = {0, 1, 2, 3, 4, 5, 6 ,7};
-const byte ScreenPage2[8] = {8, 9, 10, 11, 12, 13, 14 ,18};
-const byte ScreenPage3[8] = {68, 0, 69, 0, 1, 3, 5 ,7};
-const byte ScreenPage4[8] = {50, 0, 51, 0, 53, 0, 54, 0};
-const byte ScreenPage5[8] = {100, 0, 0, 0, 102, 0, 0, 0};
-const byte ScreenPage6[8] = {150, 0, 0, 0, 0, 0, 0, 0};
-const byte ScreenPage7[8] = {0, 1, 104, 0, 0, 0, 52, 3};
-const byte ScreenPage8[8] = {168, 0, 0, 0, 0, 0, 0, 0};
+const byte ScreenPage1[8] = {50, 0, 1, 2, 3, 4, 5, 6};
+const byte ScreenPage2[8] = {50, 0, 7, 8, 9, 10, 11, 12};
+const byte ScreenPage3[8] = {50, 0, 13, 14, 15, 16, 17, 18};
+const byte ScreenPage4[8] = {50, 0, 51, 0, 52, 0, 53, 0};
+const byte ScreenPage5[8] = {50, 0, 56, 0, 66, 0, 8, 16};
+const byte ScreenPage6[8] = {50, 0, 5, 9, 2, 4, 68, 0};
+const byte ScreenPage7[8] = {50, 0, 68, 0, 56, 0, 53, 0};
+const byte ScreenPage8[8] = {1, 2, 100, 0, 0, 0, 3, 4};
 
-const String VersionStr = "1.5.0";
+const String VersionStr = "1.5.1";
 const byte ProgressBarMode = 2;
 const byte ProgressBarLeft = 1;
 const int Timeout = 80;
 const int Injectors_Size = 240;
 const byte O2Input = 0;
 const byte MapValue = 0;
-//const byte BoostValue = 3;
 const byte UseCelcius = 1;
 const byte UseKMH = 1;
-const byte UseLAMBA = 0;
-//const byte WBType = 0;
+const byte O2Type = 0;
 const double WBConversion[4] = {0.5, 0.75, 3.38, 1.14};
 const byte Tranny[4] = {0x46, 0x67, 0x8E, 0xB8};
-const byte MapByte[2] = {0xBA, 0xFE};
-
-//const double WBConversion[24] = {0.5, 0.75, 0.75, 0.79, 1, 0.82, 1.25, 0.85, 1.5, 0.89, 1.75, 0.92, 2, 0.96, 2.25, 0.99, 2.5, 1.02, 2.75, 1.06, 3, 1.09, 3.38, 1.14};
-//const byte Tranny[10] = {0x46, 0x00, 0x67, 0x00, 0x8E, 0x00, 0xB8, 0x00, 0x52, 0xDE};
-//oem = BA - FE
-//2bar = 08 - F9
-
-int FakeValue = 0;
+const byte MapByte[4] = {0xBA, 0x7F, 0xFE, 0x86};
 
 //#####################################################
 

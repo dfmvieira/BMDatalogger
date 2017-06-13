@@ -36,8 +36,8 @@ void SetPeak() {
   if (ThisScreenIndex == 2) SetPeakValue(-40, 140);
   if (ThisScreenIndex == 3) SetPeakValue(0, 100);
   if (ThisScreenIndex == 4) {
-    if (UseLAMBA) SetPeakValue(0, 5);
-    if (!UseLAMBA) SetPeakValue(10, 20);
+    if (O2Type == 1) SetPeakValue(0, 5);
+    if (O2Type == 0) SetPeakValue(10, 20);
   }
   if (ThisScreenIndex == 5) SetPeakValue(-6, 60);
   if (ThisScreenIndex == 6) SetPeakValue(0, 20);

@@ -20,10 +20,8 @@ void GetData(){
   Serial.flush();
   Serial.write(" ");
 
-  FakeValue += 156;
-  if (FakeValue >= 11000) FakeValue = 0;
-  FakeValue2 += 1;
-  if (FakeValue2 >= 175) FakeValue2 = 0;
+  //FakeValue += 1;
+  //if (FakeValue >= 180) FakeValue = 0;
 }
 
 bool ResetMil() {
@@ -137,6 +135,7 @@ byte GetActivated(byte ThisByte, const int ThisPos, const bool Reversed) {
 }
 
 float GetInstantConsumption(){
+  if (GetVssKMH() == 0) return 0;
   //float hundredkm = ((60 / GetVssKMH()) * 100) / 60;     //minutes needed to travel 100km
   float hundredkm = (60 / GetVssKMH()) * 100;     //minutes needed to travel 100km
   float fuelc = (hundredkm * ((Injectors_Size / 100) * GetDuty())) / 1000;     
@@ -162,33 +161,26 @@ double GetO2(){
   if (O2Input == 2) WBByte = Datalog_Bytes[44];
   if (O2Input == 3) WBByte = Datalog_Bytes[45];
   double RTND = 0.0;
-  if (UseLAMBA == 0) RTND = constrain((double) InterpolateWB(GetVolt(WBByte) * 14.7), 10, 20);
-  if (UseLAMBA == 1) RTND = constrain((double) InterpolateWB(GetVolt(WBByte)), 0, 5);
-  if (UseLAMBA == 2) RTND = constrain((double) GetVolt(WBByte), 0, 16);
+  if (O2Type == 0) RTND = constrain((double) InterpolateWB(GetVolt(WBByte)) * 14.7, 10, 20);
+  if (O2Type == 1) RTND = constrain((double) InterpolateWB(GetVolt(WBByte)), 0, 5);
+  if (O2Type == 2) RTND = constrain((double) GetVolt(WBByte), 0, 16);
 
   //return RoundThis(1, RTND);
   return RTND;
 }
 
-double InterpolateWB(const double ThisDouble) {
-  double RTN = (WBConversion[1] + (((ThisDouble - WBConversion[0]) * (WBConversion[3] - WBConversion[1])) / (WBConversion[2] - WBConversion[0])));
-
-  if (ThisDouble < WBConversion[0]) RTN = WBConversion[1];
-  if (ThisDouble > WBConversion[2]) RTN = WBConversion[3];
-        
-  /*for (int i = 0; i < (sizeof(WBConversion) / 2); i++)
-  {
-      index = 2 * i; 
-      if ((ThisDouble >= WBConversion[index]) && (ThisDouble <= WBConversion[index + 2])) 
-          RTN = (WBConversion[index + 1] + (((ThisDouble - WBConversion[index]) * (WBConversion[index + 3] - WBConversion[index + 1])) / (WBConversion[index + 2] - WBConversion[index])));
-  }*/
-
-  return RTN;
+double InterpolateWB(double ThisDouble) {
+  if (ThisDouble < WBConversion[0]) return WBConversion[1];
+  if (ThisDouble > WBConversion[2]) return WBConversion[3];
+  return (WBConversion[1] + (((ThisDouble - WBConversion[0]) * (WBConversion[3] - WBConversion[1])) / (WBConversion[2] - WBConversion[0])));
 }
 
 int GetMBar() {
-  int Value = (int) Datalog_Bytes[4];
-  return (int) ((((Value * ((int) MapByte[1] - (int) MapByte[0])) / 255) + (int) MapByte[0]) - 32768);
+  long Value = (long) Datalog_Bytes[4];
+  long MapLow = (MapByte[1] * 256) + MapByte[0];
+  long MapHigh = (MapByte[3] * 256) + MapByte[2];
+                
+  return (int) ((((Value * (MapHigh - MapLow)) / 255) + MapLow) - 32768);
 }
 
 int GetMap(){
@@ -218,8 +210,6 @@ unsigned int GetRpm(){
   
   int rpm = (int) (1851562/Long2Bytes(Datalog_Bytes[6], Datalog_Bytes[7]));
   return constrain(rpm, 0, 11000);
-
-  //return constrain(FakeValue, 0, 11000);
 }
 
 bool GetIgnCut(){
@@ -271,26 +261,10 @@ double GetTPSVolt(){
   return constrain(GetVolt(Datalog_Bytes[5]), 0, 5);
 }
 
-/*unsigned int GetGear(){
-  byte Gear = 0;
-  for (int i = 0; i < 4; i++) {
-    if (((int) (GetVss() * 256) * (int) GetRpm() / (int) 256) >= Tranny[i]) Gear = i + 1;
-    else break;
-  }
-
-  if (GetVss() == 0) Gear = 0;
-    
-  return Gear;
-}*/
-
 unsigned int GetGear(){
-  if (GetVssKMH() == 0) return 0;
+  if (GetVssKMH() == 0 | GetRpm() == 0) return 0;
   
-  int Gear = 0;
   long num = (((long) GetVssKMH() * 256) * (long) GetRpm()) / 65535;
-  for (int i = 0; i < 4; i++) {
-      if (num < (long) Tranny[i]) Gear = i + 1;
-      else Gear = 5;
-  }
-  return Gear;
+  for (int i = 0; i < 4; i++) if (num < (long) Tranny[i]) return i + 1;
+  return 5;
 }
