@@ -261,10 +261,32 @@ double GetTPSVolt(){
   return constrain(GetVolt(Datalog_Bytes[5]), 0, 5);
 }
 
-unsigned int GetGear(){
-  if (GetVssKMH() == 0 | GetRpm() == 0) return 0;
-  
-  long num = (((long) GetVssKMH() * 256) * (long) GetRpm()) / 65535;
-  for (int i = 0; i < 4; i++) if (num < (long) Tranny[i]) return i + 1;
-  return 5;
+//###############################
+
+bool GetOutputFanCtrl(){
+  return (bool) GetActivated(Datalog_Bytes[39], 6, false);
+}
+
+bool GetVTS(){
+  return (bool) GetActivated(Datalog_Bytes[23], 7, false);
+}
+
+bool GetVTP(){
+  return (bool) GetActivated(Datalog_Bytes[21], 3, false);
+}
+
+double GetELDVolt(){
+  return GetVolt(Datalog_Bytes[24]);
+}
+
+bool GetO2Heater(){
+  return (bool) GetActivated(Datalog_Bytes[23], 6, false);
+}
+
+bool GetAC(){
+  return (bool) GetActivated(Datalog_Bytes[22], 7, false);
+}
+
+bool GetAtlCtrl(){
+  return (bool) GetActivated(Datalog_Bytes[22], 5, false);
 }

@@ -2,6 +2,7 @@
 #define OFF 0
 volatile int buttonTop = 0;
 volatile int buttonBottom = 0;
+volatile int buttonDual = 0;
 unsigned long last_interrupt_time=0;
 const int debouncing = 80;
 
@@ -17,6 +18,10 @@ void GetButtonStates() {
     }
   }
   if (buttonBottom == ON) NextMenu();
+  if (buttonDual == ON) {
+    InitPeak();
+    buttonDual = OFF;
+  }
 }
 
 void ResetMilCodes() {
@@ -94,15 +99,17 @@ void ShowMenu() {
 void GetButtonTopState() {
   if (digitalRead(TopButton) == LOW) {
     unsigned long interrupt_time = millis();  
-    if (buttonTop == OFF && (interrupt_time - last_interrupt_time > debouncing)) {
-      buttonTop=ON;
+    if (buttonTop == OFF && buttonDual == OFF && (interrupt_time - last_interrupt_time > debouncing)) {
+      if (ScreenCurrentMenu == 1 && digitalRead(BottomButton) == LOW && buttonBottom == OFF) buttonDual=ON;
+      else buttonTop=ON;
+      
       last_interrupt_time = interrupt_time;
     }
   }
 
   if (digitalRead(BottomButton) == LOW) {
     unsigned long interrupt_time = millis();
-    if (buttonBottom == OFF && (interrupt_time - last_interrupt_time > debouncing)) {
+    if (buttonBottom == OFF && buttonDual == OFF && (interrupt_time - last_interrupt_time > debouncing)) {
       buttonBottom=ON;
       last_interrupt_time = interrupt_time;
     }

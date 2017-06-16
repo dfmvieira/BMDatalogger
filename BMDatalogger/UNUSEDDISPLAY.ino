@@ -3,12 +3,18 @@
 //###########################################################################################################
 //PROTOCOL
 
+
+/*const byte Tranny[4] = {70,103,142,184};
+unsigned int GetGear(){
+  if (GetVssKMH() == 0 | GetRpm() == 0) return 0;
+  
+  long num = (((long) GetVssKMH() * 256) * (long) GetRpm()) / 65535;
+  for (int i = 0; i < 4; i++) if (num < (long) Tranny[i]) return i + 1;
+  return 5;
+}*/
+
 /*void Disconnect() {
   Serial.end();
-}
-
-bool GetOutputFanCtrl(){
-  return (bool) GetActivated(Datalog_Bytes[39], 6, false);
 }
 
 bool GetOutputBST(){
@@ -31,10 +37,6 @@ bool GetOutputEBC(){
   return (bool) GetActivated(Datalog_Bytes[39], 4, false);
 }
 
-bool GetVTP(){
-  return (bool) GetActivated(Datalog_Bytes[21], 3, false);
-}
-
 int GetIgnTable(){
   return (0.25 * Datalog_Bytes[20]) - 6;
 }
@@ -53,14 +55,6 @@ float GetInjectorDuty() {
 
 bool GetFuelCut2(){
   return (bool) GetActivated(Datalog_Bytes[8], 5, false);
-}
-
-bool GetFanCtrl(){
-  return (bool) GetActivated(Datalog_Bytes[22], 4, false);
-}
-
-bool GetAtlCtrl(){
-  return (bool) GetActivated(Datalog_Bytes[22], 5, false);
 }
 
 bool GetMIL(){
@@ -133,22 +127,6 @@ bool GetIAB(){
 
 bool GetPurge(){
   return (bool) GetActivated(Datalog_Bytes[22], 6, false);
-}
-
-bool GetAC(){
-  return (bool) GetActivated(Datalog_Bytes[22], 7, false);
-}
-
-bool GetO2Heater(){
-  return (bool) GetActivated(Datalog_Bytes[23], 6, false);
-}
-
-bool GetVTS(){
-  return (bool) GetActivated(Datalog_Bytes[23], 7, false);
-}
-
-double GetELDVolt(){
-  return GetVolt(Datalog_Bytes[24]);
 }
 
 bool GetATShift1(){
