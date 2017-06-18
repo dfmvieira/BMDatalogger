@@ -49,7 +49,7 @@ const byte ScreenPage6[8] = {50,0,5,9,2,4,68,0};
 const byte ScreenPage7[8] = {50,0,68,0,56,0,53,0};
 const byte ScreenPage8[8] = {1,2,100,0,0,0,3,4};
 
-const String VersionStr = "1.5.2";
+const String VersionStr = "1.5.3";
 const byte ProgressBarMode = 0;
 const byte ProgressBarLeft = 0;
 const int Timeout = 200;

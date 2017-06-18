@@ -11,7 +11,7 @@ void GetButtonStates() {
   if (buttonTop == ON) {
     if (EcuConnected) {
       if(ScreenCurrentMenu != 2) NextDisplay();
-      if(ScreenCurrentMenu == 2) ResetMilCodes();
+      //if(ScreenCurrentMenu == 2) ResetMilCodes();
     } else {
       NextMenu();
       buttonTop=OFF;
@@ -24,7 +24,7 @@ void GetButtonStates() {
   }
 }
 
-void ResetMilCodes() {
+/*void ResetMilCodes() {
   lcd.clear();
   ResetBufferIndex();
   GetInfosString(11);
@@ -39,7 +39,7 @@ void ResetMilCodes() {
   delay(1000);
   lcd.clear();
   buttonTop=OFF;
-}
+}*/
 
 void NextDisplay() {
   if(ScreenCurrentMenu == 0) {

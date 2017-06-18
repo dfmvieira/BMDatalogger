@@ -24,13 +24,13 @@ void GetData(){
   //if (FakeValue >= 180) FakeValue = 0;
 }
 
-bool ResetMil() {
+/*bool ResetMil() {
   bool MilResetted = false;
   Serial.write((byte) 80);
   delay(500);
   if ((int) Serial.read() == 80) MilResetted = true;
   return MilResetted;
-}
+}*/
 
 void GetMil() {
   int Displayed = 0;
@@ -80,6 +80,20 @@ void GetMil() {
     GetInfosString(10);
     writeBigString(0, 2);
   }
+
+  //Reset Overlay if displayed
+  if (Displayed == 1) {
+    ResetBufferIndex();
+    PrintText(10, 10, 2);
+  }
+  if (Displayed == 2) {
+    ResetBufferIndex();
+    PrintTextLenght(0, 3);
+  }
+  if (Displayed == 3) {
+    ResetBufferIndex();
+    PrintText(10, 10, 3);
+  }
 }
 
 int FixMil(int Value) {
@@ -119,7 +133,7 @@ double GetVolt(const byte ThisByte) {
 }
 
 float GetDuration(const int ThisInt) {
-  return (float) ThisInt * 3.20000004768372 / 1000.0;
+  return ((float) ThisInt * 3.20000004768372) / 1000.0;
 }
 
 byte GetActivated(byte ThisByte, const int ThisPos, const bool Reversed) {
@@ -136,14 +150,19 @@ byte GetActivated(byte ThisByte, const int ThisPos, const bool Reversed) {
 
 float GetInstantConsumption(){
   if (GetVssKMH() == 0) return 0;
-  //float hundredkm = ((60 / GetVssKMH()) * 100) / 60;     //minutes needed to travel 100km
-  float hundredkm = (60 / GetVssKMH()) * 100;     //minutes needed to travel 100km
+  //float hundredkm = ((60 / GetVssKMH()) * 100) / 60;                      //minutes needed to travel 100km (OLD)
+  float hundredkm = 6000 / GetVssKMH();                                     //minutes needed to travel 100km
   float fuelc = (hundredkm * ((Injectors_Size / 100) * GetDuty())) / 1000;     
-  return constrain(fuelc, 0.0, 50.0);
+  return constrain(fuelc, 0.0, 50.0);                                       //Vary between 0-50 L/100km
 }
 
 float GetDuty(){
-  return ((float) GetRpm() * (float) GetInj()) / 1200;
+  return ((float) GetRpm() * (float) GetInjDurr()) / 1200;
+}
+
+int GetInjDurr(){
+  //return (int) (Long2Bytes(Datalog_Bytes[17], Datalog_Bytes[18]) / 352);
+  return GetDuration((int) Long2Bytes(Datalog_Bytes[17], Datalog_Bytes[18]));
 }
 
 int GetEct(){
@@ -177,8 +196,8 @@ double InterpolateWB(double ThisDouble) {
 
 int GetMBar() {
   long Value = (long) Datalog_Bytes[4];
-  long MapLow = (MapByte[1] * 256) + MapByte[0];
-  long MapHigh = (MapByte[3] * 256) + MapByte[2];
+  long MapLow = ((long) MapByte[1] * 256) + (long) MapByte[0];
+  long MapHigh = ((long) MapByte[3] * 256) + (long) MapByte[2];
                 
   return (int) ((((Value * (MapHigh - MapLow)) / 255) + MapLow) - 32768);
 }
@@ -188,7 +207,7 @@ int GetMap(){
   if (MapValue == 0) return constrain(mBar, 0, 1048);
   else if (MapValue == 1) {
     if (mBar <= 1013) return 0;
-    else return constrain((int) ((float) (mBar - 1013) * 0.01450377), 0, 40); //GetValuePSI(ThisInt);
+    else return constrain((int) (((float) mBar - 1013) * 0.01450377), 0, 40); //GetValuePSI(ThisInt);
   }
   else if (MapValue == 2) return constrain((int) round((double) mBar * 0.1), 0, 105); //GetValueKPa(ThisInt);
   else return 0;
@@ -197,7 +216,7 @@ int GetMap(){
 double GetBoost(){
   int ThisInt = GetMBar();
   if (ThisInt <= 1013) return 0;
-  else return ((double) (ThisInt - 1013) * 0.0145037695765495);
+  else return (double) (((double) ThisInt - 1013) * 0.0145037695765495);
 }
 
 unsigned int GetTps(){
@@ -233,10 +252,6 @@ double GetInjFV() {
     return (double) Long2Bytes(Datalog_Bytes[17], Datalog_Bytes[18]) / 4.0;
 }
 
-int GetInj(){
-  return (int) (Long2Bytes(Datalog_Bytes[17], Datalog_Bytes[18]) / 352);  
-}
-
 int GetIgn(){
   return constrain((0.25 * Datalog_Bytes[19]) - 6, -6, 60);
 }
@@ -250,7 +265,7 @@ bool GetOutput2ndMap(){
 }
 
 int GetIACVDuty(){
-  return constrain(((int) ((float) Long2Bytes(Datalog_Bytes[49], Datalog_Bytes[50]) / 32768) * 100.0 - 100.0), -100, 100);
+  return constrain((int) (((Long2Bytes(Datalog_Bytes[49], Datalog_Bytes[50]) / 32768) * 100.0) - 100.0), -100, 100);
 }
 
 double GetMapVolt(){

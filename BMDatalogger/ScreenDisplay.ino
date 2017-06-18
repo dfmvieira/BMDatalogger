@@ -161,7 +161,7 @@ int GetInt() {
   if (ThisScreenIndex == 3) return (int) GetTps();
   if (ThisScreenIndex == 4) return (int) GetO2();
   if (ThisScreenIndex == 5) return (int) GetIgn();
-  if (ThisScreenIndex == 6) return (int) GetInj();
+  if (ThisScreenIndex == 6) return (int) GetInjDurr();
   if (ThisScreenIndex == 7) return (int) GetInstantConsumption();
   if (ThisScreenIndex == 8) return (int) GetIACVDuty();
   if (ThisScreenIndex == 9) return (int) GetMap();
@@ -191,7 +191,7 @@ void SetValueToBuffer() {
   if (ThisScreenIndex == 3) Add_String(String(GetTps()));
   if (ThisScreenIndex == 4) Add_String(String(GetO2()));
   if (ThisScreenIndex == 5) Add_String(String(GetIgn()));
-  if (ThisScreenIndex == 6) Add_String(String(GetInj()));
+  if (ThisScreenIndex == 6) Add_String(String(GetInjDurr()));
   if (ThisScreenIndex == 7) Add_String(String(GetInstantConsumption()));
   if (ThisScreenIndex == 8) Add_String(String(GetIACVDuty()));
   if (ThisScreenIndex == 9) Add_String(String(GetMap()));

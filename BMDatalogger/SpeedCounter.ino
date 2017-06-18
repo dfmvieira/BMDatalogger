@@ -12,7 +12,13 @@ void SetSpeedTime() {
     CheckDone = false;
   }
   if (!CheckDone) {
-    if (Speed >= 3 && Speed < 100) TimeVal = ((double)(((long) millis() - (long) last_zero_time)) / 1000) + 0.1;
+    if (Speed >= 3 && Speed < 100) {
+      TimeVal = ((double)(((long) millis() - (long) last_zero_time)) / 1000) + 0.1;
+      if (TimeVal > 20) {
+        TimeVal = 99.99;
+        CheckDone = true;
+      }
+    }
     if (Speed >= 100) {
       if (TimeVal < BestTimeVal) BestTimeVal = TimeVal;
       CheckDone = true;
