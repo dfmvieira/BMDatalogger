@@ -20,102 +20,100 @@ void Display() {
     if (ScreenCurrentPage == 8) ThisScreenIndex = ScreenPage8[i];
     if (ScreenCurrentMenu == 1) ThisScreenIndex = ScreenCurrentPeak;
 
-    if (ThisScreenIndex < 255) {
-      int ThisScreenMode = 0;                                 //normal
-      if (ThisScreenIndex >= 50) ThisScreenMode = 1;          //progressbar
-      if (ThisScreenIndex >= 100) ThisScreenMode = 2;         //big
-      if (ThisScreenIndex >= 150) ThisScreenMode = 3;         //big2
-      if (ScreenCurrentMenu == 1) ThisScreenMode = 4;         //peak
-      if (ScreenCurrentMenu == 2) ThisScreenMode = 5;         //mil
-  
-      if (ThisScreenMode != 5) {
-        if (ThisScreenIndex >= 50 && ThisScreenIndex < 100) ThisScreenIndex -= 50;
-        if (ThisScreenIndex >= 100 && ThisScreenIndex < 150) ThisScreenIndex -= 100;
-        if (ThisScreenIndex >= 150) ThisScreenIndex -= 150;
-  
-        ResetBufferIndex();
-        
-        //Empty
-        /*if (ThisScreenIndex >= MaxDataValue) {
-          SetPos(i);
-          if (ThisScreenMode >= 1) XPos = 0;
-          if (ThisScreenMode >= 3) YPos = 0;
-          PrintText(10, XPos, YPos);
-          if (ThisScreenMode >= 1) PrintText(20, XPos, YPos);
-          if (ThisScreenMode >= 2) PrintText(20, XPos, YPos + 1);
-          if (ThisScreenMode == 3) {
-            PrintText(20, XPos, YPos + 3);
-            PrintText(20, XPos, YPos + 4);
-          }
-        }*/
-        
-        if (ThisScreenIndex < MaxDataValue) {
-          GetSensorString(ThisScreenIndex);
-          
-          if (ThisScreenMode < 2) {
-            SetValueToBuffer();
-            Add_Sensor_Desc();
-          }
+    int ThisScreenMode = 0;                                 //normal
+    if (ThisScreenIndex >= 50) ThisScreenMode = 1;          //progressbar
+    if (ThisScreenIndex >= 100) ThisScreenMode = 2;         //big
+    if (ThisScreenIndex >= 150) ThisScreenMode = 3;         //big2
+    if (ScreenCurrentMenu == 1) ThisScreenMode = 4;         //peak
+    if (ScreenCurrentMenu == 2) ThisScreenMode = 5;         //mil
+
+    if (ThisScreenMode != 5) {
+      if (ThisScreenIndex >= 50 && ThisScreenIndex < 100) ThisScreenIndex -= 50;
+      if (ThisScreenIndex >= 100 && ThisScreenIndex < 150) ThisScreenIndex -= 100;
+      if (ThisScreenIndex >= 150) ThisScreenIndex -= 150;
+
+      ResetBufferIndex();
       
-          SetPos(i);
-          if (ThisScreenMode >= 1) XPos = 0;
-          if (ThisScreenMode >= 3) YPos = 0;
-  
-          //normal
-          if (ThisScreenMode == 0) PrintText(10, XPos, YPos);
-  
-          //progressbar
-          if (ThisScreenMode == 1) {
-            if (ProgressBarLeft == 0) XPos = 10;
-            PrintText(10, XPos, YPos);
-            if (ProgressBarLeft == 0) XPos = 0;
-            if (ProgressBarLeft == 1) XPos = 10;
-            DrawProgressBar(GetInt(), 10);
-            i++;
-          }
-  
-          //big font
-          if (ThisScreenMode == 2) {
-            PrintTextLenght(XPos, YPos);
-            int StartAt = GetBufferLenght();
-            ResetBufferIndex();
-            SetValueToBuffer();
-            writeBigString(StartAt, YPos);
-            i += 3;
-          }
-  
-          //big font #2
-          if (ThisScreenMode == 3) {
-            writeBigString(XPos, YPos);
-            ResetBufferIndex();
-            SetValueToBuffer();
-            writeBigString(XPos, YPos+2);
-            i += 8;
-          }
-  
-          //peak
-          if (ThisScreenMode == 4) {
-            writeBigString(XPos, YPos);
-            ResetBufferIndex();
-            GetInfosString(15);
-            Add_String(String(GetPeakMin()));
-            Add_Sensor_Desc();
-            PrintText(10, XPos, YPos + 2);
-  
-            ResetBufferIndex();
-            GetInfosString(17);
-            SetValueToBuffer();
-            Add_Sensor_Desc();
-            PrintText(10, XPos + 10, YPos + 2);
-            
-            ResetBufferIndex();
-            GetInfosString(16);
-            Add_String(String(GetPeakMax()));
-            Add_Sensor_Desc();
-            PrintText(20, XPos, YPos + 3);
-            
-            i += 8;
-          }
+      //Empty
+      /*if (ThisScreenIndex >= MaxDataValue) {
+        SetPos(i);
+        if (ThisScreenMode >= 1) XPos = 0;
+        if (ThisScreenMode >= 3) YPos = 0;
+        PrintText(10, XPos, YPos);
+        if (ThisScreenMode >= 1) PrintText(20, XPos, YPos);
+        if (ThisScreenMode >= 2) PrintText(20, XPos, YPos + 1);
+        if (ThisScreenMode == 3) {
+          PrintText(20, XPos, YPos + 3);
+          PrintText(20, XPos, YPos + 4);
+        }
+      }*/
+      
+      if (ThisScreenIndex < MaxDataValue) {
+        GetSensorString(ThisScreenIndex);
+        
+        if (ThisScreenMode < 2) {
+          SetValueToBuffer();
+          Add_Sensor_Desc();
+        }
+    
+        SetPos(i);
+        if (ThisScreenMode >= 1) XPos = 0;
+        if (ThisScreenMode >= 3) YPos = 0;
+
+        //normal
+        if (ThisScreenMode == 0) PrintText(10, XPos, YPos);
+
+        //progressbar
+        if (ThisScreenMode == 1) {
+          if (ProgressBarLeft == 0) XPos = 10;
+          PrintText(10, XPos, YPos);
+          if (ProgressBarLeft == 0) XPos = 0;
+          if (ProgressBarLeft == 1) XPos = 10;
+          DrawProgressBar(GetInt(), 10);
+          i++;
+        }
+
+        //big font
+        if (ThisScreenMode == 2) {
+          PrintTextLenght(XPos, YPos);
+          int StartAt = GetBufferLenght();
+          ResetBufferIndex();
+          SetValueToBuffer();
+          writeBigString(StartAt, YPos);
+          i += 3;
+        }
+
+        //big font #2
+        if (ThisScreenMode == 3) {
+          writeBigString(XPos, YPos);
+          ResetBufferIndex();
+          SetValueToBuffer();
+          writeBigString(XPos, YPos+2);
+          i += 8;
+        }
+
+        //peak
+        if (ThisScreenMode == 4) {
+          writeBigString(XPos, YPos);
+          ResetBufferIndex();
+          GetInfosString(15);
+          Add_String(String(GetPeakMin()));
+          Add_Sensor_Desc();
+          PrintText(10, XPos, YPos + 2);
+
+          ResetBufferIndex();
+          GetInfosString(17);
+          SetValueToBuffer();
+          Add_Sensor_Desc();
+          PrintText(10, XPos + 10, YPos + 2);
+          
+          ResetBufferIndex();
+          GetInfosString(16);
+          Add_String(String(GetPeakMax()));
+          Add_Sensor_Desc();
+          PrintText(20, XPos, YPos + 3);
+          
+          i += 8;
         }
       }
     }
@@ -167,7 +165,6 @@ int GetInt() {
   if (ThisScreenIndex == 9) return (int) GetMap();
   if (ThisScreenIndex == 10) return (int) GetBoost();
   if (ThisScreenIndex == 11) return (int) GetVss();
-  //if (ThisScreenIndex == 12) return (int) GetGear();
   if (ThisScreenIndex == 12) return (int) GetOutputFanCtrl();
   if (ThisScreenIndex == 13) return (int) GetBattery();
   if (ThisScreenIndex == 14) return (int) GetIgnCut();
@@ -197,7 +194,6 @@ void SetValueToBuffer() {
   if (ThisScreenIndex == 9) Add_String(String(GetMap()));
   if (ThisScreenIndex == 10) Add_String(String(GetBoost()));
   if (ThisScreenIndex == 11) Add_String(String(GetVss()));
-  //if (ThisScreenIndex == 12) Add_String(String(GetGear()));
   if (ThisScreenIndex == 12) Add_String(String(GetOutputFanCtrl()));
   if (ThisScreenIndex == 13) Add_String(String(GetBattery()));
   if (ThisScreenIndex == 14) Add_String(String(GetIgnCut()));

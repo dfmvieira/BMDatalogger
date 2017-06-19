@@ -8,18 +8,18 @@ void GetWarnings() {
 
   //Disable (not warning)
   if (!Warning && IsWarning) {
-    lcd.setBacklight(255);
+    lcd.backlight();
     IsWarning = false;
   }
 
   //Warning (Trigger Flash)
   if (Warning) {
     if (!IsWarning) {
-      lcd.setBacklight(0);
+      lcd.noBacklight();
       IsWarning = true;
     }
     else {
-      lcd.setBacklight(255);
+      lcd.noBacklight();
       IsWarning = false;
     }
   }

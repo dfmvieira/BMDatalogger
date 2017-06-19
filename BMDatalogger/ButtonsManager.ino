@@ -12,6 +12,7 @@ void GetButtonStates() {
     if (EcuConnected) {
       if(ScreenCurrentMenu != 2) NextDisplay();
       //if(ScreenCurrentMenu == 2) ResetMilCodes();
+      if(ScreenCurrentMenu == 2) buttonTop = OFF;
     } else {
       NextMenu();
       buttonTop=OFF;

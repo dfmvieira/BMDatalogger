@@ -75,6 +75,7 @@ void GetMil() {
     }
   }
 
+  //Nothing Displayed
   if (Displayed == 0) {
     ResetBufferIndex();
     GetInfosString(10);
@@ -166,11 +167,11 @@ int GetInjDurr(){
 }
 
 int GetEct(){
-  return constrain(GetTemperature(Datalog_Bytes[0]), -40, 140);
+  return constrain(GetTemperature(Datalog_Bytes[0]), TempMin, TempMax);
 }
 
 int GetIat(){
-  return constrain(GetTemperature(Datalog_Bytes[1]), -40, 140);                  
+  return constrain(GetTemperature(Datalog_Bytes[1]), TempMin, TempMax);                  
 }
 
 double GetO2(){
@@ -196,15 +197,15 @@ double InterpolateWB(double ThisDouble) {
 
 int GetMBar() {
   long Value = (long) Datalog_Bytes[4];
-  long MapLow = ((long) MapByte[1] * 256) + (long) MapByte[0];
-  long MapHigh = ((long) MapByte[3] * 256) + (long) MapByte[2];
+  long MapLow = (long) mBarMin + 32768;
+  long MapHigh = (long) mBarMax + 32768;
                 
   return (int) ((((Value * (MapHigh - MapLow)) / 255) + MapLow) - 32768);
 }
 
 int GetMap(){
   int mBar = GetMBar();
-  if (MapValue == 0) return constrain(mBar, 0, 1048);
+  if (MapValue == 0) return constrain(mBar, mBarMin, mBarMax);
   else if (MapValue == 1) {
     if (mBar <= 1013) return 0;
     else return constrain((int) (((float) mBar - 1013) * 0.01450377), 0, 40); //GetValuePSI(ThisInt);

@@ -10,7 +10,6 @@ const char sensor_8[] PROGMEM = "IACV:";
 const char sensor_9[] PROGMEM = "MAP:";
 const char sensor_10[] PROGMEM = "BST:";
 const char sensor_11[] PROGMEM = "VSS:";
-//const char sensor_12[] PROGMEM = "GEAR:";
 const char sensor_12[] PROGMEM = "FAN:";
 const char sensor_13[] PROGMEM = "BATT:";
 const char sensor_14[] PROGMEM = "ICUT:";

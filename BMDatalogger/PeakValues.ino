@@ -32,8 +32,8 @@ void ApplyPeak() {
 
 void SetPeak() {
   if (ThisScreenIndex == 0) SetPeakValue(0, 11000);
-  if (ThisScreenIndex == 1) SetPeakValue(-40, 140);
-  if (ThisScreenIndex == 2) SetPeakValue(-40, 140);
+  if (ThisScreenIndex == 1) SetPeakValue(TempMin, TempMax);
+  if (ThisScreenIndex == 2) SetPeakValue(TempMin, TempMax);
   if (ThisScreenIndex == 3) SetPeakValue(0, 100);
   if (ThisScreenIndex == 4) {
     if (O2Type == 1) SetPeakValue(0, 5);
@@ -43,10 +43,9 @@ void SetPeak() {
   if (ThisScreenIndex == 6) SetPeakValue(0, 20);
   if (ThisScreenIndex == 7) SetPeakValue(0, 50);
   if (ThisScreenIndex == 8) SetPeakValue(-100, 100);
-  if (ThisScreenIndex == 9) SetPeakValue(0, 1048);
+  if (ThisScreenIndex == 9) SetPeakValue(mBarMin, mBarMax);
   if (ThisScreenIndex == 10) SetPeakValue(0, 40);
   if (ThisScreenIndex == 11) SetPeakValue(0, 300);
-  //if (ThisScreenIndex == 12) SetPeakValue(0, 5);
   if (ThisScreenIndex == 12) SetPeakValue(0, 1);
   if (ThisScreenIndex == 13) SetPeakValue(0, 18);
   if (ThisScreenIndex == 14) SetPeakValue(0, 1);

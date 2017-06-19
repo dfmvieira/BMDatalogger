@@ -49,7 +49,7 @@ const byte ScreenPage6[8] = {50,0,5,9,2,4,68,0};
 const byte ScreenPage7[8] = {50,0,68,0,56,0,53,0};
 const byte ScreenPage8[8] = {1,2,100,0,0,0,3,4};
 
-const String VersionStr = "1.5.3";
+const String VersionStr = "1.5.4";
 const byte ProgressBarMode = 0;
 const byte ProgressBarLeft = 0;
 const int Timeout = 200;
@@ -65,12 +65,22 @@ const int Warning_RPM = 7500;
 const int Warning_IAT = 45;
 const int Warning_ECT = 106;
 
+int mBarMin = -70;
+int mBarMax = 1790;
+int TempMin = -40;
+int TempMax = 140;
+
 //#####################################################
 
 void setup() {
   pinMode(TopButton,INPUT_PULLUP);
   pinMode(BottomButton,INPUT_PULLUP);
   
+  mBarMin = (int) ((((long) MapByte[1] * 256) + (long) MapByte[0]) - 32768);
+  mBarMax = (int) ((((long) MapByte[3] * 256) + (long) MapByte[2]) - 32768);
+  if (UseCelcius == 0) TempMin = TempMin * 1.8 + 32.0;
+  if (UseCelcius == 0) TempMax = TempMax * 1.8 + 32.0;
+    
   Screen();
   Connect();
 }
