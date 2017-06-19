@@ -66,6 +66,7 @@ void NextMenu() {
 
 void ShowPage() {
   lcd.clear();
+  lcd.backlight();
   ResetBufferIndex();
   GetInfosString(5);
   writeBigString(3, 0);
@@ -82,6 +83,7 @@ void ShowPage() {
 
 void ShowMenu() {
   lcd.clear();
+  lcd.backlight();
   ResetBufferIndex();
   GetInfosString(6);
   writeBigString(3, 0);

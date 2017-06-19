@@ -7,9 +7,11 @@ void Display() {
   }
 
   SetSpeedTime();
+  GetWarnings();
   
   for (int i=0; i<8; i++) {
     ThisScreenIndex = 0;
+    if (ScreenCurrentPage == 0) ScreenCurrentPage = 1;
     if (ScreenCurrentPage == 1) ThisScreenIndex = ScreenPage1[i];
     if (ScreenCurrentPage == 2) ThisScreenIndex = ScreenPage2[i];
     if (ScreenCurrentPage == 3) ThisScreenIndex = ScreenPage3[i];
@@ -47,7 +49,8 @@ void Display() {
           PrintText(20, XPos, YPos + 4);
         }
       }*/
-      
+
+      //Only Run 'reconized' data values
       if (ThisScreenIndex < MaxDataValue) {
         GetSensorString(ThisScreenIndex);
         
@@ -179,6 +182,7 @@ int GetInt() {
   if (ThisScreenIndex == 23) return (int) GetO2Heater();
   if (ThisScreenIndex == 24) return (int) GetAC();
   if (ThisScreenIndex == 25) return (int) GetAtlCtrl();
+  if (ThisScreenIndex == 26) return (int) GetGear();
 }
 
 void SetValueToBuffer() {
@@ -208,6 +212,7 @@ void SetValueToBuffer() {
   if (ThisScreenIndex == 23) Add_String(String(GetO2Heater()));
   if (ThisScreenIndex == 24) Add_String(String(GetAC()));
   if (ThisScreenIndex == 25) Add_String(String(GetAtlCtrl()));
+  if (ThisScreenIndex == 26) Add_String(String(GetGear()));
 
   //remake double into 1decimal
   if (ThisScreenIndex == 4) RemoveLastChar();

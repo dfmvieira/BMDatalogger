@@ -4,16 +4,9 @@
 //PROTOCOL
 
 
-/*const byte Tranny[4] = {70,103,142,184};
-unsigned int GetGear(){
-  if (GetVssKMH() == 0 | GetRpm() == 0) return 0;
-  
-  long num = (((long) GetVssKMH() * 256) * (long) GetRpm()) / 65535;
-  for (int i = 0; i < 4; i++) if (num < (long) Tranny[i]) return i + 1;
-  return 5;
-}*/
+/*
 
-/*void Disconnect() {
+void Disconnect() {
   Serial.end();
 }
 
@@ -245,4 +238,6 @@ double GetEBC(byte ThisByte) {
   if (num > 100.0)
     num = 100.0;
   return round((num * 10)) / 10;
-}*/
+}
+
+*/

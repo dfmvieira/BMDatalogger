@@ -16,14 +16,15 @@ const char sensor_14[] PROGMEM = "ICUT:";
 const char sensor_15[] PROGMEM = "FCUT:";
 const char sensor_16[] PROGMEM = "INJFV:";
 const char sensor_17[] PROGMEM = "2MAP:";
-const char sensor_18[] PROGMEM = "0-100:";
-const char sensor_19[] PROGMEM = "B0100:";
+const char sensor_18[] PROGMEM = "TIME:";
+const char sensor_19[] PROGMEM = "BTIME:";
 const char sensor_20[] PROGMEM = "VTS:";
 const char sensor_21[] PROGMEM = "VTP:";
 const char sensor_22[] PROGMEM = "ELDV:";
 const char sensor_23[] PROGMEM = "O2H:";
 const char sensor_24[] PROGMEM = "AC:";
 const char sensor_25[] PROGMEM = "ALT:";
+const char sensor_26[] PROGMEM = "GEAR:";
 
 const char inf_0[] PROGMEM = "kmh";
 const char inf_1[] PROGMEM = "mph";
@@ -81,7 +82,9 @@ const char* const SensorVars[] PROGMEM = {
   sensor_0, sensor_1, sensor_2, sensor_3, sensor_4,
   sensor_5, sensor_6, sensor_7, sensor_8, sensor_9, 
   sensor_10, sensor_11, sensor_12, sensor_13, sensor_14,
-  sensor_15, sensor_16, sensor_17, sensor_18, sensor_19
+  sensor_15, sensor_16, sensor_17, sensor_18, sensor_19,
+  sensor_20, sensor_21, sensor_22, sensor_23, sensor_24,
+  sensor_25, sensor_26
 };
 
 const char* const StringInfos[] PROGMEM = {

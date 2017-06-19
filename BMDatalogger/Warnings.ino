@@ -19,7 +19,7 @@ void GetWarnings() {
       IsWarning = true;
     }
     else {
-      lcd.noBacklight();
+      lcd.backlight();
       IsWarning = false;
     }
   }

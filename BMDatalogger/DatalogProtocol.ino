@@ -115,7 +115,7 @@ int FixMil(int Value) {
 }
 
 long Long2Bytes(const byte ThisByte1, const byte ThisByte2) {
-  return (long) ((long) ThisByte2 * 256 + (long) ThisByte1);
+  return ((long) ThisByte2 * 256) + (long) ThisByte1;
 }
 
 float GetTemperature(const byte ThisByte) {
@@ -246,7 +246,7 @@ unsigned int GetVss(){
 }
 
 unsigned int GetVssKMH(){
-  return (int) Datalog_Bytes[16];
+  return (unsigned int) Datalog_Bytes[16];
 }
 
 double GetInjFV() {
@@ -266,7 +266,7 @@ bool GetOutput2ndMap(){
 }
 
 int GetIACVDuty(){
-  return constrain((int) (((Long2Bytes(Datalog_Bytes[49], Datalog_Bytes[50]) / 32768) * 100.0) - 100.0), -100, 100);
+  return constrain((int) (Long2Bytes(Datalog_Bytes[49], Datalog_Bytes[50]) / 327.68) - 100, -100, 100);
 }
 
 double GetMapVolt(){
@@ -305,4 +305,13 @@ bool GetAC(){
 
 bool GetAtlCtrl(){
   return (bool) GetActivated(Datalog_Bytes[22], 5, false);
+}
+
+unsigned int GetGear(){
+  long VSS = (long) GetVssKMH();
+  long FAKERPM = Long2Bytes(Datalog_Bytes[6], Datalog_Bytes[7]);
+  if (VSS == 0 | GetRpm() == 0) return 0;
+  long num = ((VSS * 256) * FAKERPM) / 65535;
+  for (int i = 0; i < 4; i++) if (num < (long) Tranny[i]) return i + 1;
+  return 5;
 }
