@@ -28,7 +28,7 @@ LiquidCrystal_I2C lcd(0x3F, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);
 const int TopButton = 9;
 const int BottomButton = 8;
 
-byte ScreenCurrentPage = 0;
+byte ScreenCurrentPage = 1;
 byte ScreenCurrentPeak = 0;
 byte ScreenCurrentMenu = 0;
 int ThisScreenIndex = 0;    //current display index number
@@ -40,7 +40,7 @@ const int MaxDataValue = 27;
 bool EcuConnected = false;
 unsigned long last_datalog_time=0;
 
-const byte ScreenPage1[8] = {50,0,20,21,22,23,24,26};
+const byte ScreenPage1[8] = {50,0,1,2,3,4,5,6};
 const byte ScreenPage2[8] = {50,0,7,8,9,10,11,12};
 const byte ScreenPage3[8] = {50,0,13,14,15,16,17,18};
 const byte ScreenPage4[8] = {50,0,51,0,52,0,53,0};
@@ -49,7 +49,7 @@ const byte ScreenPage6[8] = {50,0,5,9,2,4,68,0};
 const byte ScreenPage7[8] = {50,0,68,0,56,0,53,0};
 const byte ScreenPage8[8] = {1,2,100,0,0,0,3,4};
 
-const String VersionStr = "1.5.5";
+const String VersionStr = "1.6.0";
 const byte ProgressBarMode = 0;
 const byte ProgressBarLeft = 0;
 const int Timeout = 200;

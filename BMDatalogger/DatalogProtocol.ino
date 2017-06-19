@@ -154,7 +154,7 @@ float GetInstantConsumption(){
   //float hundredkm = ((60 / GetVssKMH()) * 100) / 60;                      //minutes needed to travel 100km (OLD)
   float hundredkm = 6000 / GetVssKMH();                                     //minutes needed to travel 100km
   float fuelc = (hundredkm * ((Injectors_Size / 100) * GetDuty())) / 1000;     
-  return constrain(fuelc, 0.0, 50.0);                                       //Vary between 0-50 L/100km
+  return constrain(fuelc * 4, 0.0, 50.0);                                   //Vary between 0-50 L/100km
 }
 
 float GetDuty(){
