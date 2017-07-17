@@ -1,5 +1,5 @@
 void Display() {
-  unsigned long current_time = millis();
+  /*unsigned long current_time = millis();
   if (current_time - last_datalog_time > Timeout) {
     GetData();
     ApplyPeak();
@@ -7,7 +7,7 @@ void Display() {
   }
 
   SetSpeedTime();
-  GetWarnings();
+  GetWarnings();*/
   
   for (int i=0; i<8; i++) {
     ThisScreenIndex = 0;
@@ -64,7 +64,9 @@ void Display() {
         if (ThisScreenMode >= 3) YPos = 0;
 
         //normal
-        if (ThisScreenMode == 0) PrintText(10, XPos, YPos);
+        if (ThisScreenMode == 0) {
+          PrintText(10, XPos, YPos);
+        }
 
         //progressbar
         if (ThisScreenMode == 1) {
@@ -124,7 +126,7 @@ void Display() {
       //Mil Menu
       ResetBufferIndex();
       GetInfosString(9);
-      writeBigString(0, 0);
+      writeBigString(5, 0);
       GetMil();
     }
   }
@@ -198,20 +200,20 @@ void SetValueToBuffer() {
   if (ThisScreenIndex == 9) Add_String(String(GetMap()));
   if (ThisScreenIndex == 10) Add_String(String(GetBoost()));
   if (ThisScreenIndex == 11) Add_String(String(GetVss()));
-  if (ThisScreenIndex == 12) Add_String(String(GetOutputFanCtrl()));
+  if (ThisScreenIndex == 12) GetActivatedString(GetOutputFanCtrl());
   if (ThisScreenIndex == 13) Add_String(String(GetBattery()));
-  if (ThisScreenIndex == 14) Add_String(String(GetIgnCut()));
-  if (ThisScreenIndex == 15) Add_String(String(GetFuelCut1()));
+  if (ThisScreenIndex == 14) GetActivatedString(GetIgnCut());
+  if (ThisScreenIndex == 15) GetActivatedString(GetFuelCut1());
   if (ThisScreenIndex == 16) Add_String(String(GetInjFV()));
-  if (ThisScreenIndex == 17) Add_String(String(GetOutput2ndMap()));
+  if (ThisScreenIndex == 17) GetActivatedString(GetOutput2ndMap());
   if (ThisScreenIndex == 18) Add_String(String(GetSpeedTime()));
   if (ThisScreenIndex == 19) Add_String(String(GetBestSpeedTime()));
-  if (ThisScreenIndex == 20) Add_String(String(GetVTS()));
-  if (ThisScreenIndex == 21) Add_String(String(GetVTP()));
+  if (ThisScreenIndex == 20) GetActivatedString(GetVTS());
+  if (ThisScreenIndex == 21) GetActivatedString(GetVTP());
   if (ThisScreenIndex == 22) Add_String(String(GetELDVolt()));
-  if (ThisScreenIndex == 23) Add_String(String(GetO2Heater()));
-  if (ThisScreenIndex == 24) Add_String(String(GetAC()));
-  if (ThisScreenIndex == 25) Add_String(String(GetAtlCtrl()));
+  if (ThisScreenIndex == 23) GetActivatedString(GetO2Heater());
+  if (ThisScreenIndex == 24) GetActivatedString(GetAC());
+  if (ThisScreenIndex == 25) GetActivatedString(GetAtlCtrl());
   if (ThisScreenIndex == 26) Add_String(String(GetGear()));
 
   //remake double into 1decimal

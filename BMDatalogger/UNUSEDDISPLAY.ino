@@ -10,48 +10,12 @@ void Disconnect() {
   Serial.end();
 }
 
-bool GetOutputBST(){
-  return (bool) GetActivated(Datalog_Bytes[39], 7, false);
-}
-
-bool GetOutputFTL(){
-  return (bool) GetActivated(Datalog_Bytes[39], 0, false);
-}
-
-bool GetOutputAntilag(){
-  return (bool) GetActivated(Datalog_Bytes[39], 1, false);
-}
-
-bool GetOutputFTS(){
-  return (bool) GetActivated(Datalog_Bytes[39], 2, false);
-}
-
-bool GetOutputEBC(){
-  return (bool) GetActivated(Datalog_Bytes[39], 4, false);
-}
-
 int GetIgnTable(){
   return (0.25 * Datalog_Bytes[20]) - 6;
 }
 
 int GetBaro(){
   return (int) round((double) ((int) Datalog_Bytes[3] / 2 + 24) * 7.221 - 59.0);
-}
-
-bool GetVTSM(){
-  return (bool) GetActivated(Datalog_Bytes[8], 3, false);
-}
-
-float GetInjectorDuty() {
-  return (float) ((double) GetRpm() * (double) GetDuration(Long2Bytes(Datalog_Bytes[17], Datalog_Bytes[18])) / 1200.0);
-}
-
-bool GetFuelCut2(){
-  return (bool) GetActivated(Datalog_Bytes[8], 5, false);
-}
-
-bool GetMIL(){
-  return (bool) GetActivated(Datalog_Bytes[23], 5, false);
 }
 
 bool GetInputFTL(){
@@ -62,6 +26,10 @@ bool GetInputFTS(){
   return (bool) GetActivated(Datalog_Bytes[38], 1, false);
 }
 
+bool GetVTSFeedBack(){
+  return (bool) GetActivated(Datalog_Bytes[21], 6, false);
+}
+
 bool GetInputEBC(){
   return (bool) GetActivated(Datalog_Bytes[38], 2, false);
 }
@@ -70,56 +38,32 @@ bool GetInputBST(){
   return (bool) GetActivated(Datalog_Bytes[38], 7, false);
 }
 
-bool GetOutputBoostCut(){
-  return (bool) GetActivated(Datalog_Bytes[39], 3, false);
+bool GetSCCChecker(){
+  return (bool) GetActivated(Datalog_Bytes[8], 1, false);
 }
 
-double GetInjDuration(){
-  return round(((double) GetDuration((int) Long2Bytes(Datalog_Bytes[17], Datalog_Bytes[18]))) * 100) / 100;
+bool GetVTSM(){
+  return (bool) GetActivated(Datalog_Bytes[8], 3, false);
 }
 
-bool GetLeanProtect(){
-  return (bool) GetActivated(Datalog_Bytes[43], 7, false);
+bool GetPostFuel(){
+  return (bool) GetActivated(Datalog_Bytes[8], 0, false);
 }
 
-bool GetParkN(){
-  return (bool) GetActivated(Datalog_Bytes[21], 0, false);
+bool GetInputEBCHi(){
+  return (bool) GetActivated(Datalog_Bytes[38], 3, false);
 }
 
-bool GetBKSW(){
-  return (bool) GetActivated(Datalog_Bytes[21], 1, false);
+bool GetInputGPO1(){
+  return (bool) GetActivated(Datalog_Bytes[38], 4, false);
 }
 
-bool GetACC(){
-  return (bool) GetActivated(Datalog_Bytes[21], 2, false);
+bool GetInputGPO2(){
+  return (bool) GetActivated(Datalog_Bytes[38], 5, false);
 }
 
-bool GetStart(){
-  return (bool) GetActivated(Datalog_Bytes[21], 4, false);
-}
-
-bool GetSCC(){
-  return (bool) GetActivated(Datalog_Bytes[21], 5, false);
-}
-
-bool GetVTSFeedBack(){
-  return (bool) GetActivated(Datalog_Bytes[21], 6, false);
-}
-
-bool GetPSP(){
-  return (bool) GetActivated(Datalog_Bytes[21], 7, false);
-}
-
-bool GetFuelPump(){
-  return (bool) GetActivated(Datalog_Bytes[22], 0, false);
-}
-
-bool GetIAB(){
-  return (bool) GetActivated(Datalog_Bytes[22], 2, false);
-}
-
-bool GetPurge(){
-  return (bool) GetActivated(Datalog_Bytes[22], 6, false);
+bool GetInputGPO3(){
+  return (bool) GetActivated(Datalog_Bytes[38], 6, false);
 }
 
 bool GetATShift1(){
@@ -128,6 +72,18 @@ bool GetATShift1(){
 
 bool GetATShift2(){
   return (bool) GetActivated(Datalog_Bytes[8], 7, false);
+}
+
+float GetInjectorDuty() {
+  return (float) ((double) GetRpm() * (double) GetDuration(Long2Bytes(Datalog_Bytes[17], Datalog_Bytes[18])) / 1200.0);
+}
+
+bool GetMIL(){
+  return (bool) GetActivated(Datalog_Bytes[23], 5, false);
+}
+
+double GetInjDuration(){
+  return round(((double) GetDuration((int) Long2Bytes(Datalog_Bytes[17], Datalog_Bytes[18]))) * 100) / 100;
 }
 
 double GetECTFC(){
@@ -162,60 +118,12 @@ float GetGEARIC(){
   return GetIC(Datalog_Bytes[36]);
 }
 
-bool GetInputEBCHi(){
-  return (bool) GetActivated(Datalog_Bytes[38], 3, false);
-}
-
-bool GetInputGPO1(){
-  return (bool) GetActivated(Datalog_Bytes[38], 4, false);
-}
-
-bool GetInputGPO2(){
-  return (bool) GetActivated(Datalog_Bytes[38], 5, false);
-}
-
-bool GetInputGPO3(){
-  return (bool) GetActivated(Datalog_Bytes[38], 6, false);
-}
-
 double GetEBCBaseDuty(){
   return GetEBC(Datalog_Bytes[40]);
 }
 
 double GetEBCDuty(){
   return GetEBC(Datalog_Bytes[41]);
-}
-
-bool GetOutputGPO1(){
-  return (bool) GetActivated(Datalog_Bytes[43], 0, false);
-}
-
-bool GetOutputGPO2(){
-  return (bool) GetActivated(Datalog_Bytes[43], 1, false);
-}
-
-bool GetOutputGPO3(){
-  return (bool) GetActivated(Datalog_Bytes[43], 2, false);
-}
-
-bool GetOutputBSTStage2(){
-  return (bool) GetActivated(Datalog_Bytes[43], 3, false);
-}
-
-bool GetOutputBSTStage3(){
-  return (bool) GetActivated(Datalog_Bytes[43], 4, false);
-}
-
-bool GetOutputBSTStage4(){
-  return (bool) GetActivated(Datalog_Bytes[43], 5, false);
-}
-
-bool GetPostFuel(){
-  return (bool) GetActivated(Datalog_Bytes[8], 0, false);
-}
-
-bool GetSCCChecker(){
-  return (bool) GetActivated(Datalog_Bytes[8], 1, false);
 }
 
 float GetIC(byte ThisByte) {

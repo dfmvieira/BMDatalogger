@@ -35,10 +35,11 @@ int ThisScreenIndex = 0;    //current display index number
 int XPos = 0;
 int YPos = 0;
 char StringBuffer[20];
-
-const int MaxDataValue = 27;
-bool EcuConnected = false;
+const int MaxDataValue = 50;
+//bool EcuConnected = false;
+bool InMain = true;
 unsigned long last_datalog_time=0;
+bool Sleeping = false;
 
 const byte ScreenPage1[8] = {50,0,1,2,3,4,5,6};
 const byte ScreenPage2[8] = {50,0,7,8,9,10,11,12};
@@ -49,7 +50,7 @@ const byte ScreenPage6[8] = {50,0,5,9,2,4,68,0};
 const byte ScreenPage7[8] = {50,0,68,0,56,0,53,0};
 const byte ScreenPage8[8] = {1,2,100,0,0,0,3,4};
 
-const String VersionStr = "1.6.0";
+const String VersionStr = "1.7.0";
 const byte ProgressBarMode = 0;
 const byte ProgressBarLeft = 0;
 const int Timeout = 200;
@@ -89,8 +90,18 @@ void setup() {
 //#####################################################
 
 void loop() {
-  if (!EcuConnected) ScreenJ12();
-  if (EcuConnected) Display();
+  unsigned long current_time = millis();
+  if (current_time - last_datalog_time > Timeout) {
+    GetData();
+    ApplyPeak();
+    last_datalog_time = current_time;
+  }
+
+  SetSpeedTime();
+  GetWarnings();
+  
+  if (InMain) ScreenMain();
+  if (!InMain) Display();
   GetButtonStates();
 }
 

@@ -26,6 +26,30 @@ const char sensor_24[] PROGMEM = "AC:";
 const char sensor_25[] PROGMEM = "ALT:";
 const char sensor_26[] PROGMEM = "GEAR:";
 
+const char sensor_27[] PROGMEM = "BST:";
+const char sensor_28[] PROGMEM = "FTL:";
+const char sensor_29[] PROGMEM = "ATLG:";
+const char sensor_30[] PROGMEM = "FTS:";
+const char sensor_31[] PROGMEM = "EBC:";
+const char sensor_32[] PROGMEM = "BSTCT:";
+const char sensor_33[] PROGMEM = "LEAN:";
+const char sensor_34[] PROGMEM = "PARK:";
+const char sensor_35[] PROGMEM = "BKSW:";
+const char sensor_36[] PROGMEM = "ACC:";
+const char sensor_37[] PROGMEM = "START:";
+const char sensor_38[] PROGMEM = "SCC:";
+const char sensor_39[] PROGMEM = "FCUT2:";
+const char sensor_40[] PROGMEM = "PSP:";
+const char sensor_41[] PROGMEM = "FPMP:";
+const char sensor_42[] PROGMEM = "IAB:";
+const char sensor_43[] PROGMEM = "PURGE:";
+const char sensor_44[] PROGMEM = "GPO1:";
+const char sensor_45[] PROGMEM = "GPO2:";
+const char sensor_46[] PROGMEM = "GPO3:";
+const char sensor_47[] PROGMEM = "BSTS2:";
+const char sensor_48[] PROGMEM = "BSTS3:";
+const char sensor_49[] PROGMEM = "BSTS4:";
+
 const char inf_0[] PROGMEM = "kmh";
 const char inf_1[] PROGMEM = "mph";
 const char inf_2[] PROGMEM = "%";
@@ -34,8 +58,8 @@ const char inf_4[] PROGMEM = "L";
 const char inf_5[] PROGMEM = "PAGE";
 const char inf_6[] PROGMEM = "MENU";
 const char inf_7[] PROGMEM = "SENSOR";
-const char inf_8[] PROGMEM = "  PEAKS";
-const char inf_9[] PROGMEM = "     MIL";
+const char inf_8[] PROGMEM = "PEAKS";
+const char inf_9[] PROGMEM = "MIL";
 const char inf_10[] PROGMEM = "NO CODE";
 const char inf_11[] PROGMEM = "  RESET";
 const char inf_12[] PROGMEM = "   DONE";
@@ -44,6 +68,11 @@ const char inf_14[] PROGMEM = "START";
 const char inf_15[] PROGMEM = "Min:";
 const char inf_16[] PROGMEM = "Max:";
 const char inf_17[] PROGMEM = "Curr:";
+const char inf_18[] PROGMEM = "Off";
+const char inf_19[] PROGMEM = "On";
+const char inf_20[] PROGMEM = "BMDatalogger";
+const char inf_21[] PROGMEM = "By Bouletmarc";
+const char inf_22[] PROGMEM = "SLEEP";
 
 const char err_0[] PROGMEM = "UKNW";
 const char err_1[] PROGMEM = "O2A";
@@ -84,14 +113,19 @@ const char* const SensorVars[] PROGMEM = {
   sensor_10, sensor_11, sensor_12, sensor_13, sensor_14,
   sensor_15, sensor_16, sensor_17, sensor_18, sensor_19,
   sensor_20, sensor_21, sensor_22, sensor_23, sensor_24,
-  sensor_25, sensor_26
+  sensor_25, sensor_26, sensor_27, sensor_28, sensor_29,
+  sensor_30, sensor_31, sensor_32, sensor_33, sensor_34,
+  sensor_35, sensor_36, sensor_37, sensor_38, sensor_39,
+  sensor_40, sensor_41, sensor_42, sensor_43, sensor_44,
+  sensor_45, sensor_46, sensor_47, sensor_48, sensor_49
 };
 
 const char* const StringInfos[] PROGMEM = {
   inf_0, inf_1, inf_2, inf_3, inf_4,
   inf_5, inf_6, inf_7, inf_8, inf_9, 
   inf_10, inf_11, inf_12, inf_13, inf_14,
-  inf_15, inf_16, inf_17
+  inf_15, inf_16, inf_17, inf_18, inf_19,
+  inf_20, inf_21, inf_22
 };
 
 const char* const ErrorsVars[] PROGMEM = {
@@ -156,6 +190,11 @@ void GetInfosString(int Addr) {
   GetStringsChar((unsigned int) pgm_read_word(&StringInfos[Addr]));
 }
 
+void GetActivatedString(bool Activated) {
+  if (!Activated) GetInfosString(18);
+  if (Activated) GetInfosString(19);
+}
+
 void GetErrorString(int Addr) {
   Add_String(String(Addr) + "-");
   if (Addr == 11 | Addr == 18) Addr = 0;
@@ -209,6 +248,13 @@ void PrintTextLenght(int PosX, int PosY) {
   for (int i=0; i < CurrentBufferIndex; i++) {
     lcd.setCursor(PosX + i, PosY);
     lcd.print(StringBuffer[i]);
+  }
+}
+
+void PrintTextFrom(int Lenght, int From, int PosX, int PosY) {
+  for (int i=0; i < Lenght; i++) {
+    lcd.setCursor(PosX + i, PosY);
+    lcd.print(StringBuffer[i + From]);
   }
 }
 

@@ -9,20 +9,16 @@ const int debouncing = 80;
 void GetButtonStates() {
   GetButtonTopState();
   if (buttonTop == ON) {
-    if (EcuConnected) {
+    if (!InMain) {
       if(ScreenCurrentMenu != 2) NextDisplay();
       //if(ScreenCurrentMenu == 2) ResetMilCodes();
       if(ScreenCurrentMenu == 2) buttonTop = OFF;
     } else {
-      NextMenu();
-      buttonTop=OFF;
+      if (!Sleeping) MainMenuNext();
     }
   }
-  if (buttonBottom == ON) NextMenu();
-  if (buttonDual == ON) {
-    InitPeak();
-    buttonDual = OFF;
-  }
+  if (buttonBottom == ON) MainMenu();
+  if (buttonDual == ON) ResetPeaks();
 }
 
 /*void ResetMilCodes() {
@@ -42,6 +38,21 @@ void GetButtonStates() {
   buttonTop=OFF;
 }*/
 
+void ResetPeaks() {
+  lcd.clear();
+  ResetBufferIndex();
+  GetInfosString(11);
+  writeBigString(0, 0);
+  ResetBufferIndex();
+  InitPeak();
+  GetInfosString(12);
+  writeBigString(0, 2);
+
+  delay(1000);
+  lcd.clear();
+  buttonDual=OFF;
+}
+
 void NextDisplay() {
   if(ScreenCurrentMenu == 0) {
     ScreenCurrentPage++;
@@ -55,22 +66,40 @@ void NextDisplay() {
   buttonTop=OFF;
 }
 
-void NextMenu() {
-  if (EcuConnected) ScreenCurrentMenu++;
-  if (!EcuConnected) EcuConnected = true;
-  
-  if(ScreenCurrentMenu > 2) ScreenCurrentMenu = 0;
-  ShowMenu();
+void MainMenu() {
+  lcd.backlight();
+  lcd.clear();
+  if(ScreenCurrentMenu != 3) {
+    if (InMain) InMain = false;
+    else InMain = true;
+  }
+  else {
+    if (!Sleeping) {
+      lcd.noBacklight();
+      Sleeping = true;
+    } else {
+      Sleeping = false;
+    }
+  }
   buttonBottom=OFF;
+  delay(500);
+}
+
+void MainMenuNext() {
+  ScreenCurrentMenu++;
+  if(ScreenCurrentMenu > 3) ScreenCurrentMenu = 0;
+  buttonTop=OFF;
+  delay(100);
 }
 
 void ShowPage() {
   lcd.clear();
   lcd.backlight();
+
   ResetBufferIndex();
   GetInfosString(5);
   writeBigString(3, 0);
-
+  
   ResetBufferIndex();
   if(ScreenCurrentMenu == 0) Add_String(String(ScreenCurrentPage));
   if(ScreenCurrentMenu == 1) Add_String(String(ScreenCurrentPeak));
@@ -89,10 +118,17 @@ void ShowMenu() {
   writeBigString(3, 0);
 
   ResetBufferIndex();
+  int XOffset = 0;
   if (ScreenCurrentMenu == 0) GetInfosString(7);
-  if (ScreenCurrentMenu == 1) GetInfosString(8);
-  if (ScreenCurrentMenu == 2) GetInfosString(9);
-  writeBigString(0, 2);
+  if (ScreenCurrentMenu == 1) {
+    GetInfosString(8);
+    XOffset = 2;
+  }
+  if (ScreenCurrentMenu == 2) {
+    GetInfosString(9);
+    XOffset = 5;
+  }
+  writeBigString(XOffset, 2);
   
   delay(1000);
   lcd.clear();

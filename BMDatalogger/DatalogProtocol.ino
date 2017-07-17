@@ -315,3 +315,97 @@ unsigned int GetGear(){
   for (int i = 0; i < 4; i++) if (num < (long) Tranny[i]) return i + 1;
   return 5;
 }
+
+//###############################
+
+bool GetOutputBST(){
+  return (bool) GetActivated(Datalog_Bytes[39], 7, false);
+}
+
+bool GetOutputFTL(){
+  return (bool) GetActivated(Datalog_Bytes[39], 0, false);
+}
+
+bool GetOutputAntilag(){
+  return (bool) GetActivated(Datalog_Bytes[39], 1, false);
+}
+
+bool GetOutputFTS(){
+  return (bool) GetActivated(Datalog_Bytes[39], 2, false);
+}
+
+bool GetOutputEBC(){
+  return (bool) GetActivated(Datalog_Bytes[39], 4, false);
+}
+
+bool GetOutputBoostCut(){
+  return (bool) GetActivated(Datalog_Bytes[39], 3, false);
+}
+
+bool GetLeanProtect(){
+  return (bool) GetActivated(Datalog_Bytes[43], 7, false);
+}
+
+bool GetParkN(){
+  return (bool) GetActivated(Datalog_Bytes[21], 0, false);
+}
+
+bool GetBKSW(){
+  return (bool) GetActivated(Datalog_Bytes[21], 1, false);
+}
+
+bool GetACC(){
+  return (bool) GetActivated(Datalog_Bytes[21], 2, false);
+}
+
+bool GetStart(){
+  return (bool) GetActivated(Datalog_Bytes[21], 4, false);
+}
+
+bool GetSCC(){
+  return (bool) GetActivated(Datalog_Bytes[21], 5, false);
+}
+
+bool GetFuelCut2(){
+  return (bool) GetActivated(Datalog_Bytes[8], 5, false);
+}
+
+bool GetPSP(){
+  return (bool) GetActivated(Datalog_Bytes[21], 7, false);
+}
+
+bool GetFuelPump(){
+  return (bool) GetActivated(Datalog_Bytes[22], 0, false);
+}
+
+bool GetIAB(){
+  return (bool) GetActivated(Datalog_Bytes[22], 2, false);
+}
+
+bool GetPurge(){
+  return (bool) GetActivated(Datalog_Bytes[22], 6, false);
+}
+
+bool GetOutputGPO1(){
+  return (bool) GetActivated(Datalog_Bytes[43], 0, false);
+}
+
+bool GetOutputGPO2(){
+  return (bool) GetActivated(Datalog_Bytes[43], 1, false);
+}
+
+bool GetOutputGPO3(){
+  return (bool) GetActivated(Datalog_Bytes[43], 2, false);
+}
+
+bool GetOutputBSTStage2(){
+  return (bool) GetActivated(Datalog_Bytes[43], 3, false);
+}
+
+bool GetOutputBSTStage3(){
+  return (bool) GetActivated(Datalog_Bytes[43], 4, false);
+}
+
+bool GetOutputBSTStage4(){
+  return (bool) GetActivated(Datalog_Bytes[43], 5, false);
+}

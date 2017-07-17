@@ -58,6 +58,30 @@ void SetPeak() {
   if (ThisScreenIndex == 24) SetPeakValue(0,1);
   if (ThisScreenIndex == 25) SetPeakValue(0,1);
   if (ThisScreenIndex == 26) SetPeakValue(0,5);
+  
+  if (ThisScreenIndex == 27) SetPeakValue(0,1);
+  if (ThisScreenIndex == 28) SetPeakValue(0,1);
+  if (ThisScreenIndex == 29) SetPeakValue(0,1);
+  if (ThisScreenIndex == 30) SetPeakValue(0,1);
+  if (ThisScreenIndex == 31) SetPeakValue(0,1);
+  if (ThisScreenIndex == 32) SetPeakValue(0,1);
+  if (ThisScreenIndex == 33) SetPeakValue(0,1);
+  if (ThisScreenIndex == 34) SetPeakValue(0,1);
+  if (ThisScreenIndex == 35) SetPeakValue(0,1);
+  if (ThisScreenIndex == 36) SetPeakValue(0,1);
+  if (ThisScreenIndex == 37) SetPeakValue(0,1);
+  if (ThisScreenIndex == 38) SetPeakValue(0,1);
+  if (ThisScreenIndex == 39) SetPeakValue(0,1);
+  if (ThisScreenIndex == 40) SetPeakValue(0,1);
+  if (ThisScreenIndex == 41) SetPeakValue(0,1);
+  if (ThisScreenIndex == 42) SetPeakValue(0,1);
+  if (ThisScreenIndex == 43) SetPeakValue(0,1);
+  if (ThisScreenIndex == 44) SetPeakValue(0,1);
+  if (ThisScreenIndex == 45) SetPeakValue(0,1);
+  if (ThisScreenIndex == 46) SetPeakValue(0,1);
+  if (ThisScreenIndex == 47) SetPeakValue(0,1);
+  if (ThisScreenIndex == 48) SetPeakValue(0,1);
+  if (ThisScreenIndex == 49) SetPeakValue(0,1);
 }
 
 double GetPeakPercent(int value) {

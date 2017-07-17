@@ -1,4 +1,4 @@
-void ScreenJ12() {
+/*void ScreenJ12() {
   unsigned long current_time = millis();
   if (current_time - last_datalog_time > Timeout) {
     EcuConnected = GetJ12Cut();
@@ -12,5 +12,5 @@ void ScreenJ12() {
   }else {
     ShowMenu();
   }
-}
+}*/
 
