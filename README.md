@@ -19,12 +19,21 @@ IF USING BLUETOOTH :
 
 # Wiring Diagram :
 
-![alt tag](https://raw.githubusercontent.com/bouletmarc/BMDatalogger/master/BMDatalogger_Wiring_Diagram.png)
+![alt tag](https://raw.githubusercontent.com/bouletmarc/BMDatalogger/master/BMDatalogger_Wiring_Diagram2.png)
 
 - I2C Serial 5v --> Arduino 5V
 - I2C Serial Grn --> Arduino Grn
 - I2c Serial SDA --> Arduino A4
 - I2C Serial SCL --> Arduino A5
+
+- ECU CN2 Pin#2 --> Arduino Tx
+- ECU CN2 Pin#4 --> Arduino Rx
+
+# *** EVERYTHING BELLOW ARE INFORMATION IF YOU ARE USING BLUETOOTH ***
+
+# Wiring Diagram (Bluetooth):
+
+![alt tag](https://raw.githubusercontent.com/bouletmarc/BMDatalogger/master/BMDatalogger_Wiring_Diagram.png)
 
 - HC05 (Master) 5v --> Arduino 5V
 - HC05 (Master) Grn --> Arduino Grn
