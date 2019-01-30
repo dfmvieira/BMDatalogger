@@ -1,6 +1,6 @@
 # BMDatalogger
 
-The BMDatalogger is made to datalog Ectune ISR V3 protocol with the Adruino Nano. This is kind of a 'Tuner View' but under Arduino.
+The BMDatalogger is made to datalog BMTune and Ectune ISR V3 protocol with the Adruino Nano. This is kind of a 'Tuner View' but under Arduino.
 
 # Download : [HERE][]
 
